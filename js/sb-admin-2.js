@@ -52,5 +52,9 @@
     }, 1000, 'easeInOutExpo');
     e.preventDefault();
   });
+  $('.carousel').carousel({
+    interval: 2000
+  })
 
 })(jQuery); // End of use strict
+
