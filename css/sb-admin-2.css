@@ -10801,6 +10801,12 @@ form.user .btn-user {
   padding: 0.75rem 1rem;
   width: 8rem;
 }
+#reg{
+  width: 10rem;;
+}
+.fas-login{
+  font-size: 1.5rem;
+}
 
 .btn-google {
   color: #fff;

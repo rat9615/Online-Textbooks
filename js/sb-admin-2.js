@@ -56,5 +56,7 @@
     interval: 2000
   })
 
+  
+
 })(jQuery); // End of use strict
 

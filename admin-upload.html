@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Online Textbooks - Dashboard</title>
+  <title>Online Textbooks - Admin-upload</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -29,7 +29,7 @@
     <ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Logo -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="admin-index.html">
         <div class="sidebar-brand-icon">
           <i class="fas fa-book-reader"></i>
         </div>
@@ -41,7 +41,7 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="admin-index.html">
           <i class="fas fa-fw fa-chalkboard-teacher"></i>
           <span>Dashboard</span></a>
       </li>
@@ -57,17 +57,23 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="branch.html">Branch</a>
-            <a class="collapse-item" href="semesters.html">Semester</a>
-            <a class = "collapse-item" href="authors.html">Authors</a>
+            <a class="collapse-item" href="#">Branch</a>
+            <a class="collapse-item" href="#">Semester</a>
+            <a class = "collapse-item" href="#">Authors</a>
           </div>
         </div>
       </li>
 
       <li class="nav-item">
-        <a class = "nav-link" href="download.html">
+        <a class = "nav-link" href="#download">
           <i class="fas fa-fw fa-download"></i>
           <span>Download books</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class = "nav-link" href="admin-upload.html">
+          <i class="fas fa-fw fa-upload"></i>
+          <span>Upload books</span>
         </a>
       </li>
       <!-- Divider -->
@@ -100,25 +106,25 @@
 
       <!-- Nav item - Request a book -->
       <li class="nav-item">
-        <a class="nav-link" href="#request">
+        <a class="nav-link" href="admin-index.html#request">
           <i class="fas fa-fw fa-comment"></i>
-          <span>Request a book</span></a>
+          <span>Book requests</span></a>
       </li>
 
       <!-- Nav Item - About Us -->
       <li class="nav-item">
-        <a class="nav-link" href="#about">
+        <a class="nav-link" href="admin-index.html#about">
           <i class="fas fa-fw fa-address-card"></i>
           <span>About Us</span></a>
       </li>
 
-      <!--Nav Item- Contact-->
+      <!--Nav Item- Contact
       <li class="nav-item">
-        <a class="nav-link" href="#contactus">
+        <a class="nav-link" href="#contact">
           <i class="fas fa-fw fa-address-book"></i>
           <span>Contact</span>
         </a>
-      </li>
+      </li>-->
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -200,7 +206,7 @@
                   </div>
                   <div>
                     <div class="small text-gray-500">March 22, 2020</div>
-                    <span class="font-weight-bold">The book requested has been uploaded!</span>
+                    <span class="font-weight-bold">You have received a request for a book!</span>
                   </div>
                 </a>
                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
@@ -216,7 +222,7 @@
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
-                  <h6>USN</h6>
+                  <h6>Admin</h6>
                   <p>Name</p>
                 </a>
                 
@@ -240,78 +246,64 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
           </div>
-
+          
           <!--latest added books-->
           <div class="row">
             <div class="col-xl-12 col-lg-9 mb-4">
               <div id="contact" class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-danger">List of latest added books</h6>
+                  <h6 class="m-0 font-weight-bold text-danger">Upload books</h6>
                 </div>
-                <div class="card-body my-5">
-                
+                <div class="card-body">
+                    <form class="user">
+                        <div class="form-group">
+                          <input type="text" class="form-control form-control-user" id = "bookname" placeholder="Name of the book"> 
+                        </div>
+                        <div class="form-group">
+                          <input type = "text" class="form-control form-control-user" placeholder="Year of publication">
+                        </div>
+                        <div class="form-group">
+                          <input type="text" class="form-control form-control-user" placeholder="Name of the Author">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control selectpicker">
+                             <optgroup label="Branch">
+                             <option value="mca">Computer Applications</option>
+                             <option value="mba">Business Administration</option>
+                            </optgroup>
+                            </select>
+                          </div>
+                        <div class="form-group">
+                          <select class="form-control selectpicker">
+                           <optgroup label="Semester">
+                           <option value="first">I</option>
+                           <option value="epub">II</option>
+                           <option value="epub">III</option>
+                           <option value="epub">IV</option>
+                           <option value="epub">V</option>
+                           <option value="epub">VI</option>
+                          </optgroup>
+                          </select>
+                        </div>
+                        <div class="card shadow my-5">
+                            <div class=" card-block text-center my-5 py-5">
+                                <span class="my-5">Drop files here to upload</span>
+                            </div>
+                        </div>
+                        <div class="text-center ">
+                          <a href="#" class="btn btn-danger btn-user">Upload</a>
+                        </div>
+                    </form>
                 </div>
               </div>
             </div>
           </div>
-          <!-- Content Row -->
-          <div class="row">  
-              <!-- Request a book -->
-              <div class="col-xl-6 col-md-5 mb-4">
-              <div id = "request" class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-danger">Request a book</h6>
-                </div>
-                <div class="card-body">
-                  <p class="text-center">Could not find the book you were looking for?</p>
-                  <p class="text-center mb=2">Fill in the below details and we will get back to you as soon as possible.</p>
-                  <form class="user">
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id = "bookname" placeholder="Name of the book"> 
-                    </div>
-                    <div class="form-group">
-                      <input type = "text" class="form-control form-control-user" placeholder="Year of publication">
-                    </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" placeholder="Name of the Author">
-                    </div>
-                    <div class="form-group">
-                      <select class="form-control selectpicker">
-                       <optgroup label="Required format">
-                       <option value="pdf">PDF</option>
-                       <option value="epub">epub</option>
-                      </optgroup>
-                      </select>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="btn btn-danger btn-user">Request</a>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
+          
 
-              <!-- About Us -->
-            <div class="col-xl-6 col-md-5 mb-4">
-              <div id = "about" class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-danger">About Us</h6>
-                </div>
-                <div class="card-body">
-                  <p class="text-justify">Online Textbooks is a website where students and teachers can find relative study
-                    materials online such as textbooks and reference books instead of owning a physical copy.
-                    The web application consists of a repository of textbooks in a digital format relative to the
-                    student’s field of study. It eliminates the need for physical textbooks and materials not
-                    being available to the students of a particular class. </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!--Contact-->
+          <!--Contact
           <div class="row">
             <div class="col-xl-12 col-lg-9 mb-4">
-              <div id="contactus" class="card shadow mb-4">
+              <div id="contact" class="card shadow mb-4">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-danger">Contact</h6>
                 </div>
@@ -335,7 +327,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div>-->
 
         </div>
         <!-- /.container-fluid -->

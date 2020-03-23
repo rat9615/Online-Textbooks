@@ -57,9 +57,9 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="branch.html">Branch</a>
-            <a class="collapse-item" href="semesters.html">Semester</a>
-            <a class = "collapse-item" href="authors.html">Authors</a>
+            <a class="collapse-item" href="#">Branch</a>
+            <a class="collapse-item" href="#">Semester</a>
+            <a class = "collapse-item" href="#">Authors</a>
           </div>
         </div>
       </li>
@@ -100,21 +100,21 @@
 
       <!-- Nav item - Request a book -->
       <li class="nav-item">
-        <a class="nav-link" href="#request">
+        <a class="nav-link" href="index.html#request">
           <i class="fas fa-fw fa-comment"></i>
           <span>Request a book</span></a>
       </li>
 
       <!-- Nav Item - About Us -->
       <li class="nav-item">
-        <a class="nav-link" href="#about">
+        <a class="nav-link" href="index.html#about">
           <i class="fas fa-fw fa-address-card"></i>
           <span>About Us</span></a>
       </li>
 
       <!--Nav Item- Contact-->
       <li class="nav-item">
-        <a class="nav-link" href="#contactus">
+        <a class="nav-link" href="index.html#contactus">
           <i class="fas fa-fw fa-address-book"></i>
           <span>Contact</span>
         </a>
@@ -144,18 +144,6 @@
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
           </button>
-
-          <!-- Topbar Search -->
-          <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search books" aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-danger" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-          </form>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
@@ -241,102 +229,48 @@
             <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
           </div>
 
-          <!--latest added books-->
+          <!--Download books-->
           <div class="row">
             <div class="col-xl-12 col-lg-9 mb-4">
               <div id="contact" class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-danger">List of latest added books</h6>
-                </div>
-                <div class="card-body my-5">
-                
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Content Row -->
-          <div class="row">  
-              <!-- Request a book -->
-              <div class="col-xl-6 col-md-5 mb-4">
-              <div id = "request" class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-danger">Request a book</h6>
+                  <h6 class="m-0 font-weight-bold text-danger">Browse books</h6>
                 </div>
                 <div class="card-body">
-                  <p class="text-center">Could not find the book you were looking for?</p>
-                  <p class="text-center mb=2">Fill in the below details and we will get back to you as soon as possible.</p>
                   <form class="user">
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id = "bookname" placeholder="Name of the book"> 
+                        <select class="form-control selectpicker">
+                         <optgroup label="Branch">
+                         <option value="mca">Computer Applications</option>
+                         <option value="mba">Business Administration</option>
+                        </optgroup>
+                        </select>
                     </div>
                     <div class="form-group">
-                      <input type = "text" class="form-control form-control-user" placeholder="Year of publication">
+                        <select class="form-control selectpicker">
+                         <optgroup label="Semester">
+                         <option value="first">I</option>
+                         <option value="epub">II</option>
+                         <option value="epub">III</option>
+                         <option value="epub">IV</option>
+                         <option value="epub">V</option>
+                         <option value="epub">VI</option>
+                        </optgroup>
+                        </select>
                     </div>
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user" placeholder="Name of the Author">
-                    </div>
-                    <div class="form-group">
-                      <select class="form-control selectpicker">
-                       <optgroup label="Required format">
-                       <option value="pdf">PDF</option>
-                       <option value="epub">epub</option>
-                      </optgroup>
-                      </select>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="btn btn-danger btn-user">Request</a>
-                    </div>
+                    <div class="text-center ">
+                        <a href="#" class="btn btn-danger btn-user">Browse</a>
+                      </div>
                   </form>
+                  <div class="card shadow my-5 py-5">
+                    <div class=" card-block text-center my-5 py-5">
+                        <span class="my-5">List of books</span>
+                    </div>
                 </div>
-              </div>
-            </div>
-
-              <!-- About Us -->
-            <div class="col-xl-6 col-md-5 mb-4">
-              <div id = "about" class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-danger">About Us</h6>
-                </div>
-                <div class="card-body">
-                  <p class="text-justify">Online Textbooks is a website where students and teachers can find relative study
-                    materials online such as textbooks and reference books instead of owning a physical copy.
-                    The web application consists of a repository of textbooks in a digital format relative to the
-                    student’s field of study. It eliminates the need for physical textbooks and materials not
-                    being available to the students of a particular class. </p>
                 </div>
               </div>
             </div>
           </div>
-
-          <!--Contact-->
-          <div class="row">
-            <div class="col-xl-12 col-lg-9 mb-4">
-              <div id="contactus" class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-danger">Contact</h6>
-                </div>
-                <div class="card-body">
-                  <h4 class="font-weight-bold text-center">We'd love to hear from you</h4>
-                  <p class="text-center">Our team is happy to answer your questions. Fill out the form below and we'll get in touch with you as soon as possible</p>
-                  <form class="user mb-4">
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user"placeholder="Name">
-                    </div>
-                    <div class="form-group">
-                      <input type="email" class="form-control form-control-user" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                      <textarea id="text" class="form-control" rows = "10" placeholder="Message"></textarea>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="btn btn-danger btn-user">Submit</a>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
         <!-- /.container-fluid -->
 
