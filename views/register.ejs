@@ -23,7 +23,8 @@
 <body class="bg-gradient-danger">
 
   <div class="container">
-
+    
+    
     <div class="card o-hidden border-0 shadow-lg my-5">
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
@@ -32,7 +33,7 @@
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center mb-4">
-                <a class="d-flex align-items-center justify-content-center text-decoration-none" href="login.html">
+                <a class="d-flex align-items-center justify-content-center text-decoration-none" href="/users/register">
                   <div class="fas-login">
                     <i class="fas fa-book-reader text-danger"></i>
                   </div>
@@ -42,23 +43,29 @@
               <div class="text-center">
                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
               </div>
-              <form class="user">
+              <!--alert-->
+              <% if (user == 'error') { %>
+                <div class="alert alert-warning" role="alert">
+                  There seems to be a problem. Try again or contact your administrator!
+                </div>
+              <% } %>
+              <form class="user" action = '/users/register' method="POST">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
+                    <input type="text" class="form-control form-control-user" id="exampleFirstName" name="firstname" placeholder="First Name">
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
+                    <input type="text" class="form-control form-control-user" id="exampleLastName" name="lastname" placeholder="Last Name">
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" name="email" placeholder="Email Address">
                 </div>
                   <div class="form-group">
-                    <input type="text" class="form-control form-control-user" id="exampleInputUSN"  placeholder="USN">
+                    <input type="text" class="form-control form-control-user" id="exampleInputUSN" name="usn"  placeholder="USN">
                   </div>
                   <div class="form-group">
-                    <select class=" form-control selectpicker">
+                    <select class=" form-control selectpicker" name="course">
                       <optgroup label="Course"></optgroup>
                         <option selected hidden disabled>Course</option>
                         <option value="mca">Computer Applications</option>
@@ -66,19 +73,12 @@
                       </optgroup>
                     </select>
                   </div>
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
-                  </div>
-                  <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
-                  </div>
+                <div class="form-group">
+                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" name="password" placeholder="Password">
                 </div>
                 <div class="text-center">
-                <a href="login.html"  id =  "reg" class="btn btn-danger btn-user">
-                  Register Account
-                </a>
-              </div>
+                  <input type="submit" class = "btn btn-danger btn-user" value="Register">
+                </div>
               </form>
               <hr>
               <div class="text-center">

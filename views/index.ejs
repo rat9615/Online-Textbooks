@@ -216,8 +216,10 @@
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
-                  <h6>USN</h6>
-                  <p>Name</p>
+                  <% logindata.forEach(function (login) { %>
+                    <h6><%= login.usn %></h6>
+                    <p><%= login.firstname%> <%= login.lastname %></p>
+                <% }) %>
                 </a>
                 
                 <div class="dropdown-divider"></div>
