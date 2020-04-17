@@ -1,19 +1,21 @@
-const express = require('express')
-const router = express.Router()
-const passport = require('passport')
-const userreg = require('../models/userreg')
+const express = require('express');
 
-//static
-router.use(express.static('public'))
+const router = express.Router();
+const passport = require('passport');
+const userreg = require('../models/userreg');
 
-//index
-router.post('/', passport.authenticate('local',{ failureRedirect :'/users/login'}), function(req,res){
-    userreg.find({}, function(err,data){
+// static
+router.use(express.static('public'));
 
-        res.render('index',{ logindata : data })
-    })
-    
-})
+// index
+router.post(
+  '/',
+  passport.authenticate('local', { failureRedirect: '/users/login' }),
+  (req, res) => {
+    userreg.find({}, (err, data) => {
+      res.render('index', { logindata: data });
+    });
+  },
+);
 
-
-module.exports = router
+module.exports = router;

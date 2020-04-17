@@ -1,40 +1,45 @@
 {
-    "title": "Online Textbooks",
-    "name": "online-textbooks",
-    "version": "1.0.0",
-    "scripts": {
-        "start": "node app.js",
-        "watch": "nodemon app.js"
-    },
-    "description": "Online Textbooks is a web application where students can find relative study materials online such as textbooks and reference books instead of owning a physical copy.",
-    "main": "login.html",
-    "author": "Rohan R",
-    "license": "ISC",
-    "devDependancies": {
-        "node": "^13.7.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/rat9615/Online-Textbooks.git"
-    },
-    "dependencies": {
-        "@fortawesome/fontawesome-free": "5.12.0",
-        "@popperjs/core": "^2.2.2",
-        "bcryptjs": "^2.4.3",
-        "bootstrap": "4.4.1",
-        "chart.js": "2.9.3",
-        "connect-flash": "^0.1.1",
-        "datatables.net-bs4": "1.10.20",
-        "ejs": "^3.0.2",
-        "express": "^4.17.1",
-        "express-session": "^1.17.0",
-        "jquery": "^3.5.0",
-        "jquery.easing": "^1.4.1",
-        "mongodb": "^3.5.5",
-        "mongoose": "^5.9.7",
-        "passport": "^0.4.1",
-        "passport-local": "^1.0.0",
-        "passport-local-mongoose": "^6.0.1",
-        "popper.js": "^1.16.1"
-    }
+  "title": "Online Textbooks",
+  "name": "online-textbooks",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js",
+    "watch": "nodemon app.js"
+  },
+  "description": "Online Textbooks is a web application where students can find relative study materials online such as textbooks and reference books instead of owning a physical copy.",
+  "main": "login.html",
+  "author": "Rohan R",
+  "license": "ISC",
+  "devDependancies": {
+    "node": "^13.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rat9615/Online-Textbooks.git"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "5.12.0",
+    "@popperjs/core": "^2.2.2",
+    "body-parser": "^1.19.0",
+    "bootstrap": "4.4.1",
+    "chart.js": "2.9.3",
+    "connect-flash": "^0.1.1",
+    "datatables.net-bs4": "1.10.20",
+    "ejs": "^3.0.2",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "jquery": "^3.5.0",
+    "jquery.easing": "^1.4.1",
+    "mongodb": "^3.5.5",
+    "mongoose": "^5.9.7",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^6.0.1",
+    "popper.js": "^1.16.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
+  }
 }
