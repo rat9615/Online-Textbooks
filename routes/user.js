@@ -7,17 +7,35 @@ const userreg = require('../models/userreg');
 router.use(express.static('public'));
 
 router.get('/login', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/');
+  }
   res.render('login');
 });
 
+// forgot-password
 router.get('/forgot-password', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/');
+  }
   res.render('forgot-password');
 });
 
+// register
 router.get('/register', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/');
+  }
   res.render('register', { user: 'null' });
 });
 
+// logout
+router.get('/logout', (req, res) => {
+  if (req.isAuthenticated()) {
+    req.logOut();
+    res.redirect('/users/login');
+  }
+});
 router.post('/register', (req, res) => {
   userreg.register(
     // eslint-disable-next-line new-cap

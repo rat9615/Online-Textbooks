@@ -43,8 +43,8 @@ passport.deserializeUser(userreg.deserializeUser());
 passport.use(
   new LocalStrategy({ usernameField: 'email' }, userreg.authenticate()),
 );
-// routes
 
+// routes
 app.use('/users', require('./routes/user'));
 app.use('/', require('./routes/index'));
 
