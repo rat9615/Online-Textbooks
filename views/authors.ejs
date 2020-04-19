@@ -38,7 +38,7 @@
         <!-- Logo -->
         <a
           class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="index.html"
+          href="/"
         >
           <div class="sidebar-brand-icon">
             <i class="fas fa-book-reader"></i>
@@ -51,7 +51,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="/">
             <i class="fas fa-fw fa-chalkboard-teacher"></i>
             <span>Dashboard</span></a
           >
@@ -80,19 +80,27 @@
             data-parent="#accordionSidebar"
           >
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="#">Branch</a>
-              <a class="collapse-item" href="#">Semester</a>
-              <a class="collapse-item" href="#">Authors</a>
+              <a class="collapse-item" href="/branch">Branch</a>
+              <a class="collapse-item" href="/semester">Semester</a>
+              <a class="collapse-item" href="/author">Authors</a>
             </div>
           </div>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="download.html">
+          <a class="nav-link" href="/download-books">
             <i class="fas fa-fw fa-download"></i>
             <span>Download books</span>
           </a>
         </li>
+        <% if (user == 'admin') { %>
+          <li class="nav-item">
+            <a class="nav-link" href="/upload-books">
+              <i class="fas fa-fw fa-upload"></i>
+              <span>Upload books</span>
+            </a>
+          </li>
+        <% } %>
         <!-- Divider -->
         <hr class="sidebar-divider" />
 
@@ -101,49 +109,42 @@
           Other
         </div>
 
-        <!-- Nav Item - Pages Collapse Menu
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>-->
-
-        <!-- Nav item - Request a book -->
-        <li class="nav-item">
-          <a class="nav-link" href="index.html#request">
-            <i class="fas fa-fw fa-comment"></i>
-            <span>Request a book</span></a
-          >
-        </li>
-
-        <!-- Nav Item - About Us -->
-        <li class="nav-item">
-          <a class="nav-link" href="index.html#about">
-            <i class="fas fa-fw fa-address-card"></i>
-            <span>About Us</span></a
-          >
-        </li>
-
-        <!--Nav Item- Contact-->
-        <li class="nav-item">
-          <a class="nav-link" href="index.html#contactus">
-            <i class="fas fa-fw fa-address-book"></i>
-            <span>Contact</span>
-          </a>
-        </li>
+        <% if (user == 'admin') { %>
+          <!-- Nav item - Request a book -->
+          <li class="nav-item">
+            <a class="nav-link" href="/#request">
+              <i class="fas fa-fw fa-comment"></i>
+              <span>Book requests</span></a
+            >
+          </li>
+          <% } %>
+          <% if (user == 'regular') { %>
+          <!-- Nav item - Request a book -->
+          <li class="nav-item">
+            <a class="nav-link" href="/#request">
+              <i class="fas fa-fw fa-comment"></i>
+              <span>Request a book</span></a
+            >
+          </li>
+          <% } %>
+  
+          <!-- Nav Item - About Us -->
+          <li class="nav-item">
+            <a class="nav-link" href="/#about">
+              <i class="fas fa-fw fa-address-card"></i>
+              <span>About Us</span></a
+            >
+          </li>
+  
+          <% if (user == 'regular') { %>
+          <!--Nav Item- Contact-->
+          <li class="nav-item">
+            <a class="nav-link" href="/#contactus">
+              <i class="fas fa-fw fa-address-book"></i>
+              <span>Contact</span>
+            </a>
+          </li>
+        <% } %>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
@@ -272,9 +273,9 @@
                   class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                   aria-labelledby="userDropdown"
                 >
-                  <a class="dropdown-item" href="#">
-                    <h6>USN</h6>
-                    <p>Name</p>
+                  <a class="dropdown-item" href="/">
+                    <h6><%= login.usn %></h6>
+                    <p><%= login.firstname%> <%= login.lastname %></p>
                   </a>
 
                   <div class="dropdown-divider"></div>
@@ -391,7 +392,7 @@
             >
               Cancel
             </button>
-            <a class="btn btn-danger" href="login.html">Logout</a>
+            <a class="btn btn-danger" href="/users/logout">Logout</a>
           </div>
         </div>
       </div>

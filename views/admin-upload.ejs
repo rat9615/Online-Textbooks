@@ -38,7 +38,7 @@
         <!-- Logo -->
         <a
           class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="admin-index.html"
+          href="/"
         >
           <div class="sidebar-brand-icon">
             <i class="fas fa-book-reader"></i>
@@ -51,7 +51,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-          <a class="nav-link" href="admin-index.html">
+          <a class="nav-link" href="/">
             <i class="fas fa-fw fa-chalkboard-teacher"></i>
             <span>Dashboard</span></a
           >
@@ -80,21 +80,21 @@
             data-parent="#accordionSidebar"
           >
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="#">Branch</a>
-              <a class="collapse-item" href="#">Semester</a>
-              <a class="collapse-item" href="#">Authors</a>
+              <a class="collapse-item" href="/branch">Branch</a>
+              <a class="collapse-item" href="/semester">Semester</a>
+              <a class="collapse-item" href="/author">Authors</a>
             </div>
           </div>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="#download">
+          <a class="nav-link" href="/download-books">
             <i class="fas fa-fw fa-download"></i>
             <span>Download books</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="admin-upload.html">
+          <a class="nav-link" href="/upload-books">
             <i class="fas fa-fw fa-upload"></i>
             <span>Upload books</span>
           </a>
@@ -107,29 +107,9 @@
           Other
         </div>
 
-        <!-- Nav Item - Pages Collapse Menu
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-          <i class="fas fa-fw fa-folder"></i>
-          <span>Pages</span>
-        </a>
-        <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Login Screens:</h6>
-            <a class="collapse-item" href="login.html">Login</a>
-            <a class="collapse-item" href="register.html">Register</a>
-            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-            <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Other Pages:</h6>
-            <a class="collapse-item" href="404.html">404 Page</a>
-            <a class="collapse-item" href="blank.html">Blank Page</a>
-          </div>
-        </div>
-      </li>-->
-
         <!-- Nav item - Request a book -->
         <li class="nav-item">
-          <a class="nav-link" href="admin-index.html#request">
+          <a class="nav-link" href="/#request">
             <i class="fas fa-fw fa-comment"></i>
             <span>Book requests</span></a
           >
@@ -137,19 +117,11 @@
 
         <!-- Nav Item - About Us -->
         <li class="nav-item">
-          <a class="nav-link" href="admin-index.html#about">
+          <a class="nav-link" href="/#about">
             <i class="fas fa-fw fa-address-card"></i>
             <span>About Us</span></a
           >
         </li>
-
-        <!--Nav Item- Contact
-      <li class="nav-item">
-        <a class="nav-link" href="#contact">
-          <i class="fas fa-fw fa-address-book"></i>
-          <span>Contact</span>
-        </a>
-      </li>-->
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
@@ -298,9 +270,8 @@
                   class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                   aria-labelledby="userDropdown"
                 >
-                  <a class="dropdown-item" href="#">
-                    <h6>Admin</h6>
-                    <p>Name</p>
+                  <a class="dropdown-item" href="/">
+                    <h6><%= login.firstname%> <%= login.lastname %></h6>
                   </a>
 
                   <div class="dropdown-divider"></div>
@@ -397,34 +368,6 @@
               </div>
             </div>
 
-            <!--Contact
-          <div class="row">
-            <div class="col-xl-12 col-lg-9 mb-4">
-              <div id="contact" class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-danger">Contact</h6>
-                </div>
-                <div class="card-body">
-                  <h4 class="font-weight-bold text-center">We'd love to hear from you</h4>
-                  <p class="text-center">Our team is happy to answer your questions. Fill out the form below and we'll get in touch with you as soon as possible</p>
-                  <form class="user mb-4">
-                    <div class="form-group">
-                      <input type="text" class="form-control form-control-user"placeholder="Name">
-                    </div>
-                    <div class="form-group">
-                      <input type="email" class="form-control form-control-user" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                      <textarea id="text" class="form-control" rows = "10" placeholder="Message"></textarea>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="btn btn-danger btn-user">Submit</a>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>-->
           </div>
           <!-- /.container-fluid -->
         </div>
@@ -480,7 +423,7 @@
             >
               Cancel
             </button>
-            <a class="btn btn-danger" href="login.html">Logout</a>
+            <a class="btn btn-danger" href="/users/logout">Logout</a>
           </div>
         </div>
       </div>

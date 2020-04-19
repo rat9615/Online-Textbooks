@@ -6,35 +6,40 @@ const userreg = require('../models/userreg');
 // static
 router.use(express.static('public'));
 
-router.get('/login', (req, res) => {
+router.get('/login', (req, res, done) => {
   if (req.isAuthenticated()) {
     res.redirect('/');
+    return done();
   }
-  res.render('login');
+  return res.render('login');
 });
 
 // forgot-password
-router.get('/forgot-password', (req, res) => {
+router.get('/forgot-password', (req, res, done) => {
   if (req.isAuthenticated()) {
     res.redirect('/');
+    return done();
   }
-  res.render('forgot-password');
+  return res.render('forgot-password');
 });
 
 // register
-router.get('/register', (req, res) => {
+router.get('/register', (req, res, done) => {
   if (req.isAuthenticated()) {
     res.redirect('/');
+    return done();
   }
-  res.render('register', { user: 'null' });
+  return res.render('register', { user: 'null' });
 });
 
 // logout
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res, done) => {
   if (req.isAuthenticated()) {
     req.logOut();
     res.redirect('/users/login');
+    return done();
   }
+  return res.redirect('/users/login');
 });
 router.post('/register', (req, res) => {
   userreg.register(

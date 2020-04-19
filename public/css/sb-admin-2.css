@@ -5919,7 +5919,9 @@ a.close.disabled {
   background-color: #000;
   border-radius: 0.35rem;
 }
-
+.fa-bars {
+  color: var(--red);
+}
 .popover {
   position: absolute;
   top: 0;
