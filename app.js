@@ -1,6 +1,8 @@
 const express = require('express');
 
 const app = express();
+const cors = require('cors');
+const fileupload = require('express-fileupload');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
@@ -16,22 +18,26 @@ mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
   useCreateIndex: true,
 });
 
+// cors
+app.use(cors());
 // bodyparser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
+
 // EJS
 app.set('view engine', 'ejs');
 
 // sessions
 app.use(
   session({
-    cookie: { maxAge: 100000 },
     secret: 'its a secret',
     resave: false,
     saveUninitialized: false,
-  }),
+  })
 );
 
+// fileupload
+app.use(fileupload());
 // passport
 app.use(flash());
 app.use(passport.initialize());
@@ -41,7 +47,7 @@ app.use(passport.session());
 passport.serializeUser(userreg.serializeUser());
 passport.deserializeUser(userreg.deserializeUser());
 passport.use(
-  new LocalStrategy({ usernameField: 'email' }, userreg.authenticate()),
+  new LocalStrategy({ usernameField: 'email' }, userreg.authenticate())
 );
 
 // routes

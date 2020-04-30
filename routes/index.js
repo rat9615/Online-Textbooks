@@ -1,19 +1,23 @@
 const express = require('express');
+const cors = require('cors');
+const fu = require('express-fileupload');
 
 const router = express.Router();
 const passport = require('passport');
+const Books = require('../models/books');
+
 // static
 router.use(express.static('public'));
+router.use(cors());
+router.use(fu());
 
 // index
-router.get('/', (req, res, done) => {
+router.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      res.render('admin-index', { login: req.user });
-      return done();
+      return res.render('admin-index', { login: req.user });
     }
-    res.render('index', { login: req.user });
-    return done();
+    return res.render('index', { login: req.user });
   }
   return res.redirect('/users/login');
 });
@@ -21,75 +25,98 @@ router.get('/', (req, res, done) => {
 router.post(
   '/',
   passport.authenticate('local', { failureRedirect: '/users/login' }),
-  (req, res, done) => {
+  (req, res) => {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      res.render('admin-index', { login: req.user });
-      return done();
+      return res.render('admin-index', { login: req.user });
     }
     return res.render('index', { login: req.user });
-  },
+  }
 );
 
 // download books
-router.get('/download-books', (req, res, done) => {
+router.get('/download-books', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      res.render('download', { login: req.user, user: 'admin' });
-      return done();
+      return res.render('download', { login: req.user, user: 'admin' });
     }
-    res.render('download', { login: req.user, user: 'regular' });
-    return done();
+    return res.render('download', { login: req.user, user: 'regular' });
   }
   return res.redirect('/users/login');
 });
 
 // branch
-router.get('/branch', (req, res, done) => {
+router.get('/branch', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      res.render('branch', { login: req.user, user: 'admin' });
-      return done();
+      return res.render('branch', { login: req.user, user: 'admin' });
     }
-    res.render('branch', { login: req.user, user: 'regular' });
-    return done();
+    return res.render('branch', { login: req.user, user: 'regular' });
   }
   return res.redirect('/users/login');
 });
 
 // semester
-router.get('/semester', (req, res, done) => {
+router.get('/semester', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      res.render('semesters', { login: req.user, user: 'admin' });
-      return done();
+      return res.render('semesters', { login: req.user, user: 'admin' });
     }
-    res.render('semesters', { login: req.user, user: 'regular' });
-    return done();
+    return res.render('semesters', { login: req.user, user: 'regular' });
   }
   return res.redirect('/users/login');
 });
 
 // authors
-router.get('/author', (req, res, done) => {
+router.get('/author', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      res.render('authors', { login: req.user, user: 'admin' });
-      return done();
+      return res.render('authors', { login: req.user, user: 'admin' });
     }
-    res.render('authors', { login: req.user, user: 'regular' });
-    return done();
+    return res.render('authors', { login: req.user, user: 'regular' });
   }
   return res.redirect('/users/login');
 });
 
-// admin upload books
-router.get('/upload-books', (req, res, done) => {
+// admin upload books page
+router.get('/upload-books', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      res.render('admin-upload', { login: req.user });
-      return done();
+      return res.render('admin-upload', { login: req.user, books: 'empty' });
     }
   }
   return res.redirect('/users/login');
 });
+
+// uploading the books
+router.post(
+  '/upload-books',
+  Books.upload.single('pdffiles'),
+  async (req, res) => {
+    // eslint-disable-next-line new-cap
+    // const book = new Books.books({
+    //   bookname: req.body.bookname,
+    //   bookedition: req.body.bookedition,
+    //   year: new Date(req.body.year),
+    //   course: req.body.course,
+    //   semester: req.body.semester,
+    //   // eslint-disable-next-line no-underscore-dangle
+    //   // pdffiles: req.file.id,
+    // });
+    // await book.save();
+    return res.json({ file: req.file });
+    /* res.render('admin-upload', {
+      login: req.user,
+      books: 'full',
+      bookname: req.body.bookname,
+    }); */
+  }
+);
+
+router.post('/uploads', (req) => {
+  console.log(req.files);
+  const uploadFile = req.files.pdffiles;
+  // const fileName = req.files.file.name;
+  uploadFile.mv(`${__dirname}/public/uploads/svs`);
+});
+
 module.exports = router;

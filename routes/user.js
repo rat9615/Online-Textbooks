@@ -6,41 +6,38 @@ const userreg = require('../models/userreg');
 // static
 router.use(express.static('public'));
 
-router.get('/login', (req, res, done) => {
+router.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
-    res.redirect('/');
-    return done();
+    return res.redirect('/');
   }
   return res.render('login');
 });
 
 // forgot-password
-router.get('/forgot-password', (req, res, done) => {
+router.get('/forgot-password', (req, res) => {
   if (req.isAuthenticated()) {
-    res.redirect('/');
-    return done();
+    return res.redirect('/');
   }
   return res.render('forgot-password');
 });
 
 // register
-router.get('/register', (req, res, done) => {
+router.get('/register', (req, res) => {
   if (req.isAuthenticated()) {
-    res.redirect('/');
-    return done();
+    return res.redirect('/');
   }
   return res.render('register', { user: 'null' });
 });
 
 // logout
-router.get('/logout', (req, res, done) => {
+router.get('/logout', (req, res) => {
   if (req.isAuthenticated()) {
     req.logOut();
-    res.redirect('/users/login');
-    return done();
+    return res.redirect('/users/login');
   }
   return res.redirect('/users/login');
 });
+
 router.post('/register', (req, res) => {
   userreg.register(
     // eslint-disable-next-line new-cap
@@ -60,7 +57,7 @@ router.post('/register', (req, res) => {
         console.log('no error');
         res.render('submit-success', { username: req.body.firstname });
       }
-    },
+    }
   );
 });
 

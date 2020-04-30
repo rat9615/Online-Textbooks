@@ -18,13 +18,27 @@
       rel="stylesheet"
       type="text/css"
     />
+
     <link
       href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
       rel="stylesheet"
     />
 
+    <!--File pond styles-->
+    <link
+      href="https://unpkg.com/filepond/dist/filepond.css"
+      rel="stylesheet"
+    />
+    <!-- font -->
+
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet" />
+
+    <!--Filepond CDN-->
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="https://unpkg.com/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.js"></script>
+    <!-- <script src="https://unpkg.com/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.js"></script> -->
+    <script src="https://unpkg.com/filepond/dist/filepond.js"></script>
   </head>
 
   <body id="page-top">
@@ -301,7 +315,7 @@
               <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
             </div>
 
-            <!--latest added books-->
+            <!--upload books-->
             <div class="row">
               <div class="col-xl-12 col-lg-9 mb-4">
                 <div id="contact" class="card shadow mb-4">
@@ -311,19 +325,47 @@
                     </h6>
                   </div>
                   <div class="card-body">
-                    <form class="user">
+                    <% if(books == 'empty') {%>
+                    <form
+                      class="user"
+                      action="/upload-books"
+                      method="POST"
+                      enctype="multipart/form-data"
+                    >
                       <div class="form-group">
                         <input
                           type="text"
                           class="form-control form-control-user"
                           id="bookname"
+                          name="bookname"
                           placeholder="Name of the book"
                         />
+                      </div>
+                      <div class="form-group">
+                        <select
+                          class="form-control selectpicker"
+                          name="bookedition"
+                        >
+                          <optgroup label="Editions">
+                            <option selected hidden disabled>Edition</option>
+                            <option value="firsted">First Edition</option>
+                            <option value="seconded">Second Edition</option>
+                            <option value="thirded">Third Edition</option>
+                            <option value="fourthed">Fourth Edition</option>
+                            <option value="fifthed">Fifth Edition</option>
+                            <option value="sixthed">Sixth Edition</option>
+                            <option value="seventhed">Seventh Edition</option>
+                            <option value="eighthed">Eighth Edition</option>
+                            <option value="ninthed">Ninth Edition</option>
+                            <option value="tenthed">Tenth Edition</option>
+                          </optgroup>
+                        </select>
                       </div>
                       <div class="form-group">
                         <input
                           type="text"
                           class="form-control form-control-user"
+                          name="year"
                           placeholder="Year of publication"
                         />
                       </div>
@@ -331,43 +373,64 @@
                         <input
                           type="text"
                           class="form-control form-control-user"
+                          name="author"
                           placeholder="Name of the Author"
                         />
                       </div>
                       <div class="form-group">
-                        <select class="form-control selectpicker">
+                        <select class="form-control selectpicker" name="course">
                           <optgroup label="Branch">
+                            <option selected hidden disabled>Course</option>
                             <option value="mca">Computer Applications</option>
                             <option value="mba">Business Administration</option>
                           </optgroup>
                         </select>
                       </div>
                       <div class="form-group">
-                        <select class="form-control selectpicker">
+                        <select
+                          class="form-control selectpicker"
+                          name="semester"
+                        >
                           <optgroup label="Semester">
+                            <option selected hidden disabled>Semester</option>
                             <option value="first">I</option>
-                            <option value="epub">II</option>
-                            <option value="epub">III</option>
-                            <option value="epub">IV</option>
-                            <option value="epub">V</option>
-                            <option value="epub">VI</option>
+                            <option value="second">II</option>
+                            <option value="third">III</option>
+                            <option value="fourth">IV</option>
+                            <option value="fifth">V</option>
+                            <option value="sixth">VI</option>
                           </optgroup>
                         </select>
                       </div>
-                      <div class="card shadow my-5">
-                        <div class="card-block text-center my-5 py-5">
-                          <span class="my-5">Drop files here to upload</span>
-                        </div>
+                      <div class="form-group">
+                        <input type="file" name="pdffiles" class="my-pond" />
                       </div>
+
                       <div class="text-center">
-                        <a href="#" class="btn btn-danger btn-user">Upload</a>
+                        <input
+                          type="submit"
+                          class="btn btn-danger btn-user"
+                          value="Upload"
+                        />
                       </div>
                     </form>
+                    <% } else {%>
+                    <div class="text-center">
+                      <h1 class="h4 text-gray-900 mb-4">
+                        <%=bookname%> <br />
+                        has been uploaded.
+                      </h1>
+                    </div>
+                    <div class="text-center">
+                      <a href="/upload-books" class="btn btn-danger btn-user"
+                        >Back</a
+                      >
+                    </div>
+                    <% } %>
                   </div>
                 </div>
               </div>
             </div>
-
           </div>
           <!-- /.container-fluid -->
         </div>
@@ -437,14 +500,18 @@
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css"
-    />
+    /><!--bootsrap selec cdn needs to be changed-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/sb-admin-2.js"></script>
+
+    <!--filepond core plugin-->
+    <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
+    <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
 
     <!-- Page level plugins -->
     <script src="vendor/chart.js/Chart.min.js"></script>
