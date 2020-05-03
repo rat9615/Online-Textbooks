@@ -5,7 +5,7 @@ const fu = require('express-fileupload');
 const router = express.Router();
 const passport = require('passport');
 const Books = require('../models/books');
-
+const Requestbook = require('../models/requestbook')
 // static
 router.use(express.static('public'));
 router.use(cors());
@@ -65,6 +65,8 @@ router.get('/semester', (req, res) => {
   }
   return res.redirect('/users/login');
 });
+
+
 
 // authors
 router.get('/author', (req, res) => {

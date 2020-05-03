@@ -2,6 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 const userreg = require('../models/userreg');
+const Requestbook = require('../models/requestbook')
 
 // static
 router.use(express.static('public'));
@@ -28,6 +29,23 @@ router.get('/register', (req, res) => {
   }
   return res.render('register', { user: 'null' });
 });
+
+
+//requestbook
+router.post('/request', async (req, res) => {
+  if (req.isAuthenticated()) {
+    const request = new Requestbook({
+      name_of_the_book: req.body.bookname,
+      year_of_publication: req.body.pub,
+      name_of_author: req.body.nameofauth,
+      edition: req.body.edition,
+
+    })
+    await request.save()
+    return res.json('Form submitted')
+  }
+})
+
 
 // logout
 router.get('/logout', (req, res) => {
