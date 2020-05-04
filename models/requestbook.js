@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const passmongoose = require('passport-local-mongoose');
+const userreg = require('./userreg');
 
 // setup mongoose
 mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
@@ -35,6 +36,10 @@ const requestSchema = new mongoose.Schema({
   Edition: {
     type: String,
     required: true,
+  },
+  username: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: userreg,
   },
 });
 
