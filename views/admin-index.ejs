@@ -325,6 +325,7 @@
                     </h6>
                   </div>
                   <div class="card-body">
+                    <% requestbook.forEach(function (requestb) { %>
                     <a
                       class="dropdown-item d-xl-flex align-items-center"
                       href="#"
@@ -334,47 +335,31 @@
                           <i class="fas fa-file-alt text-white"></i>
                         </div>
                       </div>
+
                       <div>
-                        <div class="small text-gray-500">March 22, 2020</div>
+                        <div class="small text-gray-500">
+                          <%= requestb.addedAt%>
+                        </div>
                         <span class="font-weight-bold"
-                          >Book request by 1BF18MCA17!</span
+                          >Book request by <%= requestb.usn%>!</span
                         >
                         <div class="small">
                           <span class="ml-3 d-block"
-                            >Book Name : DataStructures</span
+                            >Book Name : <%= requestb.name_of_the_book %></span
                           >
-                          <span class="ml-3 d-block">Year : 2017</span>
-                          <span class="ml-3 d-block">Author : XYZ</span>
                           <span class="ml-3 d-block"
-                            >Required Format : PDF</span
+                            >Year : <%= requestb.year_of_publication%></span
+                          >
+                          <span class="ml-3 d-block"
+                            >Author : <%=requestb.name_of_author%></span
+                          >
+                          <span class="ml-3 d-block"
+                            >Author : <%=requestb.Edition%></span
                           >
                         </div>
                       </div>
                     </a>
-                    <a
-                      class="dropdown-item d-xl-flex align-items-center"
-                      href="#"
-                    >
-                      <div class="mr-3">
-                        <div class="icon-circle bg-primary">
-                          <i class="fas fa-file-alt text-white"></i>
-                        </div>
-                      </div>
-                      <div>
-                        <div class="small text-gray-500">March 20, 2020</div>
-                        <span class="font-weight-bold"
-                          >Book request by 1BM18MCA11!</span
-                        >
-                        <div class="small">
-                          <span class="ml-3 d-block">Book Name : Python</span>
-                          <span class="ml-3 d-block">Year : 2017</span>
-                          <span class="ml-3 d-block">Author : XYZ</span>
-                          <span class="ml-3 d-block"
-                            >Required Format : PDF</span
-                          >
-                        </div>
-                      </div>
-                    </a>
+                    <% }) %>
                   </div>
                 </div>
               </div>

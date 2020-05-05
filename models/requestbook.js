@@ -37,7 +37,16 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  addedAt: {
+    required: true,
+    type: Date,
+    default: Date.now,
+  },
   username: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: userreg,
+  },
+  usn: {
     type: mongoose.Schema.Types.ObjectId,
     ref: userreg,
   },

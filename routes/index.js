@@ -15,9 +15,15 @@ router.use(fu());
 router.get('/', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('admin-index', { login: req.user });
+      Requestbook.find({}, (err, data) => {
+        return res.render('admin-index', {
+          login: req.user,
+          requestbook: data,
+        });
+      });
+    } else {
+      return res.render('index', { login: req.user });
     }
-    return res.render('index', { login: req.user });
   }
   return res.redirect('/users/login');
 });
@@ -27,9 +33,15 @@ router.post(
   passport.authenticate('local', { failureRedirect: '/users/login' }),
   (req, res) => {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('admin-index', { login: req.user });
+      Requestbook.find({}, (err, data) => {
+        return res.render('admin-index', {
+          login: req.user,
+          requestbook: data,
+        });
+      });
+    } else {
+      return res.render('index', { login: req.user });
     }
-    return res.render('index', { login: req.user });
   }
 );
 
