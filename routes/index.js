@@ -12,18 +12,18 @@ router.use(cors());
 router.use(fu());
 
 // index
-router.get('/', (req, res) => {
+router.get('/', (req, res, done) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
       Requestbook.find({}, (err, data) => {
-        return res.render('admin-index', {
+        res.render('admin-index', {
           login: req.user,
           requestbook: data,
         });
       });
-    } else {
-      return res.render('index', { login: req.user });
+      return done;
     }
+    return res.render('index', { login: req.user });
   }
   return res.redirect('/users/login');
 });
@@ -31,17 +31,17 @@ router.get('/', (req, res) => {
 router.post(
   '/',
   passport.authenticate('local', { failureRedirect: '/users/login' }),
-  (req, res) => {
+  (req, res, done) => {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
       Requestbook.find({}, (err, data) => {
-        return res.render('admin-index', {
+        res.render('admin-index', {
           login: req.user,
           requestbook: data,
         });
       });
-    } else {
-      return res.render('index', { login: req.user });
+      return done;
     }
+    return res.render('index', { login: req.user });
   }
 );
 

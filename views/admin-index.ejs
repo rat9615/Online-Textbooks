@@ -338,10 +338,10 @@
 
                       <div>
                         <div class="small text-gray-500">
-                          <%= requestb.addedAt%>
+                          <%= requestb.addedAt.toDateString()%>
                         </div>
                         <span class="font-weight-bold"
-                          >Book request by <%= requestb.usn%>!</span
+                          >Book request by <%= login.usn%>!</span
                         >
                         <div class="small">
                           <span class="ml-3 d-block"
