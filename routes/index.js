@@ -140,6 +140,7 @@ router.get('/remove-books', (req, res, done) => {
           login: req.user,
           requestbook: data,
         });
+        res.redirect('/');
       });
       return done;
     }
