@@ -37,9 +37,17 @@ router.post('/request', async (req, res) => {
     year_of_publication: req.body.pub,
     name_of_author: req.body.nameofauth,
     Edition: req.body.edition,
+    usn: req.user.usn,
   });
   await request.save();
   return res.json(req.body.bookname);
+});
+
+router.get('/request', (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect('/');
+  }
+  return res.render('login');
 });
 
 // logout

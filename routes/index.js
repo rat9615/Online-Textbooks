@@ -131,4 +131,20 @@ router.post('/uploads', (req) => {
   uploadFile.mv(`${__dirname}/public/uploads/svs`);
 });
 
+// remove book requests
+router.get('/remove-books', (req, res, done) => {
+  if (req.isAuthenticated()) {
+    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+      Requestbook.deleteOne({ _id: req.body.id }, (err, data) => {
+        res.render('admin-index', {
+          login: req.user,
+          requestbook: data,
+        });
+      });
+      return done;
+    }
+    return res.redirect('/');
+  }
+  return res.redirect('/users/login');
+});
 module.exports = router;

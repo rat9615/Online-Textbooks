@@ -329,6 +329,8 @@
                     <a
                       class="dropdown-item d-xl-flex align-items-center"
                       href="#"
+                      data-toggle="modal"
+                      data-target="#requestModal"
                     >
                       <div class="mr-3">
                         <div class="icon-circle bg-primary">
@@ -341,7 +343,7 @@
                           <%= requestb.addedAt.toDateString()%>
                         </div>
                         <span class="font-weight-bold"
-                          >Book request by <%= login.usn%>!</span
+                          >Book request by <%= requestb.usn%>!</span
                         >
                         <div class="small">
                           <span class="ml-3 d-block"
@@ -354,7 +356,7 @@
                             >Author : <%=requestb.name_of_author%></span
                           >
                           <span class="ml-3 d-block"
-                            >Author : <%=requestb.Edition%></span
+                            >Edition : <%=requestb.Edition%></span
                           >
                         </div>
                       </div>
@@ -441,6 +443,41 @@
               Cancel
             </button>
             <a class="btn btn-danger" href="/users/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Book request delete Modal-->
+    <div
+      class="modal fade"
+      id="requestModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              What do you want to do?
+            </h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Select the option below to upload or remove the request.
+          </div>
+          <div class="modal-footer">
+            <a class="btn btn-danger" href="/upload-books">Upload</a>
+            <a class="btn btn-secondary" href="/remove-books">Remove</a>
           </div>
         </div>
       </div>

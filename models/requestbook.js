@@ -47,8 +47,8 @@ const requestSchema = new mongoose.Schema({
     ref: userreg,
   },
   usn: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: userreg,
+    type: 'String',
+    required: true,
   },
 });
 
