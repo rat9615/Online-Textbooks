@@ -4,6 +4,7 @@ const fileupload = require('express-fileupload');
 const router = express.Router();
 const passport = require('passport');
 const Books = require('../models/books');
+const upload = require('../models/pdfilesgrid');
 const Requestbook = require('../models/requestbook');
 
 // static
@@ -99,9 +100,9 @@ router.get('/upload-books', (req, res) => {
 });
 
 // uploading the books
-router.post('/upload-books', Books.upload.single('hello'), async (req, res) => {
+router.post('/upload-books', upload.single('hello'), async (req, res) => {
   // eslint-disable-next-line new-cap
-  const book = new Books.books({
+  const book = new Books({
     bookname: req.body.bookname,
     bookedition: req.body.bookedition,
     year: new Date(req.body.year),
@@ -109,7 +110,7 @@ router.post('/upload-books', Books.upload.single('hello'), async (req, res) => {
     author: req.body.author,
     semester: req.body.semester,
     // eslint-disable-next-line no-underscore-dangle
-    pdffiles: req.files.hello.id,
+    // pdffiles: req.files.hello.id,
   });
   await book.save();
   // console.log(req.files.filepond.name);

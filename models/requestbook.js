@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const passmongoose = require('passport-local-mongoose');
 const userreg = require('./userreg');
 
 // setup mongoose
@@ -51,8 +50,6 @@ const requestSchema = new mongoose.Schema({
     required: true,
   },
 });
-
-requestSchema.plugin(passmongoose);
 // eslint-disable-next-line new-cap
 const bookreq = new mongoose.model('bookreq', requestSchema);
 
