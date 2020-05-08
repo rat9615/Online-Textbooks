@@ -70,17 +70,18 @@
       FilePondPluginFileValidateType,
       FilePondPluginFileValidateSize
     );
+
     $.fn.filepond.setOptions({
-      server: {
-        url: '/uploads',
-      },
+      server: '/uploads',
     });
+
     // Turn input element into a pond
     $('.my-pond').filepond();
 
     // Turn input element into a pond with configuration options
     $('.my-pond').filepond({
       allowMultiple: true,
+      type: 'limbo',
     });
 
     $('.my-pond').filepond({
@@ -95,9 +96,9 @@
       console.log('file added event', e);
     });
 
-    // Manually add a file using the addfile method
-    $('.my-pond').then(function (file) {
-      console.log('file added', file);
-    });
+    // // Manually add a file using the addfile method
+    // $('.my-pond').then(function (file) {
+    //   console.log('file added', file);
+    // });
   });
 })(jQuery);

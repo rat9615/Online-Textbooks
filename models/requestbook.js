@@ -47,7 +47,7 @@ const requestSchema = new mongoose.Schema({
     ref: userreg,
   },
   usn: {
-    type: 'String',
+    type: String,
     required: true,
   },
 });

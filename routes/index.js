@@ -1,15 +1,14 @@
 const express = require('express');
-const cors = require('cors');
-const fu = require('express-fileupload');
+const fileupload = require('express-fileupload');
 
 const router = express.Router();
 const passport = require('passport');
 const Books = require('../models/books');
 const Requestbook = require('../models/requestbook');
+
 // static
 router.use(express.static('public'));
-router.use(cors());
-router.use(fu());
+router.use(fileupload({ useTempFiles: true, tempFileDir: '/tmp/' }));
 
 // index
 router.get('/', (req, res, done) => {
@@ -100,35 +99,40 @@ router.get('/upload-books', (req, res) => {
 });
 
 // uploading the books
-router.post(
-  '/upload-books',
-  Books.upload.single('pdffiles'),
-  async (req, res) => {
-    // eslint-disable-next-line new-cap
-    // const book = new Books.books({
-    //   bookname: req.body.bookname,
-    //   bookedition: req.body.bookedition,
-    //   year: new Date(req.body.year),
-    //   course: req.body.course,
-    //   semester: req.body.semester,
-    //   // eslint-disable-next-line no-underscore-dangle
-    //   // pdffiles: req.file.id,
-    // });
-    // await book.save();
-    return res.json({ file: req.file });
-    /* res.render('admin-upload', {
+router.post('/upload-books', Books.upload.single('hello'), async (req, res) => {
+  // eslint-disable-next-line new-cap
+  const book = new Books.books({
+    bookname: req.body.bookname,
+    bookedition: req.body.bookedition,
+    year: new Date(req.body.year),
+    course: req.body.course,
+    author: req.body.author,
+    semester: req.body.semester,
+    // eslint-disable-next-line no-underscore-dangle
+    pdffiles: req.files.hello.id,
+  });
+  await book.save();
+  // console.log(req.files.filepond.name);
+  return res.json({ file: req.files });
+  /* res.render('admin-upload', {
       login: req.user,
       books: 'full',
       bookname: req.body.bookname,
     }); */
-  }
-);
+});
 
-router.post('/uploads', (req) => {
-  console.log(req.files);
-  const uploadFile = req.files.pdffiles;
-  // const fileName = req.files.file.name;
-  uploadFile.mv(`${__dirname}/public/uploads/svs`);
+router.post('/uploads', (req, res) => {
+  // if (!(req.files && req.files.pdffiles)) {
+  //   res.send('No files uploaded');
+  // }
+  // console.log(req.files.pdffiles);
+  // const uploadFile = req.files.pdffiles;
+  // const fileName = req.files.pdffiles.name;
+  // uploadFile.mv(`../public/uploads/svs`);
+  console.log(`FIRST TEST: ${JSON.stringify(req.files)}`);
+  console.log(`second TEST: ${req.files.filepond.name}`);
+  req.files.filepond.mv(`E:/Online-Textbooks/${req.files.filepond.name}`);
+  res.send('done');
 });
 
 // remove book requests

@@ -33,6 +33,7 @@
     "express-session": "^1.17.0",
     "gridfs-stream": "^1.1.1",
     "jquery": "^3.5.0",
+    "jquery-filepond": "^1.0.0",
     "jquery.easing": "^1.4.1",
     "mongodb": "^3.5.5",
     "mongoose": "^5.9.7",

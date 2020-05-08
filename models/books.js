@@ -25,28 +25,32 @@ db.once('open', () => {
 // validation
 const bookschema = new mongoose.Schema({
   bookname: {
-    required: true,
     type: String,
+    required: true,
   },
   bookedition: {
-    required: true,
     type: String,
+    required: true,
   },
   year: {
-    required: true,
     type: Date,
+    required: true,
+  },
+  author: {
+    type: String,
+    required: true,
   },
   course: {
-    required: true,
     type: String,
+    required: true,
   },
   semester: {
-    required: true,
     type: String,
+    required: true,
   },
   addedAt: {
-    required: true,
     type: Date,
+    required: true,
     default: Date.now,
   },
   pdffiles: {
@@ -64,6 +68,7 @@ const storage = new GridFsStorage({
     return new Promise((resolve, reject) => {
       crypto.randomBytes(16, (err, buf) => {
         if (err) {
+          console.log('error'); // remove this
           return reject(err);
         }
         const filename = buf.toString('hex') + path.extname(file.originalname);
@@ -71,7 +76,7 @@ const storage = new GridFsStorage({
           filename,
           bucketName: 'uploads',
         };
-        return resolve(fileInfo);
+        return resolve(fileInfo); // remove this
       });
     });
   },

@@ -94,12 +94,12 @@
           </a>
         </li>
         <% if (user == 'admin') { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/upload-books">
-              <i class="fas fa-fw fa-upload"></i>
-              <span>Upload books</span>
-            </a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/upload-books">
+            <i class="fas fa-fw fa-upload"></i>
+            <span>Upload books</span>
+          </a>
+        </li>
         <% } %>
         <!-- Divider -->
         <hr class="sidebar-divider" />
@@ -110,40 +110,39 @@
         </div>
 
         <% if (user == 'admin') { %>
-          <!-- Nav item - Request a book -->
-          <li class="nav-item">
-            <a class="nav-link" href="/#request">
-              <i class="fas fa-fw fa-comment"></i>
-              <span>Book requests</span></a
-            >
-          </li>
-          <% } %>
-          <% if (user == 'regular') { %>
-          <!-- Nav item - Request a book -->
-          <li class="nav-item">
-            <a class="nav-link" href="/#request">
-              <i class="fas fa-fw fa-comment"></i>
-              <span>Request a book</span></a
-            >
-          </li>
-          <% } %>
-  
-          <!-- Nav Item - About Us -->
-          <li class="nav-item">
-            <a class="nav-link" href="/#about">
-              <i class="fas fa-fw fa-address-card"></i>
-              <span>About Us</span></a
-            >
-          </li>
-  
-          <% if (user == 'regular') { %>
-          <!--Nav Item- Contact-->
-          <li class="nav-item">
-            <a class="nav-link" href="/#contactus">
-              <i class="fas fa-fw fa-address-book"></i>
-              <span>Contact</span>
-            </a>
-          </li>
+        <!-- Nav item - Request a book -->
+        <li class="nav-item">
+          <a class="nav-link" href="/#request">
+            <i class="fas fa-fw fa-comment"></i>
+            <span>Book requests</span></a
+          >
+        </li>
+        <% } %> <% if (user == 'regular') { %>
+        <!-- Nav item - Request a book -->
+        <li class="nav-item">
+          <a class="nav-link" href="/#request">
+            <i class="fas fa-fw fa-comment"></i>
+            <span>Request a book</span></a
+          >
+        </li>
+        <% } %>
+
+        <!-- Nav Item - About Us -->
+        <li class="nav-item">
+          <a class="nav-link" href="/#about">
+            <i class="fas fa-fw fa-address-card"></i>
+            <span>About Us</span></a
+          >
+        </li>
+
+        <% if (user == 'regular') { %>
+        <!--Nav Item- Contact-->
+        <li class="nav-item">
+          <a class="nav-link" href="/#contactus">
+            <i class="fas fa-fw fa-address-book"></i>
+            <span>Contact</span>
+          </a>
+        </li>
         <% } %>
 
         <!-- Divider -->
@@ -415,12 +414,5 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
   </body>
 </html>

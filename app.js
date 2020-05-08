@@ -2,7 +2,7 @@ const express = require('express');
 
 const app = express();
 
-const fileupload = require('express-fileupload');
+const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
@@ -19,9 +19,9 @@ mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
 });
 
 // cors
-// app.use(cors())
+app.use(cors());
 // bodyparser
-app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
 // EJS
@@ -36,8 +36,6 @@ app.use(
   })
 );
 
-// fileupload
-app.use(fileupload());
 // passport
 app.use(flash());
 app.use(passport.initialize());
