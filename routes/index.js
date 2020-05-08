@@ -99,29 +99,45 @@ router.get('/upload-books', (req, res) => {
   return res.redirect('/users/login');
 });
 
-// uploading the books
-router.post('/upload-books', upload.single('hello'), async (req, res) => {
-  // eslint-disable-next-line new-cap
-  const book = new Books({
-    bookname: req.body.bookname,
-    bookedition: req.body.bookedition,
-    year: new Date(req.body.year),
-    course: req.body.course,
-    author: req.body.author,
-    semester: req.body.semester,
-    // eslint-disable-next-line no-underscore-dangle
-    // pdffiles: req.files.hello.id,
-  });
-  await book.save();
-  // console.log(req.files.filepond.name);
-  return res.json({ file: req.files });
-  /* res.render('admin-upload', {
-      login: req.user,
-      books: 'full',
-      bookname: req.body.bookname,
-    }); */
+// // uploading the books
+// router.post('/upload-books', upload.single('hello'), async (req, res) => {
+//   // eslint-disable-next-line new-cap
+//   const book = new books({
+//     bookname: req.body.bookname,
+//     bookedition: req.body.bookedition,
+//     year: new Date(req.body.year),
+//     course: req.body.course,
+//     author: req.body.author,
+//     semester: req.body.semester,
+//     // eslint-disable-next-line no-underscore-dangle
+//     // pdffiles: req.files.hello.id,
+//   });
+//   await book.save();
+//   // console.log(req.files.filepond.name);
+//   return res.json({ file: req.files });
+//   /* res.render('admin-upload', {
+//       login: req.user,
+//       books: 'full',
+//       bookname: req.body.bookname,
+//     }); */
+// });
+
+router.post('/upload-books', async (req, res) => {
+  // validate => when upload file is not entered schema details should not be entered also
+  // const book = new Books({
+  //   bookname: req.body.bookname,
+  //   bookedition: req.body.bookedition,
+  //   year: new Date(req.body.year),
+  //   course: req.body.course,
+  //   author: req.body.author,
+  //   semester: req.body.semester,
+  // });
+  // await book.save();
+  console.log(`FIRST TEST: ${JSON.stringify(req.files)}`);
+  console.log('done');
 });
 
+// filepond
 router.post('/uploads', (req, res) => {
   // if (!(req.files && req.files.pdffiles)) {
   //   res.send('No files uploaded');

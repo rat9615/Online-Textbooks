@@ -64,41 +64,41 @@
     interval: 2000,
   });
 
-  $(function () {
-    $.fn.filepond.registerPlugin(
-      // FilePondPluginFileEncode,
-      FilePondPluginFileValidateType,
-      FilePondPluginFileValidateSize
-    );
+  // $(function () {
+  //   $.fn.filepond.registerPlugin(
+  //     // FilePondPluginFileEncode,
+  //     FilePondPluginFileValidateType,
+  //     FilePondPluginFileValidateSize
+  //   );
 
-    $.fn.filepond.setOptions({
-      server: '/uploads',
-    });
+  //   $.fn.filepond.setOptions({
+  //     server: '/uploads',
+  //   });
 
-    // Turn input element into a pond
-    $('.my-pond').filepond();
+  //   // Turn input element into a pond
+  //   $('.my-pond').filepond();
 
-    // Turn input element into a pond with configuration options
-    $('.my-pond').filepond({
-      allowMultiple: true,
-      type: 'limbo',
-    });
+  //   // Turn input element into a pond with configuration options
+  //   $('.my-pond').filepond({
+  //     allowMultiple: true,
+  //     type: 'limbo',
+  //   });
 
-    $('.my-pond').filepond({
-      acceptedFileTypes: 'application/pdf',
-      maxFileSize: '50MB',
-    });
-    // Set allowMultiple property to true
-    $('.my-pond').filepond('allowMultiple', false);
+  //   $('.my-pond').filepond({
+  //     acceptedFileTypes: 'application/pdf',
+  //     maxFileSize: '50MB',
+  //   });
+  //   // Set allowMultiple property to true
+  //   $('.my-pond').filepond('allowMultiple', false);
 
-    // Listen for addfile event
-    $('.my-pond').on('FilePond:addfile', function (e) {
-      console.log('file added event', e);
-    });
+  //   // Listen for addfile event
+  //   $('.my-pond').on('FilePond:addfile', function (e) {
+  //     console.log('file added event', e);
+  //   });
 
-    // // Manually add a file using the addfile method
-    // $('.my-pond').then(function (file) {
-    //   console.log('file added', file);
-    // });
-  });
+  //   // // Manually add a file using the addfile method
+  //   // $('.my-pond').then(function (file) {
+  //   //   console.log('file added', file);
+  //   // });
+  // });
 })(jQuery);

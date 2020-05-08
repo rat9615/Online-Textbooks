@@ -21,7 +21,7 @@ mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
 // cors
 app.use(cors());
 // bodyparser
-app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
 
 // EJS
