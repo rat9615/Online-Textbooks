@@ -34,7 +34,7 @@ router.get('/register', (req, res) => {
 router.post('/request', async (req, res) => {
   const request = new Requestbook({
     name_of_the_book: req.body.bookname,
-    year_of_publication: req.body.pub,
+    year_of_publication: req.body.pub, // how will user know year of publication
     name_of_author: req.body.nameofauth,
     Edition: req.body.edition,
     usn: req.user.usn,
@@ -66,7 +66,7 @@ router.post('/register', (req, res) => {
       firstname: req.body.firstname,
       lastname: req.body.lastname,
       username: req.body.email,
-      usn: req.body.usn,
+      usn: req.body.usn, // validate so that no space is taken or else request modal wont work
       course: req.body.course,
     }),
     req.body.password,

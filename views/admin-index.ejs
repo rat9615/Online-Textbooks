@@ -32,7 +32,7 @@
     <div id="wrapper">
       <!-- Sidebar -->
       <ul
-        class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion"
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
         id="accordionSidebar"
       >
         <!-- Logo -->
@@ -162,7 +162,7 @@
                   aria-describedby="basic-addon2"
                 />
                 <div class="input-group-append">
-                  <button class="btn btn-danger" type="button">
+                  <button class="btn btn-primary" type="button">
                     <i class="fas fa-search fa-sm"></i>
                   </button>
                 </div>
@@ -228,7 +228,7 @@
                   class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
                   aria-labelledby="alertsDropdown"
                 >
-                  <h6 class="dropdown-header bg-danger border-danger">
+                  <h6 class="dropdown-header bg-primary border-primary">
                     Alerts Center
                   </h6>
                   <a class="dropdown-item d-flex align-items-center" href="#">
@@ -306,7 +306,7 @@
               <div class="col-xl-12 col-lg-9 mb-4">
                 <div id="contact" class="card shadow mb-4">
                   <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-danger">
+                    <h6 class="m-0 font-weight-bold text-primary">
                       List of latest added books
                     </h6>
                   </div>
@@ -320,7 +320,7 @@
               <div class="col-xl-6 col-md-5 mb-4">
                 <div id="request" class="card shadow mb-4">
                   <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-danger">
+                    <h6 class="m-0 font-weight-bold text-primary">
                       Book requests
                     </h6>
                   </div>
@@ -330,7 +330,7 @@
                       class="dropdown-item d-xl-flex align-items-center"
                       href="#"
                       data-toggle="modal"
-                      data-target="#requestModal"
+                      data-target="#request<%=requestb.usn%>"
                     >
                       <div class="mr-3">
                         <div class="icon-circle bg-primary">
@@ -370,7 +370,7 @@
               <div class="col-xl-6 col-md-5 mb-4">
                 <div id="about" class="card shadow mb-4">
                   <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-danger">About Us</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">About Us</h6>
                   </div>
                   <div class="card-body">
                     <p class="text-justify">
@@ -442,7 +442,7 @@
             >
               Cancel
             </button>
-            <a class="btn btn-danger" href="/users/logout">Logout</a>
+            <a class="btn btn-primary" href="/users/logout">Logout</a>
           </div>
         </div>
       </div>
@@ -452,7 +452,7 @@
     <!-- Book request delete Modal-->
     <div
       class="modal fade"
-      id="requestModal"
+      id="request<%=requestb.usn%>"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -477,10 +477,10 @@
             Select the option below to upload or remove the request.
           </div>
           <div class="modal-footer">
-            <a class="btn btn-danger" href="/upload-books">Upload</a>
+            <a class="btn btn-primary" href="/upload-books">Upload</a>
             <a
               class="btn btn-secondary"
-              href="/remove-books/<%=requestb.name_of_the_book%>"
+              href="/remove-books/<%=requestb.id%>?_method=DELETE"
               >Remove</a
             >
           </div>

@@ -122,7 +122,7 @@ router.get('/upload-books', (req, res) => {
 //     }); */
 // });
 
-router.post('/upload-books', async (req, res) => {
+router.post('/upload-books', upload.single('pdf'), async (req, res) => {
   // validate => when upload file is not entered schema details should not be entered also
   // const book = new Books({
   //   bookname: req.body.bookname,
@@ -153,14 +153,10 @@ router.post('/uploads', (req, res) => {
 });
 
 // remove book requests
-router.get('/remove-books', (req, res, done) => {
+router.get('/remove-books/:id', (req, res, done) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      Requestbook.deleteOne({ _id: req.body.id }, (err, data) => {
-        res.render('admin-index', {
-          login: req.user,
-          requestbook: data,
-        });
+      Requestbook.deleteOne({ _id: req.params.id }, (err, data) => {
         res.redirect('/');
       });
       return done;

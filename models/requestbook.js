@@ -25,8 +25,6 @@ const requestSchema = new mongoose.Schema({
   year_of_publication: {
     type: String,
     required: true,
-    minlength: 1,
-    maxlength: 25,
   },
   name_of_author: {
     type: String,

@@ -6319,7 +6319,7 @@ a.close.disabled {
   border-radius: 0.35rem;
 }
 .fa-bars {
-  color: var(--red);
+  color: #4e73df;
 }
 .popover {
   position: absolute;
