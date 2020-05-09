@@ -1,15 +1,13 @@
 const express = require('express');
-const fileupload = require('express-fileupload');
+const fu = require('express-fileupload');
 
 const router = express.Router();
 const passport = require('passport');
 const Books = require('../models/books');
-const upload = require('../models/pdfilesgrid');
 const Requestbook = require('../models/requestbook');
-
 // static
 router.use(express.static('public'));
-router.use(fileupload({ useTempFiles: true, tempFileDir: '/tmp/' }));
+router.use(fu());
 
 // index
 router.get('/', (req, res, done) => {
@@ -99,65 +97,47 @@ router.get('/upload-books', (req, res) => {
   return res.redirect('/users/login');
 });
 
-// // uploading the books
-// router.post('/upload-books', upload.single('hello'), async (req, res) => {
-//   // eslint-disable-next-line new-cap
-//   const book = new books({
-//     bookname: req.body.bookname,
-//     bookedition: req.body.bookedition,
-//     year: new Date(req.body.year),
-//     course: req.body.course,
-//     author: req.body.author,
-//     semester: req.body.semester,
-//     // eslint-disable-next-line no-underscore-dangle
-//     // pdffiles: req.files.hello.id,
-//   });
-//   await book.save();
-//   // console.log(req.files.filepond.name);
-//   return res.json({ file: req.files });
-//   /* res.render('admin-upload', {
-//       login: req.user,
-//       books: 'full',
-//       bookname: req.body.bookname,
-//     }); */
-// });
+// uploading the books
+router.post(
+  '/upload-books',
+  // Books.upload.single('pdffiles'),
+  async (req, res) => {
+    // eslint-disable-next-line new-cap
+    const book = new Books.books({
+      bookname: req.body.bookname,
+      bookedition: req.body.bookedition,
+      year: new Date(req.body.year),
+      course: req.body.course,
+      semester: req.body.semester,
+      // eslint-disable-next-line no-underscore-dangle
+      // pdffiles: req.file.id,
+    });
+    await book.save();
+    return res.json({ file: req.file });
+    /* res.render('admin-upload', {
+      login: req.user,
+      books: 'full',
+      bookname: req.body.bookname,
+    }); */
+  }
+);
 
-router.post('/upload-books', upload.single('pdf'), async (req, res) => {
-  // validate => when upload file is not entered schema details should not be entered also
-  // const book = new Books({
-  //   bookname: req.body.bookname,
-  //   bookedition: req.body.bookedition,
-  //   year: new Date(req.body.year),
-  //   course: req.body.course,
-  //   author: req.body.author,
-  //   semester: req.body.semester,
-  // });
-  // await book.save();
-  console.log(`FIRST TEST: ${JSON.stringify(req.files)}`);
-  console.log('done');
-});
-
-// filepond
-router.post('/uploads', (req, res) => {
-  // if (!(req.files && req.files.pdffiles)) {
-  //   res.send('No files uploaded');
-  // }
-  // console.log(req.files.pdffiles);
-  // const uploadFile = req.files.pdffiles;
-  // const fileName = req.files.pdffiles.name;
-  // uploadFile.mv(`../public/uploads/svs`);
-  console.log(`FIRST TEST: ${JSON.stringify(req.files)}`);
-  console.log(`second TEST: ${req.files.filepond.name}`);
-  req.files.filepond.mv(`E:/Online-Textbooks/${req.files.filepond.name}`);
-  res.send('done');
+router.post('/uploads', (req) => {
+  console.log(req.files);
+  const uploadFile = req.files.pdffiles;
+  // const fileName = req.files.file.name;
+  uploadFile.mv(`${__dirname}/public/uploads/svs`);
 });
 
 // remove book requests
-router.get('/remove-books/:id', (req, res, done) => {
+router.get('/remove-books', (req, res, done) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      Requestbook.deleteOne({ _id: req.params.id }, (err, data) => {
-        res.redirect('/');
+      Requestbook.deleteOne({ _id: req.body.id }, (err, data) => {
+        res.render('admin-index', {
+          login: req.user,
+          requestbook: data,
+        });
       });
       return done;
     }

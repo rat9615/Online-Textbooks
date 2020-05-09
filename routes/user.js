@@ -1,5 +1,7 @@
 const express = require('express');
-
+// const connect = require('connect');
+// const flash = require('connect-flash');
+const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
@@ -59,27 +61,51 @@ router.get('/logout', (req, res) => {
   return res.redirect('/users/login');
 });
 
-router.post('/register', (req, res) => {
-  userreg.register(
-    // eslint-disable-next-line new-cap
-    new userreg({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      username: req.body.email,
-      usn: req.body.usn, // validate so that no space is taken or else request modal wont work
-      course: req.body.course,
-    }),
-    req.body.password,
-    (err) => {
-      if (err) {
-        console.log(err);
-        res.render('register', { user: 'error' });
-      } else {
-        console.log('no error');
-        res.render('submit-success', { username: req.body.firstname });
-      }
-    }
-  );
-});
+let regex = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$";
+router.post('/register', [
+  check('firstname', 'Please enter your first name').exists().trim().escape().not().isEmpty(),
+  check('lastname', 'Please enter your last name').exists().trim().not().isEmpty(),
+  check('email', 'Please enter an email').exists().trim().not().isEmpty(),
+  check('usn', 'Please enter USN').exists().trim().not().isEmpty(),
+  check('usn', 'Please enter valid USN').isLength({ max: 10, min: 10 }),
+  check('course', 'Please enter Course').exists().trim().not().isEmpty(),
+  check('password', 'Please enter password').exists().trim().not().isEmpty(),
+  //check('usn', 'Please enter valid USN').isLength({ max: 10, min: 10 }), regex for USN , sort out from other branches
+  // check('password', 'Password criteria not satisfied:').custom((regex, { req, loc, path }) => {
+  //   if (regex !== req.body.password) {
+  //     throw new Error("Password should contain minimum eight characters, at least one letter, one number and one special character");
+
+  //   }
+  // }),
+
+
+
+], (req, res) => {
+  const err = validationResult(req);
+  if (!err.isEmpty()) {
+    // const user = $('errors');
+    // console.log(erro);
+    res.render('register.ejs', { user: 'error', err: err.errors[0].msg });
+
+
+  } else {
+    userreg.register(
+      // eslint-disable-next-line new-cap
+      new userreg({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        username: req.body.email,
+        usn: req.body.usn, // validate so that no space is taken or else request modal wont work
+        course: req.body.course,
+      })),
+
+
+      res.render('submit-success', { username: req.body.firstname });
+  }
+
+}
+);
+
+
 
 module.exports = router;

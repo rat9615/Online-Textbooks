@@ -2,11 +2,11 @@ const express = require('express');
 
 const app = express();
 
-const cors = require('cors');
+// const cors = require('cors');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
-const flash = require('connect-flash');
+// const flash = require('connect-flash');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const userreg = require('./models/userreg');
@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
 });
 
 // cors
-app.use(cors());
+// app.use(cors());
 // bodyparser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
@@ -37,7 +37,8 @@ app.use(
 );
 
 // passport
-app.use(flash());
+// need to check if we need this
+// app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
