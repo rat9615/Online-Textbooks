@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema({
   },
   usn: {
     type: String,
+    uppercase: true,
     required: true,
     unique: true,
   },
