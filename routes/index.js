@@ -3,11 +3,13 @@ const fu = require('express-fileupload');
 
 const router = express.Router();
 const passport = require('passport');
+const flash = require('connect-flash');
 const Books = require('../models/books');
 const Requestbook = require('../models/requestbook');
 // static
 router.use(express.static('public'));
 router.use(fu());
+router.use(flash());
 
 // index
 router.get('/', (req, res, done) => {
@@ -28,10 +30,12 @@ router.get('/', (req, res, done) => {
 
 router.post(
   '/',
-  passport.authenticate('local', { failureRedirect: '/users/login' }),
+  passport.authenticate('local', { failureRedirect: '/users/login', failureFlash: { type: 'error', message: 'Invalid Username or Password!' } }),
   (req, res, done) => {
+
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
       Requestbook.find({}, (err, data) => {
+
         res.render('admin-index', {
           login: req.user,
           requestbook: data,

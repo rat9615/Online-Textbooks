@@ -6,8 +6,9 @@ const app = express();
 const passport = require('passport');
 const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
-// const flash = require('connect-flash');
+const flash = require('connect-flash');
 const session = require('express-session');
+
 const LocalStrategy = require('passport-local').Strategy;
 const userreg = require('./models/userreg');
 
@@ -23,7 +24,7 @@ mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
 // bodyparser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
-
+app.use(flash());
 // EJS
 app.set('view engine', 'ejs');
 
@@ -36,9 +37,17 @@ app.use(
   })
 );
 
+//flash-messages
+
+
+app.use(function (req, res, next) {
+  req.flash('info', 'hello');
+  next();
+});
+
 // passport
 // need to check if we need this
-// app.use(flash());
+//app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 

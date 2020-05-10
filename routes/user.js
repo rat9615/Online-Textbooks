@@ -1,7 +1,10 @@
 const express = require('express');
 // const connect = require('connect');
-// const flash = require('connect-flash');
+const flash = require('connect-flash');
+const passport = require('passport');
 const { check, validationResult } = require('express-validator');
+
+
 const router = express.Router();
 const userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
@@ -9,12 +12,16 @@ const Requestbook = require('../models/requestbook');
 // static
 router.use(express.static('public'));
 
+router.use(flash());
+
 router.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
-  return res.render('login');
+  return res.render('login', { messages: req.flash('error') });
 });
+
+
 
 // forgot-password
 router.get('/forgot-password', (req, res) => {
@@ -61,15 +68,19 @@ router.get('/logout', (req, res) => {
   return res.redirect('/users/login');
 });
 
-let regex = "^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$";
+
 router.post('/register', [
   check('firstname', 'Please enter your first name').exists().trim().escape().not().isEmpty(),
   check('lastname', 'Please enter your last name').exists().trim().not().isEmpty(),
   check('email', 'Please enter an email').exists().trim().not().isEmpty(),
+  check('email').matches(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "i").withMessage('Enter valid email'),
   check('usn', 'Please enter USN').exists().trim().not().isEmpty(),
-  check('usn', 'Please enter valid USN').isLength({ max: 10, min: 10 }),
+  check('usn', 'USN should be 10 characters long').isLength({ max: 10, min: 10 }),
+  check('usn', 'USN must be entered in Uppercase').isUppercase(),
   check('course', 'Please enter Course').exists().trim().not().isEmpty(),
   check('password', 'Please enter password').exists().trim().not().isEmpty(),
+  check('password').matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, "i").withMessage("Password should be a combination of one uppercase , one lower case, one special char, one digit and min 8 , max 20 char long"),
+
   //check('usn', 'Please enter valid USN').isLength({ max: 10, min: 10 }), regex for USN , sort out from other branches
   // check('password', 'Password criteria not satisfied:').custom((regex, { req, loc, path }) => {
   //   if (regex !== req.body.password) {
@@ -85,27 +96,46 @@ router.post('/register', [
   if (!err.isEmpty()) {
     // const user = $('errors');
     // console.log(erro);
-    res.render('register.ejs', { user: 'error', err: err.errors[0].msg });
+    //req.flash("messages", { user: 'error', err: err.errors[0].msg });
+    //res.locals.messages = err.errors[0].msg;
+    res.render('register', { user: 'error', err: err.errors[0].msg });
+    //req.flash("messages", { user: 'error', err: err.errors[0].msg });
 
+    //res.render('register', { user: 'error', err: err.errors[0].msg });
 
+    // const flashMessages = res.locals.getMessages();
+    // console.log('flash', flashMessages);
+    // if (flashMessages.error) {
+    //   res.render('register', {
+    //     showErrors: true,
+    //     errors: flashMessages.error,
+    //   })
+    // }
+    // else {
+    //   res.render('register');
+    // }
   } else {
     userreg.register(
-      // eslint-disable-next-line new-cap
+      // eslint-disable-next-line new-caperr
       new userreg({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         username: req.body.email,
         usn: req.body.usn, // validate so that no space is taken or else request modal wont work
         course: req.body.course,
-      })),
 
-
-      res.render('submit-success', { username: req.body.firstname });
-  }
-
-}
-);
-
+      }),
+      req.body.password,
+      (err) => {
+        if (err) {
+          console.log(err);
+          // res.render('register', { user: 'error' });
+        } else {
+          res.render('submit-success', { username: req.body.firstname });
+        }
+      })
+  };
+});
 
 
 module.exports = router;

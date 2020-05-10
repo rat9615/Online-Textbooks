@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    required: true,
+    required: true,  //Check for already existing users   //think if unique email is to be implemented
   },
   usn: {
     type: String,
@@ -41,6 +41,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
+
 });
 
 userSchema.plugin(passmongoose);
