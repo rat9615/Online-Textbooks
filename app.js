@@ -2,20 +2,21 @@ const express = require('express');
 
 const app = express();
 
-const cors = require('cors');
+// const cors = require('cors');
 const passport = require('passport');
 const bodyparser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
+
 const LocalStrategy = require('passport-local').Strategy;
 const userreg = require('./models/userreg');
 
 // cors
-app.use(cors());
+// app.use(cors());
 // bodyparser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
-
+app.use(flash());
 // EJS
 app.set('view engine', 'ejs');
 
@@ -28,8 +29,17 @@ app.use(
   })
 );
 
+//flash-messages
+
+
+app.use(function (req, res, next) {
+  req.flash('info', 'hello');
+  next();
+});
+
 // passport
-app.use(flash());
+// need to check if we need this
+//app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 

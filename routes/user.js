@@ -93,7 +93,6 @@ router.post(
         (error) => {
           if (error) {
             console.log(error);
-            // res.render('register', { user: 'error' });
           } else {
             res.render('submit-success', { username: req.body.firstname });
           }

@@ -23,7 +23,9 @@
     "body-parser": "^1.19.0",
     "bootstrap": "4.4.1",
     "chart.js": "2.9.3",
+    "connect": "^3.7.0",
     "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "datatables.net-bs4": "1.10.20",
@@ -42,6 +44,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^6.0.1",
+    "password-validator": "^5.0.3",
     "popper.js": "^1.16.1"
   },
   "devDependencies": {

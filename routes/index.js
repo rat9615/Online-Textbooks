@@ -2,18 +2,15 @@ const express = require('express');
 
 const router = express.Router();
 const fileupload = require('express-fileupload');
-// const flash = require('connect-flash');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const Books = require('../models/books');
 const Requestbook = require('../models/requestbook');
-
 // static
 router.use(express.static('public'));
 router.use(fileupload({ useTempFiles: true, tempFileDir: '/tmp/' }));
-// router.use(flash());
 
 // mongoose connection => only for gridfs
 const url = 'mongodb://localhost:27017/onlinetextbookdbs';
@@ -161,11 +158,14 @@ router.post('/uploads', (req, res) => {
 });
 
 // remove book requests
-router.get('/remove-books/:id', (req, res, done) => {
+router.get('/remove-books', (req, res, done) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      Requestbook.deleteOne({ _id: req.params.id }, (err, data) => {
-        res.redirect('/');
+      Requestbook.deleteOne({ _id: req.body.id }, (err, data) => {
+        res.render('admin-index', {
+          login: req.user,
+          requestbook: data,
+        });
       });
       return done;
     }
