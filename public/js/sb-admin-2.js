@@ -72,7 +72,10 @@
     );
 
     $.fn.filepond.setOptions({
-      server: '/uploads',
+      server: {
+        process: '/uploads',
+        revert: '/remove',
+      },
     });
 
     // Turn input element into a pond

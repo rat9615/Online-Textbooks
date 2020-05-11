@@ -4,6 +4,7 @@ const router = express.Router();
 const fileupload = require('express-fileupload');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const grid = require('gridfs-stream');
 const fs = require('fs');
 const path = require('path');
 const Books = require('../models/books');
@@ -24,9 +25,11 @@ mongoose.connect(url, {
 // gridfs connection
 const db = mongoose.connection;
 let gfs;
+let Grid;
 db.on('error', console.error.bind(console, 'Connection Error'));
 db.once('open', () => {
   console.log('Connected Successfully');
+  Grid = grid(db.db, mongoose.mongo);
   gfs = new mongoose.mongo.GridFSBucket(db.db);
 });
 
@@ -135,37 +138,32 @@ router.post('/uploads', (req, res) => {
   res.send('File Uploaded!');
 });
 
-router.post('/upload-books', async (req, res) => {
+// filepond remove from server
+router.delete('/remove', (req, res) => {
   let filename = req.flash('filename');
   filename = filename[0].toString();
-  const writeStream = gfs.openUploadStream(filename);
-
-  // try {
-  // uploading file => uploads
-  fs.createReadStream(
-    path.join(__dirname, '../public/uploads', filename),
-    (err) => {
-      if (err) console.log(err);
-    }
-  ).pipe(
-    writeStream // , (err) => {
-    // if (err) throw err;
-  );
-  // } catch (err) {
-  // done();
-  // console.log('File not uploaded to gridfs error');
-  //  } finally {
-  // deleting file => uploads
   fs.unlinkSync(path.join(__dirname, '../public/uploads', filename), (err) => {
     if (err) {
       console.log(err);
     }
   });
-  // }
-
+  res.send('File deleted!');
+});
+router.post('/upload-books', async (req, res) => {
+  let filename = req.flash('filename');
+  filename = filename[0].toString();
+  const writeStream = gfs.openUploadStream(filename);
   // validate => when upload file is not entered schema details should not be entered also
   // validate => when book name and edition already exists in database
   try {
+    // uploading file => uploads
+    fs.createReadStream(
+      path.join(__dirname, '../public/uploads', filename),
+      (err) => {
+        if (err) console.log(err);
+      }
+    ).pipe(writeStream);
+    // deleting file => uploads
     const book = new Books(
       {
         bookname: req.body.bookname, // validate in case user types same name but with spacing or changes capitalization
@@ -188,16 +186,20 @@ router.post('/upload-books', async (req, res) => {
     });
   } catch (err) {
     console.log('Duplication key error');
-    // eslint-disable-next-line no-underscore-dangle
     const objId = new mongoose.Types.ObjectId(writeStream.id);
-    gfs.s._filesCollection.deleteOne({ id: objId });
-    // eslint-disable-next-line no-underscore-dangle
-    gfs.s._chunksCollection.deleteMany({ files_id: objId });
-
-    // gfs.delete(objId);
-
+    Grid.remove({ _id: objId });
     res.send('Files deleted from gfs');
     // render and put flash message of error
+  } finally {
+    fs.unlinkSync(
+      path.join(__dirname, '../public/uploads', filename),
+      (err) => {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+    // }
   }
 });
 
