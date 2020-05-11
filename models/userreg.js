@@ -30,10 +30,11 @@ const userSchema = new mongoose.Schema({
   },
   username: {
     type: String,
-    required: true,
+    required: true, // Check for already existing users  also think if unique email is to be implemented
   },
   usn: {
     type: String,
+    uppercase: true,
     required: true,
     unique: true,
   },

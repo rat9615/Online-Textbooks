@@ -5117,6 +5117,11 @@ input[type='button'].btn-block {
   border-color: #dddfeb;
 }
 
+.special-btn {
+  font-size: 0.8rem;
+  border-radius: 10rem;
+  padding: 0.7rem 1.7rem;
+}
 .pagination-lg .page-link {
   padding: 0.75rem 1.5rem;
   font-size: 1.25rem;
@@ -11366,6 +11371,30 @@ form.user .btn-user {
   width: 12.5rem;
 }
 
+/* custom cardbody */
+.scroll-cardbody {
+  max-height: 24rem;
+}
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 0.2rem;
+  height: 0.2rem;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #65abfa;
+  border-radius: 0.5rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #4986f7;
+}
 @-webkit-keyframes noise-anim {
   0% {
     clip: rect(86px, 9999px, 59px, 0);

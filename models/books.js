@@ -20,31 +20,31 @@ const bookschema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  //   bookedition: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   year: {
-  //     type: Date,
-  //     required: true,
-  //   },
-  //   author: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   course: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   semester: {
-  //     type: String,
-  //     required: true,
-  //   },
-  //   addedAt: {
-  //     type: Date,
-  //     required: true,
-  //     default: Date.now,
-  //   },
+  bookedition: {
+    type: String,
+    required: true,
+  },
+  year: {
+    type: Date,
+    required: true,
+  },
+  author: {
+    type: String,
+    required: true,
+  },
+  course: {
+    type: String,
+    required: true,
+  },
+  semester: {
+    type: String,
+    required: true,
+  },
+  addedAt: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
   // pdffiles: {
   //   type: mongoose.Schema.Types.ObjectId,
   // },

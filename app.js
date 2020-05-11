@@ -4,19 +4,11 @@ const app = express();
 
 const cors = require('cors');
 const passport = require('passport');
-const mongoose = require('mongoose');
 const bodyparser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const userreg = require('./models/userreg');
-
-// mongodb
-mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
 
 // cors
 app.use(cors());

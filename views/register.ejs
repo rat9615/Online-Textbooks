@@ -15,6 +15,9 @@
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
+  <!-- Favicon -->
+  <link rel="icon" href="img/onlinetb_favi.ico" />
+  
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.css" rel="stylesheet">
 
@@ -46,26 +49,26 @@
               <!--alert-->
               <% if (user == 'error') { %>
                 <div class="alert alert-warning" role="alert">
-                  There seems to be a problem. Try again or contact your administrator!
+                  <%= err %>
                 </div>
               <% } %>
               <form class="user" action = '/users/register' method="POST">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName" name="firstname" placeholder="First Name">
+                    <input type="text" class="form-control form-control-user" id="exampleFirstName" name="firstname" placeholder="First Name" required>
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="exampleLastName" name="lastname" placeholder="Last Name">
+                    <input type="text" class="form-control form-control-user" id="exampleLastName" name="lastname" placeholder="Last Name" required>
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" name="email" placeholder="Email Address">
+                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" name="email" placeholder="Email Address" required>
                 </div>
                   <div class="form-group">
-                    <input type="text" class="form-control form-control-user" id="exampleInputUSN" name="usn"  placeholder="USN">
+                    <input type="text" class="form-control form-control-user" id="exampleInputUSN" name="usn"  placeholder="USN" required>
                   </div>
                   <div class="form-group">
-                    <select class=" form-control selectpicker" name="course">
+                    <select class=" form-control selectpicker" name="course" required>
                       <optgroup label="Course"></optgroup>
                         <option selected hidden disabled>Course</option>
                         <option value="mca">Computer Applications</option>
@@ -74,7 +77,7 @@
                     </select>
                   </div>
                 <div class="form-group">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" name="password" placeholder="Password">
+                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" name="password" placeholder="Password" required>
                 </div>
                 <div class="text-center">
                   <input type="submit" class = "btn btn-primary btn-user" value="Register">

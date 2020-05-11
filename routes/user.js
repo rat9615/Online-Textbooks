@@ -1,6 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
+const { check, validationResult } = require('express-validator');
 const userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
 
@@ -11,7 +12,7 @@ router.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
-  return res.render('login');
+  return res.render('login', { messages: req.flash('error') });
 });
 
 // forgot-password
@@ -31,6 +32,7 @@ router.get('/register', (req, res) => {
 });
 
 // requestbook
+// should validate if a usn already exists
 router.post('/request', async (req, res) => {
   const request = new Requestbook({
     name_of_the_book: req.body.bookname,
@@ -59,27 +61,46 @@ router.get('/logout', (req, res) => {
   return res.redirect('/users/login');
 });
 
-router.post('/register', (req, res) => {
-  userreg.register(
-    // eslint-disable-next-line new-cap
-    new userreg({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      username: req.body.email,
-      usn: req.body.usn, // validate so that no space is taken or else request modal wont work
-      course: req.body.course,
+router.post(
+  '/register',
+  [
+    check('usn', 'USN should be 10 characters long').isLength({
+      max: 10,
+      min: 10,
     }),
-    req.body.password,
-    (err) => {
-      if (err) {
-        console.log(err);
-        res.render('register', { user: 'error' });
-      } else {
-        console.log('no error');
-        res.render('submit-success', { username: req.body.firstname });
-      }
+    check('course', 'Please enter Course!').exists().trim().not().isEmpty(),
+    check('password')
+      .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, 'i')
+      .withMessage(
+        'Password should be a combination of one uppercase , one lower case, one special char, one digit and min 8 , max 20 char long'
+      ),
+  ],
+  (req, res) => {
+    const err = validationResult(req);
+    if (!err.isEmpty()) {
+      res.render('register', { user: 'error', err: err.errors[0].msg });
+    } else {
+      userreg.register(
+        // eslint-disable-next-line new-cap
+        new userreg({
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          username: req.body.email,
+          usn: req.body.usn, // validate so that no space is taken or else request modal wont work
+          course: req.body.course,
+        }),
+        req.body.password,
+        (error) => {
+          if (error) {
+            console.log(error);
+            // res.render('register', { user: 'error' });
+          } else {
+            res.render('submit-success', { username: req.body.firstname });
+          }
+        }
+      );
     }
-  );
-});
+  }
+);
 
 module.exports = router;
