@@ -135,34 +135,33 @@ router.post('/uploads', (req, res) => {
   res.send('File Uploaded!');
 });
 
-router.post('/upload-books', async (req, res, done) => {
+router.post('/upload-books', async (req, res) => {
   let filename = req.flash('filename');
   filename = filename[0].toString();
   const writeStream = gfs.openUploadStream(filename);
 
-  try {
-    // uploading file => uploads
-    fs.createReadStream(
-      path.join(__dirname, '../public/uploads', filename),
-      (err) => {
-        if (err) console.log(err);
-      }
-    ).pipe(writeStream, (err) => {
-      if (err) throw err;
-    });
-  } catch (err) {
-    done();
-  } finally {
-    // deleting file => uploads
-    fs.unlinkSync(
-      path.join(__dirname, '../public/uploads', filename),
-      (err) => {
-        if (err) {
-          console.log(err);
-        }
-      }
-    );
-  }
+  // try {
+  // uploading file => uploads
+  fs.createReadStream(
+    path.join(__dirname, '../public/uploads', filename),
+    (err) => {
+      if (err) console.log(err);
+    }
+  ).pipe(
+    writeStream // , (err) => {
+    // if (err) throw err;
+  );
+  // } catch (err) {
+  // done();
+  // console.log('File not uploaded to gridfs error');
+  //  } finally {
+  // deleting file => uploads
+  fs.unlinkSync(path.join(__dirname, '../public/uploads', filename), (err) => {
+    if (err) {
+      console.log(err);
+    }
+  });
+  // }
 
   // validate => when upload file is not entered schema details should not be entered also
   // validate => when book name and edition already exists in database
@@ -189,9 +188,15 @@ router.post('/upload-books', async (req, res, done) => {
     });
   } catch (err) {
     console.log('Duplication key error');
-    gfs.s._filesCollection.deleteOne({ _id: writeStream.id });
-    // db['fs.files'].remove({ _id: writeStream.id });
-    // db['fs.chunks'].remove({ _id: writeStream.id });
+    // eslint-disable-next-line no-underscore-dangle
+    const objId = new mongoose.Types.ObjectId(writeStream.id);
+    gfs.s._filesCollection.deleteOne({ id: objId });
+    // eslint-disable-next-line no-underscore-dangle
+    gfs.s._chunksCollection.deleteMany({ files_id: objId });
+
+    // gfs.delete(objId);
+
+    res.send('Files deleted from gfs');
     // render and put flash message of error
   }
 });
