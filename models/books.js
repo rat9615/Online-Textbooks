@@ -45,9 +45,9 @@ const bookschema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
-  // pdffiles: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  // },
+  pdffiles: {
+    type: mongoose.Schema.Types.ObjectId,
+  },
 });
 
 // unique values => combination of bookname and bookedition

@@ -120,41 +120,80 @@ router.get('/upload-books', (req, res) => {
   return res.redirect('/users/login');
 });
 
-router.post('/upload-books', async (req, res) => {
-  // validate => when upload file is not entered schema details should not be entered also
-  const book = new Books({
-    bookname: req.body.bookname,
-    bookedition: req.body.bookedition,
-    year: new Date(req.body.year),
-    course: req.body.course,
-    author: req.body.author,
-    semester: req.body.semester,
-  });
-  await book.save();
-  const writeStream = gfs.openUploadStream('resume.pdf');
-  // uploading file => uploads
-  fs.createReadStream(
-    path.join(__dirname, '../public/uploads', 'resume.pdf')
-  ).pipe(writeStream);
-  console.log('done');
-  // deleting file => uploads
-  fs.unlinkSync(
-    path.join(__dirname, '../public/uploads', 'resume.pdf'),
-    (err) => {
-      if (err) throw err;
-      console.log('File deleted!');
-    }
-  );
-});
-
 // filepond upload to server
 router.post('/uploads', (req, res) => {
   const filename = req.files.filepond;
+  // validate if file does not fall into uploads folder
   req.files.filepond.mv(
-    path.join(__dirname, '../public/uploads', filename.name)
+    path.join(__dirname, '../public/uploads', filename.name),
+    (err) => {
+      if (err) throw err;
+    }
   );
+  req.flash('filename', filename.name);
   // need some validation here incase file fails to upload
-  res.send('File Uploaded');
+  res.send('File Uploaded!');
+});
+
+router.post('/upload-books', async (req, res, done) => {
+  let filename = req.flash('filename');
+  filename = filename[0].toString();
+  const writeStream = gfs.openUploadStream(filename);
+
+  try {
+    // uploading file => uploads
+    fs.createReadStream(
+      path.join(__dirname, '../public/uploads', filename),
+      (err) => {
+        if (err) console.log(err);
+      }
+    ).pipe(writeStream, (err) => {
+      if (err) throw err;
+    });
+  } catch (err) {
+    done();
+  } finally {
+    // deleting file => uploads
+    fs.unlinkSync(
+      path.join(__dirname, '../public/uploads', filename),
+      (err) => {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+  }
+
+  // validate => when upload file is not entered schema details should not be entered also
+  // validate => when book name and edition already exists in database
+  try {
+    const book = new Books(
+      {
+        bookname: req.body.bookname, // validate in case user types same name but with spacing or changes capitalization
+        bookedition: req.body.bookedition,
+        year: new Date(req.body.year),
+        course: req.body.course,
+        author: req.body.author,
+        semester: req.body.semester,
+        pdffiles: writeStream.id,
+      },
+      (err) => {
+        if (err) throw err;
+      }
+    );
+    await book.save();
+    res.render('admin-upload', {
+      login: req.user,
+      books: 'full',
+      bookname: req.body.bookname,
+    });
+  } catch (err) {
+    console.log('Duplication key error');
+    gfs.s._filesCollection.deleteOne({ _id: writeStream.id });
+    // db['fs.files'].remove({ _id: writeStream.id });
+    // db['fs.chunks'].remove({ _id: writeStream.id });
+    // render and put flash message of error
+  }
 });
 
 // remove book requests
