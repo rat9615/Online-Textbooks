@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const grid = require('gridfs-stream');
 const fs = require('fs');
 const path = require('path');
+const { PDFImage } = require('pdf-image');
 const Books = require('../models/books');
 const Requestbook = require('../models/requestbook');
 // static
@@ -45,7 +46,10 @@ router.get('/', (req, res, done) => {
       });
       return done;
     }
-    return res.render('index', { login: req.user });
+    // to get latest added books
+    Books.find({}, (err, data) => {
+      return res.render('index', { login: req.user, cover: data });
+    });
   }
   return res.redirect('/users/login');
 });
@@ -66,7 +70,11 @@ router.post(
       });
       return done;
     }
-    return res.render('index', { login: req.user });
+    // return res.render('index', { login: req.user });
+    // to get latest added books
+    Books.find({}, (err, data) => {
+      return res.render('index', { login: req.user, cover: data });
+    });
   }
 );
 // download books
@@ -126,6 +134,9 @@ router.get('/upload-books', (req, res) => {
 // filepond upload to server
 router.post('/uploads', (req, res) => {
   const filename = req.files.filepond;
+  let imagename = filename.name;
+  imagename = imagename.toString().slice(0, -4);
+
   // validate if file does not fall into uploads folder
   req.files.filepond.mv(
     path.join(__dirname, '../public/uploads', filename.name),
@@ -133,25 +144,59 @@ router.post('/uploads', (req, res) => {
       if (err) throw err;
     }
   );
+
+  // convert  pdf to image thumbnail
+  const pdfImage = new PDFImage(
+    path.join(__dirname, '../public/uploads', filename.name),
+    {
+      convertOptions: {
+        '-resize': '300x300',
+        '-quality': '100',
+        '-background': 'white',
+        '-layers': 'flatten',
+      },
+    }
+  );
+
+  pdfImage.convertPage(0).then(() => {
+    console.log('Image uploaded');
+  });
+
   req.flash('filename', filename.name);
+  req.flash('imagename', `${imagename}-0.png`);
+
   // need some validation here incase file fails to upload
-  res.send('File Uploaded!');
+  res.send('File and image Uploaded!');
 });
 
 // filepond remove from server
 router.delete('/remove', (req, res) => {
   let filename = req.flash('filename');
+  let imagename = req.flash('imagename');
   filename = filename[0].toString();
+  imagename = imagename[0].toString();
+
+  // to remove file
   fs.unlinkSync(path.join(__dirname, '../public/uploads', filename), (err) => {
     if (err) {
       console.log(err);
     }
   });
-  res.send('File deleted!');
+
+  // to remove image
+  fs.unlinkSync(path.join(__dirname, '../public/uploads', imagename), (err) => {
+    console.log(err);
+  });
+
+  res.send('File and image deleted!');
 });
+
+// uploading books to mongodb
 router.post('/upload-books', async (req, res) => {
   let filename = req.flash('filename');
+  let imagename = req.flash('imagename');
   filename = filename[0].toString();
+  imagename = imagename[0].toString();
   const writeStream = gfs.openUploadStream(filename);
   // validate => when upload file is not entered schema details should not be entered also
   // validate => when book name and edition already exists in database
@@ -173,6 +218,17 @@ router.post('/upload-books', async (req, res) => {
         author: req.body.author,
         semester: req.body.semester,
         pdffiles: writeStream.id,
+        image: {
+          data: fs
+            .readFileSync(
+              path.join(__dirname, '../public/uploads', imagename),
+              (err) => {
+                if (err) console.log(err);
+              }
+            )
+            .toString('base64'),
+          contentType: 'image/png',
+        },
       },
       (err) => {
         if (err) throw err;
@@ -192,6 +248,12 @@ router.post('/upload-books', async (req, res) => {
     // render and put flash message of error
   } finally {
     fs.unlinkSync(
+      path.join(__dirname, '../public/uploads', imagename),
+      (err) => {
+        console.log(err);
+      }
+    );
+    fs.unlinkSync(
       path.join(__dirname, '../public/uploads', filename),
       (err) => {
         if (err) {
@@ -199,7 +261,6 @@ router.post('/upload-books', async (req, res) => {
         }
       }
     );
-    // }
   }
 });
 
@@ -220,4 +281,12 @@ router.get('/remove-books', (req, res, done) => {
   return res.redirect('/users/login');
 });
 
+// downloading books
+router.get('/pdf/:id', (req, res) => {
+  if (req.isAuthenticated()) {
+    // gfs.openDownloadStream({ _id: req.params.id }).pipe(res);
+    const readstream = Grid.createReadStream({ _id: req.params.id });
+    readstream.pipe(res);
+  }
+});
 module.exports = router;

@@ -60,11 +60,16 @@
       );
     e.preventDefault();
   });
-  $('.carousel').carousel({
-    interval: 2000,
-  });
+
+  // $('[data-toggle="popover"]').popover({
+  //   trigger: 'hover',
+  //   container: 'image-container',
+  // });
 
   $(function () {
+    $('[data-toggle="popover"]').popover({
+      trigger: 'hover',
+    });
     $.fn.filepond.registerPlugin(
       // FilePondPluginFileEncode,
       FilePondPluginFileValidateType,

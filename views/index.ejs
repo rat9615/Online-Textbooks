@@ -316,7 +316,23 @@
                       List of latest added books
                     </h6>
                   </div>
-                  <div class="card-body my-5"></div>
+                  <div class="card-body my-5">
+                    <% cover.forEach(function (bookcover) { %>
+                    <div>
+                      <a
+                        href="/pdf/<%=bookcover.pdffiles%>"
+                        data-toggle="popover"
+                        title="<%=bookcover.bookname%>"
+                        data-content="Author: <%=bookcover.author%>"
+                      >
+                        <img
+                          height="150"
+                          width="100"
+                          src="data:image/jpeg;base64,<%= bookcover.image.data %>"
+                      /></a>
+                    </div>
+                    <% })%>
+                  </div>
                 </div>
               </div>
             </div>
@@ -344,15 +360,16 @@
                           type="text"
                           class="form-control form-control-user"
                           id="bookname"
-                          placeholder="Name of the book"
+                          placeholder="Book Name"
                           name="bookname"
+                          required
                         />
                       </div>
                       <div class="form-group">
                         <input
                           type="text"
                           class="form-control form-control-user"
-                          placeholder="Year of publication"
+                          placeholder="Year of Publication"
                           name="pub"
                         />
                       </div>
@@ -360,7 +377,7 @@
                         <input
                           type="text"
                           class="form-control form-control-user"
-                          placeholder="Name of the Author"
+                          placeholder="Author"
                           name="nameofauth"
                         />
                       </div>
@@ -368,11 +385,10 @@
                         <select
                           class="form-control selectpicker"
                           name="edition"
+                          required
                         >
                           <optgroup label="Editions">
-                            <option selected hidden disabled
-                              >Select Edition</option
-                            >
+                            <option selected hidden disabled>Edition</option>
                             <option value="First Edition">First Edition</option>
                             <option value="Second Edition"
                               >Second Edition</option
@@ -552,6 +568,6 @@
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/sb-admin-2.js"></script>
   </body>
 </html>

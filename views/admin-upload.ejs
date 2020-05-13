@@ -341,7 +341,8 @@
                           class="form-control form-control-user"
                           id="bookname"
                           name="bookname"
-                          placeholder="Name of the book"
+                          placeholder="Book Name"
+                          required
                         />
                       </div>
                       <div class="form-group">
@@ -369,7 +370,8 @@
                           type="text"
                           class="form-control form-control-user"
                           name="year"
-                          placeholder="Year of publication"
+                          placeholder="Year of Publication"
+                          required
                         />
                       </div>
                       <div class="form-group">
@@ -377,7 +379,8 @@
                           type="text"
                           class="form-control form-control-user"
                           name="author"
-                          placeholder="Name of the Author"
+                          placeholder="Author"
+                          required
                         />
                       </div>
                       <div class="form-group">
@@ -393,6 +396,7 @@
                         <select
                           class="form-control selectpicker"
                           name="semester"
+                          required
                         >
                           <optgroup label="Semester">
                             <option selected hidden disabled>Semester</option>
@@ -406,7 +410,12 @@
                         </select>
                       </div>
                       <div class="form-group">
-                        <input type="file" name="pdffiles" class="my-pond" />
+                        <input
+                          type="file"
+                          name="pdffiles"
+                          class="my-pond"
+                          required
+                        />
                       </div>
                       <!-- <div class="form-group">
                         <input type="file" name="pdf" />

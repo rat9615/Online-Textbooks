@@ -48,6 +48,10 @@ const bookschema = new mongoose.Schema({
   pdffiles: {
     type: mongoose.Schema.Types.ObjectId,
   },
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
 });
 
 // unique values => combination of bookname and bookedition
