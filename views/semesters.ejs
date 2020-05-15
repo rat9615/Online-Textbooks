@@ -23,9 +23,6 @@
       rel="stylesheet"
     />
 
-    <!-- Favicon -->
-    <link rel="icon" href="img/onlinetb_favi.ico" />
-
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet" />
   </head>
@@ -319,7 +316,10 @@
                   <div class="card-body">
                     <form class="user">
                       <div class="form-group">
-                        <select class="form-control selectpicker">
+                        <select
+                          id="selectCourse"
+                          class="form-control selectpicker"
+                        >
                           <optgroup label="Branch">
                             <option selected hidden disabled>Course</option>
                             <option value="mca">Computer Applications</option>
@@ -328,24 +328,27 @@
                         </select>
                       </div>
                       <div class="form-group">
-                        <select class="form-control selectpicker">
+                        <select
+                          id="selectSemester"
+                          class="form-control selectpicker"
+                        >
                           <optgroup label="Semester">
                             <option selected hidden disabled>Semester</option>
                             <option value="first">I</option>
-                            <option value="epub">II</option>
-                            <option value="epub">III</option>
-                            <option value="epub">IV</option>
-                            <option value="epub">V</option>
-                            <option value="epub">VI</option>
+                            <option value="second">II</option>
+                            <option value="third">III</option>
+                            <option value="fourth">IV</option>
+                            <option value="fifth">V</option>
+                            <option value="sixth">VI</option>
                           </optgroup>
                         </select>
                       </div>
-                      <div class="text-center">
-                        <a href="#" class="btn btn-primary btn-user">Browse</a>
-                      </div>
                     </form>
                     <div class="card shadow my-5 py-5">
-                      <div class="card-block text-center my-5 py-5">
+                      <div
+                        id="browseSemester"
+                        class="card-block text-center my-5 py-5"
+                      >
                         <span class="my-5">List of books</span>
                       </div>
                     </div>
@@ -429,6 +432,6 @@
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/sb-admin-2.js"></script>
   </body>
 </html>

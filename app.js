@@ -7,16 +7,26 @@ const passport = require('passport');
 const bodyparser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
+const favicon = require('serve-favicon');
+const path = require('path');
 
 const LocalStrategy = require('passport-local').Strategy;
 const userreg = require('./models/userreg');
 
-// cors
 // app.use(cors());
 // bodyparser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
+
+// flash
 app.use(flash());
+
+// Favicon
+app.use(
+  // eslint-disable-next-line no-undef
+  favicon(path.join(__dirname, './public/img', 'onlinetb_favi.ico'))
+);
+
 // EJS
 app.set('view engine', 'ejs');
 
@@ -29,17 +39,8 @@ app.use(
   })
 );
 
-//flash-messages
-
-
-app.use(function (req, res, next) {
-  req.flash('info', 'hello');
-  next();
-});
-
 // passport
 // need to check if we need this
-//app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 

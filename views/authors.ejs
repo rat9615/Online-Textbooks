@@ -23,9 +23,6 @@
       rel="stylesheet"
     />
 
-    <!-- Favicon -->
-    <link rel="icon" href="img/onlinetb_favi.ico" />
-
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet" />
   </head>
@@ -319,20 +316,24 @@
                   <div class="card-body">
                     <form class="user">
                       <div class="form-group">
-                        <select class="form-control selectpicker">
+                        <select
+                          id="selectAuthor"
+                          class="form-control selectpicker"
+                        >
                           <optgroup label="Authors">
                             <option selected hidden disabled>Authors</option>
-                            <option value="abc">ABC</option>
-                            <option value="xyz">XYZ</option>
+                            <% name.forEach(function(author){%>
+                            <option value="<%=author%>"><%=author%></option>
+                            <%})%>
                           </optgroup>
                         </select>
                       </div>
-                      <div class="text-center">
-                        <a href="#" class="btn btn-primary btn-user">Browse</a>
-                      </div>
                     </form>
                     <div class="card shadow my-5 py-5">
-                      <div class="card-block text-center my-5 py-5">
+                      <div
+                        id="browseAuthor"
+                        class="card-block text-center my-5 py-5"
+                      >
                         <span class="my-5">List of books</span>
                       </div>
                     </div>
@@ -416,6 +417,6 @@
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="js/sb-admin-2.js"></script>
   </body>
 </html>

@@ -1,0 +1,15 @@
+<% cover.forEach(function (bookcover) { %>
+<div>
+  <a
+    href="/pdf/<%=bookcover.bookname%>/<%=bookcover.pdffiles%>"
+    data-toggle="popover"
+    title="<b><%=bookcover.bookname%></b>"
+    data-content="<div>Author: <%=bookcover.author%></div> <div>Edition: <%=bookcover.bookedition%></div> <div>Applicable to: <%=bookcover.course%></div> "
+  >
+    <img
+      height="256"
+      width="200"
+      src="data:image/jpeg;base64,<%= bookcover.image.data %>"
+  /></a>
+</div>
+<% })%>

@@ -23,9 +23,6 @@
       rel="stylesheet"
     />
 
-    <!-- Favicon -->
-    <link rel="icon" href="img/onlinetb_favi.ico" />
-
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet" />
   </head>
@@ -317,21 +314,7 @@
                     </h6>
                   </div>
                   <div class="card-body my-5">
-                    <% cover.forEach(function (bookcover) { %>
-                    <div>
-                      <a
-                        href="/pdf/<%=bookcover.pdffiles%>"
-                        data-toggle="popover"
-                        title="<%=bookcover.bookname%>"
-                        data-content="Author: <%=bookcover.author%>"
-                      >
-                        <img
-                          height="150"
-                          width="100"
-                          src="data:image/jpeg;base64,<%= bookcover.image.data %>"
-                      /></a>
-                    </div>
-                    <% })%>
+                    <%-include('partials/searchResults') %>
                   </div>
                 </div>
               </div>

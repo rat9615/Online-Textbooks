@@ -61,15 +61,53 @@
     e.preventDefault();
   });
 
-  // $('[data-toggle="popover"]').popover({
-  //   trigger: 'hover',
-  //   container: 'image-container',
-  // });
-
-  $(function () {
+  // function popover
+  function popoverHtml() {
     $('[data-toggle="popover"]').popover({
+      html: true,
       trigger: 'hover',
     });
+  }
+
+  popoverHtml();
+  // ajax call for browse based on branch
+  $(document).on('change', '#selectCourse', function () {
+    const selectval = $('#selectCourse').val();
+    $.ajax({
+      url: `/branch/${selectval}`,
+      success(data) {
+        $('#browseBranch').html(data);
+        popoverHtml();
+      },
+    });
+  });
+
+  // ajax call for browse based on semester
+  $(document).on('change', '#selectCourse,#selectSemester', function () {
+    const selectcourse = $('#selectCourse').val();
+    const selectsem = $('#selectSemester').val();
+    $.ajax({
+      url: `/semester/${selectcourse}/${selectsem}`,
+      success(data) {
+        $('#browseSemester').html(data);
+        popoverHtml();
+      },
+    });
+  });
+
+  // ajax call for browse based on author
+  $(document).on('change', '#selectAuthor', function () {
+    const selectauth = $('#selectAuthor').val();
+    $.ajax({
+      url: `/author/${selectauth}`,
+      success(data) {
+        $('#browseAuthor').html(data);
+        popoverHtml();
+      },
+    });
+  });
+
+  $(function () {
     $.fn.filepond.registerPlugin(
       // FilePondPluginFileEncode,
       FilePondPluginFileValidateType,

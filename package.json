@@ -47,7 +47,8 @@
     "password-validator": "^5.0.3",
     "pdf-image": "^2.0.0",
     "pdfinfo": "0.0.3",
-    "popper.js": "^1.16.1"
+    "popper.js": "^1.16.1",
+    "serve-favicon": "^2.5.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

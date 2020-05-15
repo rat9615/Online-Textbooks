@@ -10,6 +10,7 @@ const path = require('path');
 const { PDFImage } = require('pdf-image');
 const Books = require('../models/books');
 const Requestbook = require('../models/requestbook');
+
 // static
 router.use(express.static('public'));
 router.use(fileupload({ useTempFiles: true, tempFileDir: '/tmp/' }));
@@ -34,6 +35,26 @@ db.once('open', () => {
   gfs = new mongoose.mongo.GridFSBucket(db.db);
 });
 
+// check authentication
+function isAuthenticated(req, res, done) {
+  if (req.isAuthenticated()) {
+    return done();
+  }
+  return res.redirect('/users/login');
+}
+
+// retrieve author's names
+function authorName(req, res, done) {
+  Books.find({}, (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+    res.locals.name = data.sort();
+    return done();
+  }).distinct('author');
+}
+// check not authenticated also if user is logged in he should not come back to register
+
 // index
 router.get('/', (req, res, done) => {
   if (req.isAuthenticated()) {
@@ -49,7 +70,7 @@ router.get('/', (req, res, done) => {
     // to get latest added books
     Books.find({}, (err, data) => {
       return res.render('index', { login: req.user, cover: data });
-    });
+    }).sort({ _id: -1 });
   }
   return res.redirect('/users/login');
 });
@@ -74,7 +95,7 @@ router.post(
     // to get latest added books
     Books.find({}, (err, data) => {
       return res.render('index', { login: req.user, cover: data });
-    });
+    }).sort({ _id: -1 });
   }
 );
 // download books
@@ -92,9 +113,15 @@ router.get('/download-books', (req, res) => {
 router.get('/branch', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('branch', { login: req.user, user: 'admin' });
+      return res.render('branch', {
+        login: req.user,
+        user: 'admin',
+      });
     }
-    return res.render('branch', { login: req.user, user: 'regular' });
+    return res.render('branch', {
+      login: req.user,
+      user: 'regular',
+    });
   }
   return res.redirect('/users/login');
 });
@@ -111,12 +138,20 @@ router.get('/semester', (req, res) => {
 });
 
 // authors
-router.get('/author', (req, res) => {
+router.get('/author', authorName, (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('authors', { login: req.user, user: 'admin' });
+      return res.render('authors', {
+        login: req.user,
+        user: 'admin',
+        name: res.locals.name,
+      });
     }
-    return res.render('authors', { login: req.user, user: 'regular' });
+    return res.render('authors', {
+      login: req.user,
+      user: 'regular',
+      name: res.locals.name,
+    });
   }
   return res.redirect('/users/login');
 });
@@ -281,12 +316,46 @@ router.get('/remove-books', (req, res, done) => {
   return res.redirect('/users/login');
 });
 
-// downloading books
-router.get('/pdf/:id', (req, res) => {
-  if (req.isAuthenticated()) {
-    // gfs.openDownloadStream({ _id: req.params.id }).pipe(res);
-    const readstream = Grid.createReadStream({ _id: req.params.id });
-    readstream.pipe(res);
-  }
+// view pdf books
+router.get('/pdf/:name/:id', isAuthenticated, (req, res) => {
+  // gfs.openDownloadStream({ _id: req.params.id }).pipe(res);
+  const readstream = Grid.createReadStream({ _id: req.params.id });
+  res.setHeader('Content-disposition', `filename= ${req.params.name}.pdf`);
+  res.setHeader('Content-type', 'application/pdf');
+  readstream.pipe(res);
 });
+
+// find books by branch
+router.get('/branch/:course', isAuthenticated, (req, res) => {
+  Books.find({ course: req.params.course }, (err, data) => {
+    return res.render(
+      path.join(__dirname, '../views/partials', 'searchResults.ejs'),
+      { cover: data }
+    );
+  }).sort({ _id: -1 });
+});
+
+// find books by semester
+router.get('/semester/:course/:semester', isAuthenticated, (req, res) => {
+  Books.find(
+    { course: req.params.course, semester: req.params.semester },
+    (err, data) => {
+      return res.render(
+        path.join(__dirname, '../views/partials', 'searchResults.ejs'),
+        { cover: data }
+      );
+    }
+  ).sort({ _id: -1 });
+});
+
+// find books by author
+router.get('/author/:author', isAuthenticated, (req, res) => {
+  Books.find({ author: req.params.author }, (err, data) => {
+    return res.render(
+      path.join(__dirname, '../views/partials', 'searchResults.ejs'),
+      { cover: data }
+    );
+  }).sort({ _id: -1 });
+});
+
 module.exports = router;
