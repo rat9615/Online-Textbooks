@@ -23,6 +23,9 @@
       rel="stylesheet"
     />
 
+    <!-- jQuery UI styles -->
+    <link href="vendor/jquery-ui/jquery-ui.css" rel="stylesheet" />
+
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.css" rel="stylesheet" />
   </head>
@@ -314,33 +317,24 @@
                     </h6>
                   </div>
                   <div class="card-body">
-                    <form
-                      class="d-block d-sm-inline-block form-inline mr-auto ml-md-3 my-4 my-md-0"
-                    >
-                      <div class="input-group">
+                    <form class="user">
+                      <div class="form-group">
                         <input
                           type="text"
-                          class="form-control bg-light border-0 small"
-                          placeholder="Search for books or authors"
-                          aria-label="Search"
-                          aria-describedby="basic-addon2"
+                          name="books"
+                          class="form-control form-control-user"
+                          id="autocomplete"
+                          placeholder="Search by book name"
                         />
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" type="button">
-                            <i class="fas fa-search fa-sm"></i>
-                          </button>
-                        </div>
                       </div>
                     </form>
                     <div class="card shadow my-5 py-5">
-                      <div class="card-block text-center my-5 py-5">
+                      <div
+                        id="downloadBooks"
+                        class="card-block text-center my-5 py-5"
+                      >
                         <span class="my-5">List of books</span>
                       </div>
-                    </div>
-                    <div class="text-center">
-                      <a href="#" class="special-btn btn btn-primary btn-user"
-                        >Download</a
-                      >
                     </div>
                   </div>
                 </div>
@@ -420,6 +414,9 @@
 
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- jQuery UI core JavaScript -->
+    <script src="vendor/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.js"></script>

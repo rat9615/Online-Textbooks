@@ -2,7 +2,7 @@
   'use strict'; // Start of use strict
 
   // Toggle the side navigation
-  $('#sidebarToggle, #sidebarToggleTop').on('click', function (e) {
+  $('#sidebarToggle, #sidebarToggleTop').on('click', function (_e) {
     $('body').toggleClass('sidebar-toggled');
     $('.sidebar').toggleClass('toggled');
     if ($('.sidebar').hasClass('toggled')) {
@@ -141,10 +141,79 @@
     $('.my-pond').on('FilePond:addfile', function (e) {
       console.log('file added event', e);
     });
+  });
 
-    // // Manually add a file using the addfile method
-    // $('.my-pond').then(function (file) {
-    //   console.log('file added', file);
+  $(function () {
+    //   // Ajax Call for autocomplete
+    //   $('#autocomplete').autocomplete({
+    //     lookup(query, done) {
+    //       $.ajax({
+    //         url: '/search/books',
+    //         success(data) {
+    //           const result = {
+    //             suggestions: $.map(data, function (book) {
+    //               return { value: book };
+    //             }),
+    //           };
+    //           done(result);
+    //         },
+    //       });
+    //     },
+    //     onSelect(book) {
+    //       $.ajax({
+    //         url: `/books/${book.value}`,
+    //         success(data) {
+    //           $('#downloadBooks').html(data);
+    //           popoverHtml();
+    //         },
+    //       });
+    //     },
+    //     showNoSuggestionNotice: true,
+    //     noSuggestionNotice: 'Sorry, no matching results',
+    //   });
+    //
+    // $('#autocomplete').autocomplete({
+    //   source: $.ajax({
+    //     url: '/search/books',
+    //     success(data) {
+    //       return $(data);
+    //     },
+    //   }),
     // });
+    $('#autocomplete')
+      .autocomplete({
+        source(req, res) {
+          $.ajax({
+            url: `/search/books/${req.term}`,
+            search: req.term,
+            success(data) {
+              if (!data.length) {
+                // eslint-disable-next-line no-param-reassign
+                data = ['No matches found!'];
+                res(data);
+              } else {
+                res(data);
+              }
+            },
+          });
+        },
+        select(_event, ui) {
+          $.ajax({
+            url: `/books/${ui.item.value}`,
+            success(data) {
+              $('#downloadBooks').html(data);
+              popoverHtml();
+            },
+          });
+        },
+      })
+      .on('keydown', function (event, ui) {
+        if (event.keyCode === 13) {
+          // prevent form submission
+          event.preventDefault();
+          // close the autocomplete
+          $('#autocomplete').autocomplete('close');
+        }
+      });
   });
 })(jQuery);

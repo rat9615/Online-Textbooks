@@ -358,4 +358,23 @@ router.get('/author/:author', isAuthenticated, (req, res) => {
   }).sort({ _id: -1 });
 });
 
+// autcomplete search
+router.get('/search/books/:bookname', isAuthenticated, (req, res) => {
+  Books.find(
+    { bookname: { $regex: req.params.bookname, $options: 'i' } },
+    (err, data) => {
+      return res.json(data);
+    }
+  ).distinct('bookname');
+});
+
+// find books by name
+router.get('/books/:bookname', isAuthenticated, (req, res) => {
+  Books.find({ bookname: req.params.bookname }, (err, data) => {
+    return res.render(
+      path.join(__dirname, '../views/partials', 'searchResults.ejs'),
+      { cover: data }
+    );
+  }).sort({ _id: -1 });
+});
 module.exports = router;
