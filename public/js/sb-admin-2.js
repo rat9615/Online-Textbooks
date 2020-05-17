@@ -108,6 +108,9 @@
   });
 
   $(function () {
+    $('[data-toggle="tooltip"]').tooltip({
+      html: true,
+    });
     $.fn.filepond.registerPlugin(
       // FilePondPluginFileEncode,
       FilePondPluginFileValidateType,
@@ -144,42 +147,6 @@
   });
 
   $(function () {
-    //   // Ajax Call for autocomplete
-    //   $('#autocomplete').autocomplete({
-    //     lookup(query, done) {
-    //       $.ajax({
-    //         url: '/search/books',
-    //         success(data) {
-    //           const result = {
-    //             suggestions: $.map(data, function (book) {
-    //               return { value: book };
-    //             }),
-    //           };
-    //           done(result);
-    //         },
-    //       });
-    //     },
-    //     onSelect(book) {
-    //       $.ajax({
-    //         url: `/books/${book.value}`,
-    //         success(data) {
-    //           $('#downloadBooks').html(data);
-    //           popoverHtml();
-    //         },
-    //       });
-    //     },
-    //     showNoSuggestionNotice: true,
-    //     noSuggestionNotice: 'Sorry, no matching results',
-    //   });
-    //
-    // $('#autocomplete').autocomplete({
-    //   source: $.ajax({
-    //     url: '/search/books',
-    //     success(data) {
-    //       return $(data);
-    //     },
-    //   }),
-    // });
     $('#autocomplete')
       .autocomplete({
         source(req, res) {
@@ -187,13 +154,7 @@
             url: `/search/books/${req.term}`,
             search: req.term,
             success(data) {
-              if (!data.length) {
-                // eslint-disable-next-line no-param-reassign
-                data = ['No matches found!'];
-                res(data);
-              } else {
-                res(data);
-              }
+              res(data);
             },
           });
         },
@@ -205,6 +166,12 @@
               popoverHtml();
             },
           });
+        },
+        response(_event, ui) {
+          if (!ui.content.length) {
+            const noResult = { value: '', label: 'No matches found!' };
+            ui.content.push(noResult);
+          }
         },
       })
       .on('keydown', function (event, ui) {

@@ -106,8 +106,10 @@
   top: 0;
   left: 0;
   cursor: default;
-  border-radius: 0.6rem;
+  border-bottom-left-radius: 0.6rem;
+  border-bottom-right-radius: 0.6rem;
 }
+
 .ui-menu {
   list-style: none;
   padding: 0;

@@ -1984,7 +1984,7 @@ pre code {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 #autocomplete {
-  background:  url("../img/search.svg")  right no-repeat;
+  background: url('../img/search.svg') right no-repeat;
 }
 @media (prefers-reduced-motion: reduce) {
   .form-control {
@@ -2198,6 +2198,31 @@ textarea.form-control {
   border-radius: 0.35rem;
 }
 
+.github {
+  background: #000 !important;
+  justify-content: center;
+  padding-left: 0.6rem;
+  transition: all 0.2s ease-in-out;
+}
+.gitbutton {
+  border-radius: 4rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 0.65rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  text-decoration: none;
+}
+a.gitbutton {
+  text-decoration: none;
+  color: azure;
+}
+footer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
 .was-validated :valid ~ .valid-feedback,
 .was-validated :valid ~ .valid-tooltip,
 .is-valid ~ .valid-feedback,
@@ -10246,7 +10271,7 @@ a:focus {
   -webkit-animation-name: growIn;
   animation-name: growIn;
   -webkit-animation-duration: 200ms;
-  animation-duration: 200ms;
+  animation-duration: 300ms;
   -webkit-animation-timing-function: transform cubic-bezier(0.18, 1.25, 0.4, 1),
     opacity cubic-bezier(0, 1, 0.4, 1);
   animation-timing-function: transform cubic-bezier(0.18, 1.25, 0.4, 1),
