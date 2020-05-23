@@ -5,7 +5,7 @@ const { check, validationResult } = require('express-validator');
 const userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
 
-// static
+// Static
 router.use(express.static('public'));
 
 router.get('/login', (req, res) => {
@@ -15,7 +15,7 @@ router.get('/login', (req, res) => {
   return res.render('login', { messages: req.flash('error') });
 });
 
-// forgot-password
+// Forgot-Password
 router.get('/forgot-password', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
@@ -23,7 +23,7 @@ router.get('/forgot-password', (req, res) => {
   return res.render('forgot-password');
 });
 
-// register
+// Register
 router.get('/register', (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect('/');
@@ -31,7 +31,7 @@ router.get('/register', (req, res) => {
   return res.render('register', { user: 'null' });
 });
 
-// requestbook
+// Requestbook
 // should validate if a usn already exists
 router.post('/request', async (req, res) => {
   const request = new Requestbook({
@@ -52,7 +52,7 @@ router.get('/request', (req, res) => {
   return res.render('login');
 });
 
-// logout
+// Logout
 router.get('/logout', (req, res) => {
   if (req.isAuthenticated()) {
     req.logOut();

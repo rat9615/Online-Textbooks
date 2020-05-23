@@ -9,9 +9,10 @@ const fs = require('fs');
 const path = require('path');
 const { PDFImage } = require('pdf-image');
 const Books = require('../models/books');
+const Userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
 
-// static
+// Static
 router.use(express.static('public'));
 router.use(fileupload({ useTempFiles: true, tempFileDir: '/tmp/' }));
 
@@ -24,7 +25,7 @@ mongoose.connect(url, {
   useCreateIndex: true,
 });
 
-// gridfs connection
+// Gridfs Connection
 const db = mongoose.connection;
 let gfs;
 let Grid;
@@ -35,7 +36,7 @@ db.once('open', () => {
   gfs = new mongoose.mongo.GridFSBucket(db.db);
 });
 
-// check authentication
+// check Authentication
 function isAuthenticated(req, res, done) {
   if (req.isAuthenticated()) {
     return done();
@@ -43,7 +44,15 @@ function isAuthenticated(req, res, done) {
   return res.redirect('/users/login');
 }
 
-// retrieve author's names
+// check if admin
+function checkAdmin(req, res, done) {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+    return done();
+  }
+  return res.redirect('/');
+}
+
+// retrieve Author's names
 function authorName(req, res, done) {
   Books.find({}, (err, data) => {
     if (err) {
@@ -55,7 +64,7 @@ function authorName(req, res, done) {
 }
 // check not authenticated also if user is logged in he should not come back to register
 
-// index
+// Index
 router.get('/', (req, res, done) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
@@ -71,6 +80,7 @@ router.get('/', (req, res, done) => {
     Books.find({}, (err, data) => {
       return res.render('index', { login: req.user, cover: data });
     }).sort({ _id: -1 });
+    return done;
   }
   return res.redirect('/users/login');
 });
@@ -98,7 +108,7 @@ router.post(
     }).sort({ _id: -1 });
   }
 );
-// download books
+// Download books
 router.get('/download-books', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
@@ -109,7 +119,7 @@ router.get('/download-books', (req, res) => {
   return res.redirect('/users/login');
 });
 
-// branch
+// Branch
 router.get('/branch', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
@@ -126,7 +136,7 @@ router.get('/branch', (req, res) => {
   return res.redirect('/users/login');
 });
 
-// semester
+// Semester
 router.get('/semester', (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
@@ -137,7 +147,7 @@ router.get('/semester', (req, res) => {
   return res.redirect('/users/login');
 });
 
-// authors
+// Authors
 router.get('/author', authorName, (req, res) => {
   if (req.isAuthenticated()) {
     if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
@@ -156,16 +166,27 @@ router.get('/author', authorName, (req, res) => {
   return res.redirect('/users/login');
 });
 
-// admin upload books page
-router.get('/upload-books', (req, res) => {
-  if (req.isAuthenticated()) {
-    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('admin-upload', { login: req.user, books: 'empty' });
-    }
+// Admin-Actions Upload books
+router.get('/upload-books', isAuthenticated, (req, res) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+    return res.render('admin-upload', { login: req.user, books: 'empty' });
   }
-  return res.redirect('/users/login');
+  return res.redirect('/');
 });
 
+// Admin-Actions Delete books
+router.get('/delete-books', isAuthenticated, (req, res, done) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+    Books.find({}, (err, data) => {
+      res.render('admin-delete', {
+        login: req.user,
+        displayBooks: data,
+      });
+    });
+    return done; // should be a callback done()
+  }
+  return res.redirect('/');
+});
 // filepond upload to server
 router.post('/uploads', (req, res) => {
   const filename = req.files.filepond;
@@ -377,4 +398,19 @@ router.get('/books/:bookname', isAuthenticated, (req, res) => {
     );
   }).sort({ _id: -1 });
 });
+
+// Admin-Actions User Accounts
+router.get('/user-accounts', isAuthenticated, (req, res, done) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+    Userreg.find({}, (err, data) => {
+      res.render('admin-user-accounts', {
+        login: req.user,
+        userAccounts: data,
+      });
+    });
+    return done;
+  }
+  res.redirect('/');
+});
+
 module.exports = router;

@@ -10,7 +10,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>Online Textbooks - Admin-upload</title>
+    <title>Online Textbooks - Admin Actions</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -92,9 +92,15 @@
             data-parent="#accordionSidebar"
           >
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="/branch">Branch</a>
-              <a class="collapse-item" href="/semester">Semester</a>
-              <a class="collapse-item" href="/author">Authors</a>
+              <a class="collapse-item" href="/branch"
+                ><i class="fas fa-fw fa-archive"></i> <span>Branch</span></a
+              >
+              <a class="collapse-item" href="/semester"
+                ><i class="fas fa-fw fa-server"></i> <span>Semester</span></a
+              >
+              <a class="collapse-item" href="/author"
+                ><i class="fas fa-fw fa-edit"></i> <span>Author</span></a
+              >
             </div>
           </div>
         </li>
@@ -105,10 +111,49 @@
             <span>Download books</span>
           </a>
         </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider" />
+
+        <!-- Heading -->
+        <div class="sidebar-heading">
+          Admin Actions
+        </div>
+
+        <!-- Admin Actions Menu -->
         <li class="nav-item">
-          <a class="nav-link" href="/upload-books">
-            <i class="fas fa-fw fa-upload"></i>
-            <span>Upload books</span>
+          <a
+            class="nav-link collapsed"
+            href="#"
+            data-toggle="collapse"
+            data-target="#collapseBooks"
+            aria-expanded="true"
+            aria-controls="collapseTwo"
+          >
+            <i class="fas fa-fw fa-book-open"></i>
+            <span>Books</span>
+          </a>
+          <div
+            id="collapseBooks"
+            class="collapse"
+            aria-labelledby="headingTwo"
+            data-parent="#accordionSidebar"
+          >
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="/upload-books"
+                ><i class="fas fa-fw fa-upload"></i>
+                <span>Upload books</span></a
+              >
+              <a class="collapse-item" href="/delete-books"
+                ><i class="fas fa-fw fa-trash"></i> <span>Delete books</span></a
+              >
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="/user-accounts">
+            <i class="fas fa-fw fa-users"></i>
+            <span>Users</span>
           </a>
         </li>
         <!-- Divider -->
@@ -253,7 +298,7 @@
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4"
             >
-              <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+              <h1 class="h3 mb-0 text-gray-800">Books</h1>
             </div>
 
             <!--upload books-->

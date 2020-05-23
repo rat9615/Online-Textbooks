@@ -2199,7 +2199,6 @@ textarea.form-control {
 }
 
 .github {
-  background: #000 !important;
   justify-content: center;
   padding-left: 0.6rem;
   transition: all 0.2s ease-in-out;
@@ -2213,10 +2212,6 @@ textarea.form-control {
   margin-bottom: 0.5rem;
   margin-top: 0.25rem;
   text-decoration: none;
-}
-a.gitbutton {
-  text-decoration: none;
-  color: azure;
 }
 footer {
   display: flex;
