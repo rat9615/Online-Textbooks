@@ -2197,7 +2197,9 @@ textarea.form-control {
   background-color: rgba(28, 200, 138, 0.9);
   border-radius: 0.35rem;
 }
-
+svg:hover {
+  fill: cornsilk;
+}
 .github {
   justify-content: center;
   padding-left: 0.6rem;
@@ -11396,6 +11398,22 @@ form.user .btn-user {
 /* custom cardbody */
 .scroll-cardbody {
   max-height: 24rem;
+}
+/* custom cardbody - latest books */
+.latest-card-body {
+  max-height: 25rem;
+}
+/* Custom Actions for - latest books */
+.custom-actions {
+  background: #e6e8f0;
+  border-radius: 0.2rem;
+  transition: 1s;
+}
+
+.custom-actions:hover {
+  transform: scale(1.1);
+  background: #bfd4e6;
+  border-radius: 0.2rem;
 }
 /* Custom scrollbar */
 ::-webkit-scrollbar {

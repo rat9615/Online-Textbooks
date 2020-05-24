@@ -1,15 +1,21 @@
-<% cover.forEach(function (bookcover) { %>
-<div>
-  <a
-    href="/pdf/<%=bookcover.bookname%>/<%=bookcover.pdffiles%>"
-    data-toggle="popover"
-    title="<b><%=bookcover.bookname%></b>"
-    data-content="<div>Author: <%=bookcover.author%></div> <div>Edition: <%=bookcover.bookedition%></div> <div>Applicable to: <%=bookcover.course%></div> "
+<div class="row justify-content-center d-sm-table d-lg-flex">
+  <% cover.forEach(function (bookcover) { %>
+  <div
+    class="col-lg d-sm-table-cell d-lg-inline-flex py-3 justify-content-center"
   >
-    <img
-      height="256"
-      width="200"
-      src="data:image/jpeg;base64,<%= bookcover.image.data %>"
-  /></a>
+    <div class="custom-actions p-3">
+      <a
+        href="/pdf/<%=bookcover.bookname%>/<%=bookcover.pdffiles%>"
+        data-toggle="popover"
+        title="<b><%=bookcover.bookname%></b>"
+        data-content="<div>Author: <%=bookcover.author%></div> <div>Edition: <%=bookcover.bookedition%></div> <div>Applicable to: <%=bookcover.course%></div> "
+      >
+        <img
+          height="256"
+          width="200"
+          src="data:image/jpeg;base64,<%= bookcover.image.data %>"
+      /></a>
+    </div>
+  </div>
+  <% })%>
 </div>
-<% })%>

@@ -79,7 +79,9 @@ router.get('/', (req, res, done) => {
     // to get latest added books
     Books.find({}, (err, data) => {
       return res.render('index', { login: req.user, cover: data });
-    }).sort({ _id: -1 });
+    })
+      .sort({ _id: -1 })
+      .limit(4);
     return done;
   }
   return res.redirect('/users/login');
@@ -105,7 +107,9 @@ router.post(
     // to get latest added books
     Books.find({}, (err, data) => {
       return res.render('index', { login: req.user, cover: data });
-    }).sort({ _id: -1 });
+    })
+      .sort({ _id: -1 })
+      .limit(4);
   }
 );
 // Download books
