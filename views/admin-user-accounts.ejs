@@ -326,7 +326,7 @@
                             <th>Email</th>
                             <th>USN</th>
                             <th>Course</th>
-                            <th>Action</th>
+                            <th>Actions</th>
                           </tr>
                         </thead>
                         <tfoot>
@@ -336,7 +336,7 @@
                             <th>Email</th>
                             <th>USN</th>
                             <th>Course</th>
-                            <th>Action</th>
+                            <th>Actions</th>
                           </tr>
                         </tfoot>
                         <tbody>
@@ -347,7 +347,11 @@
                             <td><%=users.username%></td>
                             <td><%=users.usn%></td>
                             <td><%=users.course%></td>
-                            <td>Delete</td>
+                            <td><a href="#" class="btn btn-success btn-circle"  title="Edit">
+                              <i class="fas fa-user-edit"></i>
+                            </a>&nbsp;<a href="#" data-toggle="modal" data-target="#deleteuser" class="btn btn-danger btn-circle" title="Delete">
+                              <i class="fas fa-trash"></i>
+                            </a></td>
                           </tr>
                         <% })%>
                         </tbody>
@@ -412,6 +416,47 @@
               Cancel
             </button>
             <a class="btn btn-primary" href="/users/logout">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete User Modal-->
+    <div
+      class="modal fade"
+      id="deleteuser"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Delete User?
+            </h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you wish to remove this user?
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-secondary"
+              type="button"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <a class="btn btn-danger" href="#">Delete</a>
           </div>
         </div>
       </div>

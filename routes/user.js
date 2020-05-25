@@ -23,6 +23,18 @@ router.get('/forgot-password', (req, res) => {
   return res.render('forgot-password');
 });
 
+// Reset Password
+router.get('/reset-password', (req, res) => {
+  return res.render('reset-password');
+});
+
+router.post('/reset-password', (req, res) => {
+  if (req.body.password !== req.body.confirmpassword) {
+    req.flash('error', 'Passwords do not match!');
+    res.locals.messages = req.flash();
+    res.render('reset-password');
+  }
+});
 // Register
 router.get('/register', (req, res) => {
   if (req.isAuthenticated()) {
