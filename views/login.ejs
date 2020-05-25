@@ -57,7 +57,7 @@
                       </h1>
                     </div>
                     <% if(messages && messages.length > 0) { %>
-                    <div class="alert alert-warning" role="alert">
+                    <div class="alert alert-danger py-2" role="alert">
                       <%=messages%>
                     </div>
                     <% } %>
@@ -93,7 +93,9 @@
                     </form>
                     <hr />
                     <div class="text-center">
-                      <a class="text-primary small" href="/users/reset-password"
+                      <a
+                        class="text-primary small"
+                        href="/users/forgot-password"
                         >Forgot Password?</a
                       >
                     </div>

@@ -36,7 +36,7 @@ db.once('open', () => {
   gfs = new mongoose.mongo.GridFSBucket(db.db);
 });
 
-// check Authentication
+// Check Authentication
 function isAuthenticated(req, res, done) {
   if (req.isAuthenticated()) {
     return done();

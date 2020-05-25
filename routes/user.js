@@ -2,33 +2,75 @@ const express = require('express');
 
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
+const nodemailer = require('nodemailer');
 const userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
 
 // Static
 router.use(express.static('public'));
 
-router.get('/login', (req, res) => {
+// Check Authentication
+function isAuthenticated(req, res, done) {
   if (req.isAuthenticated()) {
     return res.redirect('/');
   }
+  return done();
+}
+
+router.get('/login', isAuthenticated, (req, res) => {
   return res.render('login', { messages: req.flash('error') });
 });
 
 // Forgot-Password
-router.get('/forgot-password', (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
+router.get('/forgot-password', isAuthenticated, (req, res) => {
   return res.render('forgot-password');
 });
 
+// Send password reset link
+router.post('/forgot-password', isAuthenticated, (req, res) => {
+  userreg.findOne({ username: req.body.email }, async (err, data) => {
+    if (data) {
+      // Using nodemailer to send mail
+      const testAccount = await nodemailer.createTestAccount();
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      });
+      const info = await transporter.sendMail({
+        from: '"Admin" <no-reply@smash.com>',
+        to: `${req.body.email}`,
+        subject: 'Reset your Password', // Subject line
+        html: `<b>Hi ${data.firstname},</b><br /><br />We heard that you lost your Online Textbooks password. Sorry about that!<br />
+        But don’t worry! You can use the following link to reset your password:<br /><br />
+        If you don’t use this link within the next 2 hours, it will expire.<br /><br /><br />
+        Thanks,<br />
+        <i>The Online Textbooks Team</i>`,
+      });
+      console.log('Message sent: %s', info.messageId);
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+      req.flash(
+        'success',
+        `Please check ${req.body.email} for a link to reset your password. `
+      );
+      res.locals.messages = req.flash();
+      return res.render('forgot-password');
+    }
+    req.flash('error', 'No account found with that email!');
+    res.locals.messages = req.flash();
+    return res.render('forgot-password');
+  });
+});
 // Reset Password
-router.get('/reset-password', (req, res) => {
+router.get('/reset-password', isAuthenticated, (req, res) => {
   return res.render('reset-password');
 });
 
-router.post('/reset-password', (req, res) => {
+router.post('/reset-password', isAuthenticated, (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
     req.flash('error', 'Passwords do not match!');
     res.locals.messages = req.flash();
@@ -36,10 +78,7 @@ router.post('/reset-password', (req, res) => {
   }
 });
 // Register
-router.get('/register', (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
+router.get('/register', isAuthenticated, (req, res) => {
   return res.render('register', { user: 'null' });
 });
 
@@ -57,10 +96,7 @@ router.post('/request', async (req, res) => {
   return res.json(req.body.bookname);
 });
 
-router.get('/request', (req, res) => {
-  if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
+router.get('/request', isAuthenticated, (req, res) => {
   return res.render('login');
 });
 
