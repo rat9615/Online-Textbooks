@@ -193,6 +193,10 @@ router.get('/delete-books', isAuthenticated, (req, res, done) => {
 });
 // filepond upload to server
 router.post('/uploads', (req, res) => {
+  const uploadsDir = path.join(__dirname, '../public/uploads');
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir);
+  }
   const filename = req.files.filepond;
   let imagename = filename.name;
   imagename = imagename.toString().slice(0, -4);

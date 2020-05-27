@@ -2,12 +2,15 @@ const express = require('express');
 
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
+const jwt = require('jsonwebtoken');
+const path = require('path');
 const nodemailer = require('nodemailer');
 const userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
 
 // Static
 router.use(express.static('public'));
+router.use('/reset-password/token', express.static('public'));
 
 // Check Authentication
 function isAuthenticated(req, res, done) {
@@ -30,6 +33,14 @@ router.get('/forgot-password', isAuthenticated, (req, res) => {
 router.post('/forgot-password', isAuthenticated, (req, res) => {
   userreg.findOne({ username: req.body.email }, async (err, data) => {
     if (data) {
+      // Jwt token
+      const token = jwt.sign(
+        { data: req.body.email },
+        'FDA73CA4BBC749D5B4D9332B7C9FF',
+        {
+          expiresIn: '2h', // 2h,
+        }
+      );
       // Using nodemailer to send mail
       const testAccount = await nodemailer.createTestAccount();
       const transporter = nodemailer.createTransport({
@@ -47,6 +58,7 @@ router.post('/forgot-password', isAuthenticated, (req, res) => {
         subject: 'Reset your Password', // Subject line
         html: `<b>Hi ${data.firstname},</b><br /><br />We heard that you lost your Online Textbooks password. Sorry about that!<br />
         But don’t worry! You can use the following link to reset your password:<br /><br />
+        http://${req.headers.host}/users/reset-password/token/${token}<br />
         If you don’t use this link within the next 2 hours, it will expire.<br /><br /><br />
         Thanks,<br />
         <i>The Online Textbooks Team</i>`,
@@ -65,16 +77,46 @@ router.post('/forgot-password', isAuthenticated, (req, res) => {
     return res.render('forgot-password');
   });
 });
+
+// checkToken middleware
+function checkToken(req, res, done) {
+  jwt.verify(
+    req.params.token,
+    'FDA73CA4BBC749D5B4D9332B7C9FF',
+    (err, decoded) => {
+      if (err) {
+        console.log(err);
+        req.flash('error', 'Password reset link is invalid or has expired!');
+        res.locals.messages = req.flash();
+        return res.render('forgot-password');
+      }
+      res.locals.token = decoded.data;
+      return done();
+    }
+  );
+}
 // Reset Password
-router.get('/reset-password', isAuthenticated, (req, res) => {
-  return res.render('reset-password');
-});
+router.get(
+  '/reset-password/token/:token',
+  isAuthenticated,
+  checkToken,
+  (req, res) => {
+    userreg.findOne({ username: res.locals.token }, (err, data) => {
+      if (data) {
+        return res.render('reset-password');
+      }
+      req.flash('error', 'Password reset link is invalid or has expired!');
+      res.locals.messages = req.flash();
+      return res.render('forgot-password');
+    });
+  }
+);
 
 router.post('/reset-password', isAuthenticated, (req, res) => {
   if (req.body.password !== req.body.confirmpassword) {
     req.flash('error', 'Passwords do not match!');
     res.locals.messages = req.flash();
-    res.render('reset-password');
+    return res.render('reset-password');
   }
 });
 // Register

@@ -42,6 +42,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  resettoken: {
+    type: String,
+  },
 });
 
 userSchema.plugin(passmongoose);
