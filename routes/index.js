@@ -421,4 +421,18 @@ router.get('/user-accounts', isAuthenticated, (req, res, done) => {
   res.redirect('/');
 });
 
+// Get users data
+router.get('/users/data', isAuthenticated, (req, res) => {
+  Userreg.find({ firstname: { $ne: 'bmsce' } }, (err, data) => {
+    return res.send({ data });
+  });
+});
+
+// Get books data
+router.get('/book-data/info', isAuthenticated, (req, res) => {
+  Books.find({}, (err, data) => {
+    return res.send({ data });
+  });
+});
+
 module.exports = router;

@@ -7,6 +7,7 @@ const passport = require('passport');
 const bodyparser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
 const path = require('path');
 
@@ -38,6 +39,8 @@ app.use(
     saveUninitialized: false,
   })
 );
+// cookies
+app.use(cookieParser());
 
 // passport
 // need to check if we need this

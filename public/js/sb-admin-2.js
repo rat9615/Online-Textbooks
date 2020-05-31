@@ -64,12 +64,26 @@
   // function popover
   function popoverHtml() {
     $('[data-toggle="popover"]').popover({
+      animation: true,
       html: true,
       trigger: 'hover',
     });
   }
 
   popoverHtml();
+
+  $('#exampleRegisterPassword')
+    .popover({
+      html: true,
+      animation: true,
+      title: '<b>Password Requirements</b>',
+      content:
+        '<ul><li>Must contain minimum 8 characters.</li><li>Must contain a capital letter.</li><li>Must contain a number.</li><li>Must contain a special character.</li></ul>',
+      placement: 'top',
+    })
+    .blur(function () {
+      $(this).popover('hide');
+    });
   // ajax call for browse based on branch
   $(document).on('change', '#selectCourse', function () {
     const selectval = $('#selectCourse').val();

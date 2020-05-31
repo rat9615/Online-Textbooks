@@ -3,7 +3,6 @@ const express = require('express');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
-const path = require('path');
 const nodemailer = require('nodemailer');
 const userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
@@ -41,6 +40,7 @@ router.post('/forgot-password', isAuthenticated, (req, res) => {
           expiresIn: '2h', // 2h,
         }
       );
+      res.cookie('forgotpasswordjwt', token, { httpOnly: true });
       // Using nodemailer to send mail
       const testAccount = await nodemailer.createTestAccount();
       const transporter = nodemailer.createTransport({
@@ -112,13 +112,61 @@ router.get(
   }
 );
 
-router.post('/reset-password', isAuthenticated, (req, res) => {
-  if (req.body.password !== req.body.confirmpassword) {
-    req.flash('error', 'Passwords do not match!');
-    res.locals.messages = req.flash();
-    return res.render('reset-password');
+// jwtcookie middleware
+function jwtcookie(req, res, done) {
+  const jwtcookies = req.cookies.forgotpasswordjwt;
+  jwt.verify(jwtcookies, 'FDA73CA4BBC749D5B4D9332B7C9FF', (err, decoded) => {
+    if (err) {
+      console.log(err);
+      req.flash('error', 'Password reset link is invalid or has expired!');
+      res.locals.messages = req.flash();
+      return res.render('forgot-password');
+    }
+    res.locals.token = decoded.data;
+    return done();
+  });
+}
+
+router.post(
+  '/reset-password',
+  isAuthenticated,
+  [
+    check('password')
+      .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, 'i')
+      .withMessage('Password did not meet the requirements specified!'),
+  ],
+  jwtcookie,
+  (req, res) => {
+    const err = validationResult(req);
+    if (!err.isEmpty()) {
+      const passerror = { error: err.errors[0].msg };
+      res.locals.messages = passerror;
+      console.log(res.locals.messages);
+      res.render('reset-password');
+    } else if (req.body.password !== req.body.confirmpassword) {
+      req.flash('error', 'Passwords do not match!');
+      res.locals.messages = req.flash();
+      res.render('reset-password');
+    } else {
+      userreg.findOne({ username: res.locals.token }, async (error, data) => {
+        if (data) {
+          await data.setPassword(req.body.password);
+          await data.save();
+          req.flash('success', 'Password successfully changed! Go to Login');
+          res.locals.messages = req.flash();
+          res.render('reset-password');
+        } else {
+          req.flash(
+            'error',
+            'Password could not be changed! Contact Administrator!'
+          );
+          res.locals.messages = req.flash();
+          res.render('reset-password');
+        }
+      });
+    }
   }
-});
+);
 // Register
 router.get('/register', isAuthenticated, (req, res) => {
   return res.render('register', { user: 'null' });
@@ -161,9 +209,7 @@ router.post(
     check('course', 'Please enter Course!').exists().trim().not().isEmpty(),
     check('password')
       .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{8,}$/, 'i')
-      .withMessage(
-        'Password should be a combination of one uppercase , one lower case, one special char, one digit and min 8 , max 20 char long'
-      ),
+      .withMessage('Password did not meet the requirements specified!'),
   ],
   (req, res) => {
     const err = validationResult(req);
