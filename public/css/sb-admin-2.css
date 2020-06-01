@@ -5325,6 +5325,19 @@ a.badge-danger.focus {
   background-color: #f8f9fc;
 }
 
+#loadingsvg {
+  position: fixed;
+  display: none;
+  z-index: 1050;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
 a.badge-light:hover,
 a.badge-light:focus {
   color: #3a3b45;
@@ -11302,6 +11315,12 @@ form.user .btn-user {
   border-radius: 1.5rem;
   padding: 0.75rem 1rem;
   width: 8rem;
+}
+.modal-user {
+  font-size: 0.8rem;
+  border-radius: 1.5rem;
+  padding: 0.75rem 1rem;
+  width: 6.5rem;
 }
 #reg {
   width: 10rem;

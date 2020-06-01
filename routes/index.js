@@ -45,6 +45,7 @@ function isAuthenticated(req, res, done) {
 }
 
 // check if admin
+// work with original url
 function checkAdmin(req, res, done) {
   if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
     return done();
@@ -65,26 +66,23 @@ function authorName(req, res, done) {
 // check not authenticated also if user is logged in he should not come back to register
 
 // Index
-router.get('/', (req, res, done) => {
-  if (req.isAuthenticated()) {
-    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      Requestbook.find({}, (err, data) => {
-        res.render('admin-index', {
-          login: req.user,
-          requestbook: data,
-        });
+router.get('/', isAuthenticated, (req, res, done) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+    Requestbook.find({}, (err, data) => {
+      res.render('admin-index', {
+        login: req.user,
+        requestbook: data,
       });
-      return done;
-    }
-    // to get latest added books
-    Books.find({}, (err, data) => {
-      return res.render('index', { login: req.user, cover: data });
-    })
-      .sort({ _id: -1 })
-      .limit(4);
+    });
     return done;
   }
-  return res.redirect('/users/login');
+  // to get latest added books
+  Books.find({}, (err, data) => {
+    return res.render('index', { login: req.user, cover: data });
+  })
+    .sort({ _id: -1 })
+    .limit(4);
+  return done;
 });
 
 router.post(
@@ -113,61 +111,49 @@ router.post(
   }
 );
 // Download books
-router.get('/download-books', (req, res) => {
-  if (req.isAuthenticated()) {
-    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('download', { login: req.user, user: 'admin' });
-    }
-    return res.render('download', { login: req.user, user: 'regular' });
+router.get('/download-books', isAuthenticated, (req, res) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+    return res.render('download', { login: req.user, user: 'admin' });
   }
-  return res.redirect('/users/login');
+  return res.render('download', { login: req.user, user: 'regular' });
 });
 
 // Branch
-router.get('/branch', (req, res) => {
-  if (req.isAuthenticated()) {
-    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('branch', {
-        login: req.user,
-        user: 'admin',
-      });
-    }
+router.get('/branch', isAuthenticated, (req, res) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
     return res.render('branch', {
       login: req.user,
-      user: 'regular',
+      user: 'admin',
     });
   }
-  return res.redirect('/users/login');
+  return res.render('branch', {
+    login: req.user,
+    user: 'regular',
+  });
 });
 
 // Semester
-router.get('/semester', (req, res) => {
-  if (req.isAuthenticated()) {
-    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('semesters', { login: req.user, user: 'admin' });
-    }
-    return res.render('semesters', { login: req.user, user: 'regular' });
+router.get('/semester', isAuthenticated, (req, res) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+    return res.render('semesters', { login: req.user, user: 'admin' });
   }
-  return res.redirect('/users/login');
+  return res.render('semesters', { login: req.user, user: 'regular' });
 });
 
 // Authors
-router.get('/author', authorName, (req, res) => {
-  if (req.isAuthenticated()) {
-    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      return res.render('authors', {
-        login: req.user,
-        user: 'admin',
-        name: res.locals.name,
-      });
-    }
+router.get('/author', authorName, isAuthenticated, (req, res) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
     return res.render('authors', {
       login: req.user,
-      user: 'regular',
+      user: 'admin',
       name: res.locals.name,
     });
   }
-  return res.redirect('/users/login');
+  return res.render('authors', {
+    login: req.user,
+    user: 'regular',
+    name: res.locals.name,
+  });
 });
 
 // Admin-Actions Upload books
@@ -329,25 +315,21 @@ router.post('/upload-books', async (req, res) => {
 });
 
 // remove book requests
-router.get('/remove-books', (req, res, done) => {
-  if (req.isAuthenticated()) {
-    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      Requestbook.deleteOne({ _id: req.body.id }, (err, data) => {
-        res.render('admin-index', {
-          login: req.user,
-          requestbook: data,
-        });
+router.get('/remove-books/:id', isAuthenticated, (req, res, done) => {
+  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+    Requestbook.deleteOne({ _id: req.params.id }, (err, data) => {
+      res.render('admin-index', {
+        login: req.user,
+        requestbook: data,
       });
-      return done;
-    }
-    return res.redirect('/');
+    });
+    return done;
   }
-  return res.redirect('/users/login');
+  return res.redirect('/');
 });
 
 // view pdf books
 router.get('/pdf/:name/:id', isAuthenticated, (req, res) => {
-  // gfs.openDownloadStream({ _id: req.params.id }).pipe(res);
   const readstream = Grid.createReadStream({ _id: req.params.id });
   res.setHeader('Content-disposition', `filename= ${req.params.name}.pdf`);
   res.setHeader('Content-type', 'application/pdf');

@@ -61,6 +61,13 @@
     e.preventDefault();
   });
 
+  // modal data for request book
+  $('#requestModal').on('show.bs.modal', function (e) {
+    const bookId = $(e.relatedTarget).data('book-id');
+    $(e.currentTarget)
+      .find('a[name = "removeRequests"]')
+      .attr('href', `/remove-books/${bookId}`);
+  });
   // function popover
   function popoverHtml() {
     $('[data-toggle="popover"]').popover({
@@ -117,6 +124,50 @@
       success(data) {
         $('#browseAuthor').html(data);
         popoverHtml();
+      },
+    });
+  });
+
+  // ajax call for request book
+  $(document).on('submit', '#requestBook', function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: '/users/request',
+      method: 'POST',
+      data: $('#requestBook').serialize(),
+      success(data) {
+        if (data.success === true) {
+          $('#SuccessModal').modal('show');
+          $('#requestBook').trigger('reset');
+        } else if (data.success === false) {
+          $('#failureModal').modal('show');
+          $('#requestBook').trigger('reset');
+        }
+      },
+    });
+  });
+
+  // ajax call for contact
+  $(document).on('submit', '#contactForm', function (e) {
+    e.preventDefault();
+    $.ajax({
+      url: '/users/contact',
+      method: 'POST',
+      data: $('#contactForm').serialize(),
+      beforeSend() {
+        $('#loadingsvg').show();
+      },
+      success(data) {
+        if (data.success === true) {
+          $('#contactSuccessModal').modal('show');
+          $('#contactForm').trigger('reset');
+        } else if (data.success === false) {
+          $('#contactfailureModal').modal('show');
+          $('#contactForm').trigger('reset');
+        }
+      },
+      complete() {
+        $('#loadingsvg').hide();
       },
     });
   });

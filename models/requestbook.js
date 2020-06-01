@@ -20,10 +20,11 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 5,
-    maxlength: 25,
   },
   year_of_publication: {
-    type: String,
+    type: Number,
+    minlength: 4,
+    maxlength: 4,
     required: true,
   },
   name_of_author: {
@@ -38,10 +39,6 @@ const requestSchema = new mongoose.Schema({
     required: true,
     type: Date,
     default: Date.now,
-  },
-  username: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: userreg,
   },
   usn: {
     type: String,

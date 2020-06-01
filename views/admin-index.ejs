@@ -319,7 +319,8 @@
                       class="dropdown-item d-xl-flex align-items-center"
                       href="#"
                       data-toggle="modal"
-                      data-target="#request<%=requestb.usn%>"
+                      data-target="#requestModal"
+                      data-book-id="<%=requestb.id%>"
                     >
                       <div class="mr-3">
                         <div class="icon-circle bg-primary">
@@ -425,23 +426,24 @@
           <div class="modal-body">Select the option below to logout.</div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary"
+              class="btn btn-secondary modal-user"
               type="button"
               data-dismiss="modal"
             >
               Cancel
             </button>
-            <a class="btn btn-primary" href="/users/logout">Logout</a>
+            <a class="btn btn-primary modal-user" href="/users/logout"
+              >Logout</a
+            >
           </div>
         </div>
       </div>
     </div>
 
-    <% requestbook.forEach(function (requestb) { %>
     <!-- Book request delete Modal-->
     <div
       class="modal fade"
-      id="request<%=requestb.usn%>"
+      id="requestModal"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalLabel"
@@ -466,17 +468,19 @@
             Select the option below to upload or remove the request.
           </div>
           <div class="modal-footer">
-            <a class="btn btn-primary" href="/upload-books">Upload</a>
+            <a class="btn btn-primary modal-user" href="/upload-books"
+              >Upload</a
+            >
             <a
-              class="btn btn-secondary"
-              href="/remove-books/<%=requestb.id%>?_method=DELETE"
+              name="removeRequests"
+              class="btn btn-secondary modal-user"
+              href="/remove-books"
               >Remove</a
             >
           </div>
         </div>
       </div>
     </div>
-    <% }) %>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

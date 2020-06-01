@@ -173,21 +173,46 @@ router.get('/register', isAuthenticated, (req, res) => {
 });
 
 // Requestbook
-// should validate if a usn already exists
 router.post('/request', async (req, res) => {
   const request = new Requestbook({
     name_of_the_book: req.body.bookname,
-    year_of_publication: req.body.pub, // how will user know year of publication
+    year_of_publication: req.body.pub,
     name_of_author: req.body.nameofauth,
     Edition: req.body.edition,
     usn: req.user.usn,
   });
-  await request.save();
-  return res.json(req.body.bookname);
+  await request.save((err) => {
+    if (err) {
+      return res.jsonp({ success: false });
+    }
+    return res.jsonp({ success: true });
+  });
 });
 
-router.get('/request', isAuthenticated, (req, res) => {
-  return res.render('login');
+// Contact Form
+// Problem here no success:false
+router.post('/contact', async (req, res) => {
+  const testAccount = await nodemailer.createTestAccount();
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    secure: false,
+    auth: {
+      user: testAccount.user,
+      pass: testAccount.pass,
+    },
+  });
+  const info = await transporter.sendMail({
+    from: '"Admin" <no-reply@smash.com>',
+    to: `admin@gmail.com`,
+    subject: `${req.body.contactsubject}`,
+    html: `Hi Admin,<br /><br />${req.body.contactmessage}<br /><br /><br /><br />
+        Thanks,<br />
+        ${req.body.contactname}<br />${req.user.usn}<br /><i>${req.body.contactmail}</i>`,
+  });
+  console.log('Message sent: %s', info.messageId);
+  console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+  res.json({ success: true });
 });
 
 // Logout

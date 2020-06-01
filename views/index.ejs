@@ -286,7 +286,12 @@
                       Fill in the below details and we will get back to you as
                       soon as possible.
                     </p>
-                    <form class="user" action="/users/request" method="POST">
+                    <form
+                      id="requestBook"
+                      class="user"
+                      action="/users/request"
+                      method="POST"
+                    >
                       <div class="form-group">
                         <input
                           type="text"
@@ -303,6 +308,7 @@
                           class="form-control form-control-user"
                           placeholder="Year of Publication"
                           name="pub"
+                          required
                         />
                       </div>
                       <div class="form-group">
@@ -311,6 +317,7 @@
                           class="form-control form-control-user"
                           placeholder="Author"
                           name="nameofauth"
+                          required
                         />
                       </div>
                       <div class="form-group">
@@ -393,9 +400,15 @@
                       form below and we'll get in touch with you as soon as
                       possible
                     </p>
-                    <form class="user mb-4">
+                    <form
+                      id="contactForm"
+                      class="user mb-4"
+                      action="/users/contact"
+                      method="POST"
+                    >
                       <div class="form-group">
                         <input
+                          name="contactname"
                           type="text"
                           class="form-control form-control-user"
                           placeholder="Name"
@@ -404,6 +417,7 @@
                       </div>
                       <div class="form-group">
                         <input
+                          name="contactmail"
                           type="email"
                           class="form-control form-control-user"
                           placeholder="Email"
@@ -411,7 +425,17 @@
                         />
                       </div>
                       <div class="form-group">
+                        <input
+                          name="contactsubject"
+                          type="text"
+                          class="form-control form-control-user"
+                          placeholder="Subject"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
                         <textarea
+                          name="contactmessage"
                           id="text"
                           class="form-control"
                           rows="10"
@@ -420,7 +444,66 @@
                         ></textarea>
                       </div>
                       <div class="text-center">
-                        <a href="#" class="btn btn-primary btn-user">Submit</a>
+                        <input
+                          type="submit"
+                          class="btn btn-primary btn-user"
+                          value="Send"
+                        />
+                      </div>
+                      <div id="loadingsvg">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                          style="
+                            margin: auto;
+                            display: block;
+                            shape-rendering: auto;
+                          "
+                          width="150"
+                          height="150"
+                          viewBox="0 0 100 100"
+                          preserveAspectRatio="xMidYMid"
+                        >
+                          <circle cx="40.6582" cy="50" fill="#f6f6f6" r="20">
+                            <animate
+                              attributeName="cx"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              keyTimes="0;0.5;1"
+                              values="30;70;30"
+                              begin="-0.5s"
+                            ></animate>
+                          </circle>
+                          <circle cx="59.3418" cy="50" fill="#3ba4f6" r="20">
+                            <animate
+                              attributeName="cx"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              keyTimes="0;0.5;1"
+                              values="30;70;30"
+                              begin="0s"
+                            ></animate>
+                          </circle>
+                          <circle cx="40.6582" cy="50" fill="#f6f6f6" r="20">
+                            <animate
+                              attributeName="cx"
+                              repeatCount="indefinite"
+                              dur="1s"
+                              keyTimes="0;0.5;1"
+                              values="30;70;30"
+                              begin="-0.5s"
+                            ></animate>
+                            <animate
+                              attributeName="fill-opacity"
+                              values="0;0;1;1"
+                              calcMode="discrete"
+                              keyTimes="0;0.499;0.5;1"
+                              dur="1s"
+                              repeatCount="indefinite"
+                            ></animate>
+                          </circle>
+                          <!-- [ldio] generated by https://loading.io/ -->
+                        </svg>
                       </div>
                     </form>
                   </div>
@@ -428,7 +511,7 @@
               </div>
             </div>
           </div>
-          <!-- /.container-fluid -->
+          <!-- container-fluid -->
         </div>
         <!-- End of Main Content -->
 
@@ -476,18 +559,167 @@
           <div class="modal-body">Select the option below to logout.</div>
           <div class="modal-footer">
             <button
-              class="btn btn-secondary"
+              class="btn btn-secondary modal-user"
               type="button"
               data-dismiss="modal"
             >
               Cancel
             </button>
-            <a class="btn btn-primary" href="/users/logout">Logout</a>
+            <a class="btn btn-primary modal-user" href="/users/logout"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Book Request failure Modal-->
+    <div
+      class="modal fade"
+      id="failureModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Book Request</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">Could not send Book Request. Try Again!</div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary modal-user"
+              type="button"
+              data-dismiss="modal"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Book Success success Modal-->
+    <div
+      class="modal fade"
+      id="SuccessModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Book Request</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Book Request has been sent. We will notify once uploaded.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary modal-user"
+              type="button"
+              data-dismiss="modal"
+            >
+              Ok
+            </button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Book Request failure Modal-->
+    <div
+      class="modal fade"
+      id="contactfailureModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Contact Us</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Hi! Sorry We could not send your message. Please try again later or
+            contact your administrator in some other way.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary modal-user"
+              type="button"
+              data-dismiss="modal"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Book Success success Modal-->
+    <div
+      class="modal fade"
+      id="contactSuccessModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Contact Us</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Hi! Your message was sent successfully. Thank you.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary modal-user"
+              type="button"
+              data-dismiss="modal"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
