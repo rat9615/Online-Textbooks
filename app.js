@@ -2,7 +2,6 @@ const express = require('express');
 
 const app = express();
 
-// const cors = require('cors');
 const passport = require('passport');
 const bodyparser = require('body-parser');
 const flash = require('connect-flash');

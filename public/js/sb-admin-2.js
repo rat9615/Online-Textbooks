@@ -91,6 +91,7 @@
     .blur(function () {
       $(this).popover('hide');
     });
+
   // ajax call for browse based on branch
   $(document).on('change', '#selectCourse', function () {
     const selectval = $('#selectCourse').val();

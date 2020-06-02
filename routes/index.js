@@ -44,15 +44,13 @@ function isAuthenticated(req, res, done) {
   return res.redirect('/users/login');
 }
 
-// check if admin
-// work with original url
+// Check admin autthorization
 function checkAdmin(req, res, done) {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+  if (req.user.isAdmin === true) {
     return done();
   }
   return res.redirect('/');
 }
-
 // retrieve Author's names
 function authorName(req, res, done) {
   Books.find({}, (err, data) => {
@@ -67,12 +65,17 @@ function authorName(req, res, done) {
 
 // Index
 router.get('/', isAuthenticated, (req, res, done) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-    Requestbook.find({}, (err, data) => {
-      res.render('admin-index', {
-        login: req.user,
-        requestbook: data,
-      });
+  if (req.user.isAdmin === true) {
+    Requestbook.find({}, async (err, data) => {
+      await Books.find({}, (error, recentdata) => {
+        return res.render('admin-index', {
+          login: req.user,
+          cover: recentdata,
+          requestbook: data,
+        });
+      })
+        .sort({ _id: -1 })
+        .limit(4);
     });
     return done;
   }
@@ -92,16 +95,20 @@ router.post(
     failureFlash: { type: 'error', message: 'Invalid Email or Password!' },
   }),
   (req, res, done) => {
-    if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-      Requestbook.find({}, (err, data) => {
-        res.render('admin-index', {
-          login: req.user,
-          requestbook: data,
-        });
+    if (req.user.isAdmin === true) {
+      Requestbook.find({}, async (err, data) => {
+        await Books.find({}, (error, recentdata) => {
+          return res.render('admin-index', {
+            login: req.user,
+            cover: recentdata,
+            requestbook: data,
+          });
+        })
+          .sort({ _id: -1 })
+          .limit(4);
       });
       return done;
     }
-    // return res.render('index', { login: req.user });
     // to get latest added books
     Books.find({}, (err, data) => {
       return res.render('index', { login: req.user, cover: data });
@@ -110,9 +117,10 @@ router.post(
       .limit(4);
   }
 );
+
 // Download books
 router.get('/download-books', isAuthenticated, (req, res) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+  if (req.user.isAdmin === true) {
     return res.render('download', { login: req.user, user: 'admin' });
   }
   return res.render('download', { login: req.user, user: 'regular' });
@@ -120,7 +128,7 @@ router.get('/download-books', isAuthenticated, (req, res) => {
 
 // Branch
 router.get('/branch', isAuthenticated, (req, res) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+  if (req.user.isAdmin === true) {
     return res.render('branch', {
       login: req.user,
       user: 'admin',
@@ -134,7 +142,7 @@ router.get('/branch', isAuthenticated, (req, res) => {
 
 // Semester
 router.get('/semester', isAuthenticated, (req, res) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+  if (req.user.isAdmin === true) {
     return res.render('semesters', { login: req.user, user: 'admin' });
   }
   return res.render('semesters', { login: req.user, user: 'regular' });
@@ -142,7 +150,7 @@ router.get('/semester', isAuthenticated, (req, res) => {
 
 // Authors
 router.get('/author', authorName, isAuthenticated, (req, res) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
+  if (req.user.isAdmin === true) {
     return res.render('authors', {
       login: req.user,
       user: 'admin',
@@ -157,25 +165,19 @@ router.get('/author', authorName, isAuthenticated, (req, res) => {
 });
 
 // Admin-Actions Upload books
-router.get('/upload-books', isAuthenticated, (req, res) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-    return res.render('admin-upload', { login: req.user, books: 'empty' });
-  }
-  return res.redirect('/');
+// had to work on this check if any other person can access other than admin
+router.get('/upload-books', isAuthenticated, checkAdmin, (req, res) => {
+  return res.render('admin-upload', { login: req.user, books: 'empty' });
 });
 
 // Admin-Actions Delete books
-router.get('/delete-books', isAuthenticated, (req, res, done) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-    Books.find({}, (err, data) => {
-      res.render('admin-delete', {
-        login: req.user,
-        displayBooks: data,
-      });
+router.get('/delete-books', isAuthenticated, checkAdmin, (req, res) => {
+  Books.find({}, (err, data) => {
+    res.render('admin-delete', {
+      login: req.user,
+      displayBooks: data,
     });
-    return done; // should be a callback done()
-  }
-  return res.redirect('/');
+  });
 });
 // filepond upload to server
 router.post('/uploads', (req, res) => {
@@ -315,17 +317,10 @@ router.post('/upload-books', async (req, res) => {
 });
 
 // remove book requests
-router.get('/remove-books/:id', isAuthenticated, (req, res, done) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-    Requestbook.deleteOne({ _id: req.params.id }, (err, data) => {
-      res.render('admin-index', {
-        login: req.user,
-        requestbook: data,
-      });
-    });
-    return done;
-  }
-  return res.redirect('/');
+router.get('/remove-books/:id', isAuthenticated, checkAdmin, (req, res) => {
+  Requestbook.findByIdAndDelete(req.params.id, () => {
+    res.redirect('/#request');
+  });
 });
 
 // view pdf books
@@ -390,31 +385,55 @@ router.get('/books/:bookname', isAuthenticated, (req, res) => {
 });
 
 // Admin-Actions User Accounts
-router.get('/user-accounts', isAuthenticated, (req, res, done) => {
-  if (req.user.firstname === 'bmsce' && req.user.lastname === 'admin') {
-    Userreg.find({}, (err, data) => {
-      res.render('admin-user-accounts', {
-        login: req.user,
-        userAccounts: data,
-      });
-    });
-    return done;
-  }
-  res.redirect('/');
+router.get('/user-accounts', isAuthenticated, checkAdmin, (req, res) => {
+  res.render('admin-user-accounts', {
+    login: req.user,
+  });
 });
 
 // Get users data
-router.get('/users/data', isAuthenticated, (req, res) => {
+router.get('/users/data', isAuthenticated, checkAdmin, (req, res) => {
   Userreg.find({ firstname: { $ne: 'bmsce' } }, (err, data) => {
-    return res.send({ data });
+    return res.json({ data });
+  });
+});
+
+// Delete user data
+router.get('/users/data/:id', isAuthenticated, checkAdmin, async (req, res) => {
+  await Userreg.findByIdAndDelete(req.params.id, (err) => {
+    if (err) {
+      return res.json({ success: false });
+    }
+    return res.json({ success: true });
   });
 });
 
 // Get books data
-router.get('/book-data/info', isAuthenticated, (req, res) => {
+router.get('/book-data/info', isAuthenticated, checkAdmin, (req, res) => {
   Books.find({}, (err, data) => {
     return res.send({ data });
   });
 });
+
+// Delete books and book data
+router.get(
+  '/book-data/info/:id',
+  isAuthenticated,
+  checkAdmin,
+  async (req, res) => {
+    // eslint-disable-next-line consistent-return
+    await Books.findByIdAndDelete(req.params.id, async (err, data) => {
+      if (err) {
+        return res.json({ success: false });
+      }
+      await Grid.remove({ _id: data.pdffiles }, (error) => {
+        if (error) {
+          return res.json({ success: false });
+        }
+        return res.json({ success: true });
+      });
+    });
+  }
+);
 
 module.exports = router;

@@ -245,7 +245,7 @@
           <!-- End of Topbar -->
 
           <!-- Begin Page Content -->
-          <div class="container-fluid">
+          <div id="pgContainer" class="container-fluid">
             <!-- Page Heading -->
             <div
               class="d-sm-flex align-items-center justify-content-between mb-4"
@@ -262,7 +262,10 @@
                       Recently Added
                     </h6>
                   </div>
-                  <div class="card-body py-4 overflow-auto latest-card-body">
+                  <div
+                    id="recentAdded"
+                    class="card-body py-4 overflow-auto latest-card-body"
+                  >
                     <%-include('partials/searchResults') %>
                   </div>
                 </div>
