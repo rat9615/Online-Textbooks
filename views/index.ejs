@@ -195,11 +195,6 @@
                       >
                     </div>
                   </a>
-                  <a
-                    class="dropdown-item text-center small text-gray-500"
-                    href="#"
-                    >Show All Alerts</a
-                  >
                 </div>
               </li>
 
@@ -737,7 +732,16 @@
     <!-- Core plugin JavaScript-->
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
+    <!-- Socket io -->
+    <script src="/socket.io/socket.io.js"></script>
+
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.js"></script>
   </body>
+  <script>
+    const socket = io.connect('localhost:3000');
+    socket.on('connect', function (data) {
+      socket.emit('join', 'Hello World from client');
+    });
+  </script>
 </html>
