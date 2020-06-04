@@ -9,11 +9,14 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
 const path = require('path');
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
 
 const LocalStrategy = require('passport-local').Strategy;
 const userreg = require('./models/userreg');
 
-// app.use(cors());
+// static
+app.use(express.static(`${__dirname}/node_modules`));
 // bodyparser
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json());
@@ -42,7 +45,6 @@ app.use(
 app.use(cookieParser());
 
 // passport
-// need to check if we need this
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -57,6 +59,17 @@ passport.use(
 app.use('/users', require('./routes/user'));
 app.use('/', require('./routes/index'));
 
-// Setting up dynamic PORT env variable
+// socket server
+io.on('connection', (socket) => {
+  console.log(`Established connection ${socket.id}`);
+
+  socket.on('emit', (data) => {
+    console.log(data);
+  });
+  socket.on('disconnect', () => {
+    console.log(`Disconnected connections ${socket.id}`);
+  });
+});
+
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}`));
+server.listen(port, () => console.log(`Listening on port ${port}`));
