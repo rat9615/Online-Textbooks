@@ -14,7 +14,7 @@ const Requestbook = require('../models/requestbook');
 
 // Static
 router.use(express.static('public'));
-router.use(fileupload({ useTempFiles: true, tempFileDir: '/tmp/' }));
+router.use(fileupload());
 
 // mongoose connection => only for gridfs
 const url = 'mongodb://localhost:27017/onlinetextbookdbs';
