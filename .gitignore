@@ -1,4 +1,9 @@
+# IDE files
 .vscode
+
+# dependencies
 node_modules
 
+# environment variables
+.env
 
