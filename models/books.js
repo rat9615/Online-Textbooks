@@ -19,10 +19,12 @@ const bookschema = new mongoose.Schema({
   bookname: {
     type: String,
     required: true,
+    trim: true,
   },
   bookedition: {
     type: String,
     required: true,
+    trim: true,
   },
   year: {
     type: Date,
@@ -31,19 +33,17 @@ const bookschema = new mongoose.Schema({
   author: {
     type: String,
     required: true,
+    trim: true,
   },
   course: {
     type: String,
     required: true,
+    trim: true,
   },
   semester: {
     type: String,
     required: true,
-  },
-  addedAt: {
-    type: Date,
-    required: true,
-    default: Date.now,
+    trim: true,
   },
   pdffiles: {
     type: mongoose.Schema.Types.ObjectId,

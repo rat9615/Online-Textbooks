@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const userreg = require('./userreg');
 
 // setup mongoose
 mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
@@ -20,6 +19,7 @@ const requestSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 5,
+    trim: true,
   },
   year_of_publication: {
     type: Number,
@@ -30,15 +30,11 @@ const requestSchema = new mongoose.Schema({
   name_of_author: {
     type: String,
     required: true,
+    trim: true,
   },
   Edition: {
     type: String,
     required: true,
-  },
-  addedAt: {
-    required: true,
-    type: Date,
-    default: Date.now,
   },
   usn: {
     type: String,
