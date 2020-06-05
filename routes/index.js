@@ -165,7 +165,6 @@ router.get('/author', authorName, isAuthenticated, (req, res) => {
 });
 
 // Admin-Actions Upload books
-// had to work on this check if any other person can access other than admin
 router.get('/upload-books', isAuthenticated, checkAdmin, (req, res) => {
   return res.render('admin-upload', { login: req.user, books: 'empty' });
 });
