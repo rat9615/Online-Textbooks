@@ -196,7 +196,7 @@ router.post('/uploads', (req, res) => {
     }
   );
 
-  // convert  pdf to image thumbnail
+  // converts first page of pdf to image: thumbnail
   const pdfImage = new PDFImage(
     path.join(__dirname, '../public/uploads', filename.name),
     {
