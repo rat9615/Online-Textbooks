@@ -2,7 +2,11 @@ const express = require('express');
 
 const app = express();
 
+require('dotenv').config();
+
 const passport = require('passport');
+const mongoose = require('mongoose');
+const grid = require('gridfs-stream');
 const bodyparser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -15,20 +19,25 @@ const io = require('socket.io')(server);
 const LocalStrategy = require('passport-local').Strategy;
 const userreg = require('./models/userreg');
 
+// MongoDB Atlas Connection String from environment variables
+const { ATLAS_URI } = process.env;
+
 // static
 app.use(express.static(`${__dirname}/node_modules`));
-// bodyparser
-app.use(bodyparser.urlencoded({ extended: true }));
-app.use(bodyparser.json());
-
-// flash
-app.use(flash());
-
-// Favicon
 app.use(
   // eslint-disable-next-line no-undef
   favicon(path.join(__dirname, './public/img', 'onlinetb_favi.ico'))
 );
+
+// bodyparser
+app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyparser.json());
+
+// cookies
+app.use(cookieParser());
+
+// flash
+app.use(flash());
 
 // EJS
 app.set('view engine', 'ejs');
@@ -41,8 +50,18 @@ app.use(
     saveUninitialized: false,
   })
 );
-// cookies
-app.use(cookieParser());
+
+// MongoDB Setup and Connection
+mongoose.connect(ATLAS_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Connection Error'));
+db.once('open', () => {
+  console.log('OnlineTextbooksDB Connected Successfully');
+});
 
 // passport
 app.use(passport.initialize());

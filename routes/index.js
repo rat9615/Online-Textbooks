@@ -16,22 +16,13 @@ const Requestbook = require('../models/requestbook');
 router.use(express.static('public'));
 router.use(fileupload());
 
-// mongoose connection => only for gridfs
-const url = 'mongodb://localhost:27017/onlinetextbookdbs';
-
-mongoose.connect(url, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
-
 // Gridfs Connection
 const db = mongoose.connection;
 let gfs;
 let Grid;
 db.on('error', console.error.bind(console, 'Connection Error'));
 db.once('open', () => {
-  console.log('Connected Successfully');
+  console.log('GridFS Connected Successfully');
   Grid = grid(db.db, mongoose.mongo);
   gfs = new mongoose.mongo.GridFSBucket(db.db);
 });
@@ -392,7 +383,7 @@ router.get('/user-accounts', isAuthenticated, checkAdmin, (req, res) => {
 
 // Get users data
 router.get('/users/data', isAuthenticated, checkAdmin, (req, res) => {
-  Userreg.find({ firstname: { $ne: 'bmsce' } }, (err, data) => {
+  Userreg.find({ isAdmin: { $ne: 'true' } }, (err, data) => {
     return res.json({ data });
   });
 });
