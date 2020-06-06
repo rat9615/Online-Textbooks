@@ -52,7 +52,6 @@ function authorName(req, res, done) {
     return done();
   }).distinct('author');
 }
-// check not authenticated also if user is logged in he should not come back to register
 
 // Index
 router.get('/', isAuthenticated, (req, res, done) => {
@@ -406,24 +405,20 @@ router.get('/book-data/info', isAuthenticated, checkAdmin, (req, res) => {
 });
 
 // Delete books and book data
-router.get(
-  '/book-data/info/:id',
-  isAuthenticated,
-  checkAdmin,
-  async (req, res) => {
-    // eslint-disable-next-line consistent-return
-    await Books.findByIdAndDelete(req.params.id, async (err, data) => {
-      if (err) {
+router.get('/book-data/info/:id', isAuthenticated, checkAdmin, (req, res) => {
+  // eslint-disable-next-line consistent-return
+  Books.findByIdAndDelete(req.params.id, async (err, data) => {
+    if (err) {
+      return res.json({ success: false });
+    }
+    console.log(data.pdffiles);
+    await Grid.remove({ _id: data.pdffiles }, (error) => {
+      if (error) {
         return res.json({ success: false });
       }
-      await Grid.remove({ _id: data.pdffiles }, (error) => {
-        if (error) {
-          return res.json({ success: false });
-        }
-        return res.json({ success: true });
-      });
+      return res.json({ success: true });
     });
-  }
-);
+  });
+});
 
 module.exports = router;
