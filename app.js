@@ -6,7 +6,6 @@ require('dotenv').config();
 
 const passport = require('passport');
 const mongoose = require('mongoose');
-const grid = require('gridfs-stream');
 const bodyparser = require('body-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -14,7 +13,6 @@ const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
 const path = require('path');
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
 
 const LocalStrategy = require('passport-local').Strategy;
 const userreg = require('./models/userreg');
@@ -74,21 +72,18 @@ passport.use(
   new LocalStrategy({ usernameField: 'email' }, userreg.authenticate())
 );
 
+// disable cache
+app.use((req, res, done) => {
+  res.set(
+    'Cache-Control',
+    'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0'
+  );
+  done();
+});
+
 // routes
 app.use('/users', require('./routes/user'));
 app.use('/', require('./routes/index'));
-
-// socket server
-io.on('connection', (socket) => {
-  console.log(`Established connection ${socket.id}`);
-
-  socket.on('emit', (data) => {
-    console.log(data);
-  });
-  socket.on('disconnect', () => {
-    console.log(`Disconnected connections ${socket.id}`);
-  });
-});
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => console.log(`Listening on port ${port}`));
