@@ -6,18 +6,7 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
-
-// Static
-router.use(express.static('public'));
-router.use('/reset-password/token', express.static('public'));
-
-// Check Authentication
-function isAuthenticated(req, res, done) {
-  if (req.isAuthenticated()) {
-    return res.redirect('/');
-  }
-  return done();
-}
+const isAuthenticated = require('../middleware/checkNotAuthenticated');
 
 router.get('/login', isAuthenticated, (req, res) => {
   return res.render('login', { messages: req.flash('error') });

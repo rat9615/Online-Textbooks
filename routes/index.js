@@ -11,9 +11,11 @@ const { PDFImage } = require('pdf-image');
 const Books = require('../models/books');
 const Userreg = require('../models/userreg');
 const Requestbook = require('../models/requestbook');
+const isAuthenticated = require('../middleware/checkAuthentication');
+const checkAdmin = require('../middleware/checkAdmin');
+const authorName = require('../middleware/authorName');
 
-// Static
-router.use(express.static('public'));
+// fileupload
 router.use(fileupload());
 
 // Gridfs Connection
@@ -26,32 +28,6 @@ db.once('open', () => {
   Grid = grid(db.db, mongoose.mongo);
   gfs = new mongoose.mongo.GridFSBucket(db.db);
 });
-
-// Check Authentication
-function isAuthenticated(req, res, done) {
-  if (req.isAuthenticated()) {
-    return done();
-  }
-  return res.redirect('/users/login');
-}
-
-// Check admin autthorization
-function checkAdmin(req, res, done) {
-  if (req.user.isAdmin === true) {
-    return done();
-  }
-  return res.redirect('/');
-}
-// retrieve Author's names
-function authorName(req, res, done) {
-  Books.find({}, (err, data) => {
-    if (err) {
-      console.log(err);
-    }
-    res.locals.name = data.sort();
-    return done();
-  }).distinct('author');
-}
 
 // Index
 router.get('/', isAuthenticated, (req, res, done) => {
@@ -156,7 +132,7 @@ router.get('/author', authorName, isAuthenticated, (req, res) => {
 
 // Admin-Actions Upload books
 router.get('/upload-books', isAuthenticated, checkAdmin, (req, res) => {
-  return res.render('admin-upload', { login: req.user, books: 'empty' });
+  return res.render('admin-upload', { login: req.user });
 });
 
 // Admin-Actions Delete books
@@ -168,6 +144,7 @@ router.get('/delete-books', isAuthenticated, checkAdmin, (req, res) => {
     });
   });
 });
+
 // filepond upload to server
 router.post('/uploads', (req, res) => {
   const uploadsDir = path.join(__dirname, '../public/uploads');
@@ -252,7 +229,7 @@ router.post('/upload-books', async (req, res) => {
     // deleting file => uploads
     const book = new Books(
       {
-        bookname: req.body.bookname, // validate in case user types same name but with spacing or changes capitalization
+        bookname: req.body.bookname,
         bookedition: req.body.bookedition,
         year: new Date(req.body.year),
         course: req.body.course,
@@ -276,16 +253,11 @@ router.post('/upload-books', async (req, res) => {
       }
     );
     await book.save();
-    res.render('admin-upload', {
-      login: req.user,
-      books: 'full',
-      bookname: req.body.bookname,
-    });
+    res.json({ success: true });
   } catch (err) {
-    console.log('Duplication key error');
     const objId = new mongoose.Types.ObjectId(writeStream.id);
     Grid.remove({ _id: objId });
-    res.send('Files deleted from gfs');
+    res.json({ success: false });
     // render and put flash message of error
   } finally {
     fs.unlinkSync(
@@ -411,7 +383,6 @@ router.get('/book-data/info/:id', isAuthenticated, checkAdmin, (req, res) => {
     if (err) {
       return res.json({ success: false });
     }
-    console.log(data.pdffiles);
     await Grid.remove({ _id: data.pdffiles }, (error) => {
       if (error) {
         return res.json({ success: false });
