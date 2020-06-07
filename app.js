@@ -21,7 +21,7 @@ const userreg = require('./models/userreg');
 const { ATLAS_URI } = process.env;
 
 // static
-app.use(express.static(`${__dirname}/node_modules`));
+app.use('/public', express.static('public'));
 app.use(
   // eslint-disable-next-line no-undef
   favicon(path.join(__dirname, './public/img', 'onlinetb_favi.ico'))
@@ -84,6 +84,17 @@ app.use((req, res, done) => {
 // routes
 app.use('/users', require('./routes/user'));
 app.use('/', require('./routes/index'));
+
+// handle 404 and 500 error
+app.use((req, res) => {
+  res.status(404);
+  res.render('404');
+});
+
+app.use((req, res) => {
+  res.status(500);
+  res.render('500');
+});
 
 const port = process.env.PORT || 3000;
 server.listen(port, () => console.log(`Listening on port ${port}`));
