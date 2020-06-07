@@ -14,7 +14,7 @@
 
     <!-- Custom fonts for this template-->
     <link
-      href="vendor/fontawesome-free/css/all.min.css"
+      href="/public/vendor/fontawesome-free/css/all.min.css"
       rel="stylesheet"
       type="text/css"
     />
@@ -31,7 +31,7 @@
     />
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.css" rel="stylesheet" />
+    <link href="/public/css/online-textbooks.css" rel="stylesheet" />
 
     <!-- Filepond CDN -->
     <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
@@ -306,8 +306,8 @@
                     </h6>
                   </div>
                   <div class="card-body">
-                    <% if(books == 'empty') {%>
                     <form
+                      id="uploadBooks"
                       class="user"
                       action="/upload-books"
                       method="POST"
@@ -330,16 +330,24 @@
                         >
                           <optgroup label="Editions">
                             <option selected hidden disabled>Edition</option>
-                            <option value="firsted">First Edition</option>
-                            <option value="seconded">Second Edition</option>
-                            <option value="thirded">Third Edition</option>
-                            <option value="fourthed">Fourth Edition</option>
-                            <option value="fifthed">Fifth Edition</option>
-                            <option value="sixthed">Sixth Edition</option>
-                            <option value="seventhed">Seventh Edition</option>
-                            <option value="eighthed">Eighth Edition</option>
-                            <option value="ninthed">Ninth Edition</option>
-                            <option value="tenthed">Tenth Edition</option>
+                            <option value="First Edition">First Edition</option>
+                            <option value="Second Edition"
+                              >Second Edition</option
+                            >
+                            <option value="Third Edition">Third Edition</option>
+                            <option value="Fourth Edition"
+                              >Fourth Edition</option
+                            >
+                            <option value="Fifth Edition">Fifth Edition</option>
+                            <option value="Sixth Edition">Sixth Edition</option>
+                            <option value="Seventh Edition"
+                              >Seventh Edition</option
+                            >
+                            <option value="Eighth Edition"
+                              >Eighth Edition</option
+                            >
+                            <option value="Ninth Edition">Ninth Edition</option>
+                            <option value="Tenth Edition">Tenth Edition</option>
                           </optgroup>
                         </select>
                       </div>
@@ -365,8 +373,12 @@
                         <select class="form-control selectpicker" name="course">
                           <optgroup label="Branch">
                             <option selected hidden disabled>Course</option>
-                            <option value="mca">Computer Applications</option>
-                            <option value="mba">Business Administration</option>
+                            <option value="Computer Applications"
+                              >Computer Applications</option
+                            >
+                            <option value="Business Administration"
+                              >Business Administration</option
+                            >
                           </optgroup>
                         </select>
                       </div>
@@ -378,12 +390,12 @@
                         >
                           <optgroup label="Semester">
                             <option selected hidden disabled>Semester</option>
-                            <option value="first">I</option>
-                            <option value="second">II</option>
-                            <option value="third">III</option>
-                            <option value="fourth">IV</option>
-                            <option value="fifth">V</option>
-                            <option value="sixth">VI</option>
+                            <option value="First Semester">I</option>
+                            <option value="Second Semester">II</option>
+                            <option value="Third Semester">III</option>
+                            <option value="Fourth Semester">IV</option>
+                            <option value="Fifth Semester">V</option>
+                            <option value="Sixth Semester">VI</option>
                           </optgroup>
                         </select>
                       </div>
@@ -403,21 +415,6 @@
                         />
                       </div>
                     </form>
-                    <% } else {%>
-                    <div class="text-center">
-                      <h1 class="h4 text-gray-900 mb-4">
-                        <%=bookname%> <br />
-                        has been uploaded.
-                      </h1>
-                    </div>
-                    <div class="text-center">
-                      <a
-                        href="/upload-books"
-                        class="special-btn btn btn-primary btn-user"
-                        >Back</a
-                      >
-                    </div>
-                    <% } %>
                   </div>
                 </div>
               </div>
@@ -445,6 +442,58 @@
     <a class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>
     </a>
+
+    <div id="loadingsvg">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        style="margin: auto; display: block; shape-rendering: auto;"
+        width="150"
+        height="150"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="xMidYMid"
+      >
+        <circle cx="40.6582" cy="50" fill="#f6f6f6" r="20">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            keyTimes="0;0.5;1"
+            values="30;70;30"
+            begin="-0.5s"
+          ></animate>
+        </circle>
+        <circle cx="59.3418" cy="50" fill="#3ba4f6" r="20">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            keyTimes="0;0.5;1"
+            values="30;70;30"
+            begin="0s"
+          ></animate>
+        </circle>
+        <circle cx="40.6582" cy="50" fill="#f6f6f6" r="20">
+          <animate
+            attributeName="cx"
+            repeatCount="indefinite"
+            dur="1s"
+            keyTimes="0;0.5;1"
+            values="30;70;30"
+            begin="-0.5s"
+          ></animate>
+          <animate
+            attributeName="fill-opacity"
+            values="0;0;1;1"
+            calcMode="discrete"
+            keyTimes="0;0.499;0.5;1"
+            dur="1s"
+            repeatCount="indefinite"
+          ></animate>
+        </circle>
+        <!-- [ldio] generated by https://loading.io/ -->
+      </svg>
+    </div>
 
     <!-- Logout Modal-->
     <div
@@ -485,9 +534,84 @@
       </div>
     </div>
 
+    <!-- Contact failure Modal-->
+    <div
+      class="modal fade"
+      id="uploadFailureModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Upload Books</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Something went terribly wrong! The book you uploaded may already
+            exist or there seems to be a server problem.
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary modal-user"
+              type="button"
+              data-dismiss="modal"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Contact Success Modal-->
+    <div
+      class="modal fade"
+      id="uploadSuccessModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Upload books</h5>
+            <button
+              class="close"
+              type="button"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Your book was successfully uploaded!
+          </div>
+          <div class="modal-footer">
+            <button
+              class="btn btn-primary modal-user"
+              type="button"
+              data-dismiss="modal"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/public/vendor/jquery/jquery.min.js"></script>
+    <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!--Bootstrap-select cdn-->
     <link
@@ -497,13 +621,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.js"></script>
+    <script src="/public/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!--filepond core plugin-->
     <script src="https://unpkg.com/filepond/dist/filepond.min.js"></script>
     <script src="https://unpkg.com/jquery-filepond/filepond.jquery.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/public/js/online-textbooks.js"></script>
+    <script src="/public/js/demo/filepond-custom.js"></script>
   </body>
 </html>
