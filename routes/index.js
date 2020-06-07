@@ -255,6 +255,7 @@ router.post('/upload-books', async (req, res) => {
     await book.save();
     res.json({ success: true });
   } catch (err) {
+    console.log(err);
     const objId = new mongoose.Types.ObjectId(writeStream.id);
     Grid.remove({ _id: objId });
     res.json({ success: false });
