@@ -1983,6 +1983,7 @@ pre code {
   border-radius: 0.35rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+
 #autocomplete {
   background: url('../img/search.svg') right no-repeat;
 }
@@ -2120,6 +2121,9 @@ textarea.form-control {
 
 .form-group {
   margin-bottom: 1rem;
+}
+.form-group-custom {
+  margin-bottom: 1.7rem;
 }
 
 .form-text {
@@ -2466,7 +2470,7 @@ textarea.form-control.is-invalid {
     justify-content: center;
     margin-bottom: 0;
   }
-  .form-inline .form-group {
+  .form-inline .form-group .form-group-custom {
     display: flex;
     flex: 0 0 auto;
     flex-flow: row wrap;
@@ -11295,6 +11299,16 @@ form.user .form-control-user {
   border-radius: 10rem;
   padding: 1.5rem 1rem;
 }
+.dropicker {
+  font-size: 0.8rem;
+  border-radius: 10rem;
+  border: 1px solid #d1d3e2;
+  padding: 0.9rem 1rem;
+}
+.dropicker.dropdown-toggle:focus {
+  outline: none !important;
+}
+
 #text {
   resize: none;
   font-size: 0.8rem;
@@ -11306,11 +11320,6 @@ form.user .form-control-user {
   width: 100%;
 }
 
-.selectpicker {
-  font-size: 0.8rem;
-  border-radius: 10rem;
-  padding: 1.5rem 1rem;
-}
 form.user .btn-user {
   font-size: 0.8rem;
   border-radius: 1.5rem;

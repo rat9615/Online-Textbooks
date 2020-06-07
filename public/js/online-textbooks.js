@@ -46,6 +46,11 @@
     }
   });
 
+  $(document).ready(function () {
+    // Bootstrap Select
+    $('select').selectpicker();
+  });
+
   // Smooth scrolling using jQuery easing
   $(document).on('click', 'a.scroll-to-top', function (e) {
     var $anchor = $(this);
@@ -114,7 +119,6 @@
       success(data) {
         $('#browseSemester').html(data);
         popoverHtml();
-        $('.selectpicker').selectpicker('refresh');
       },
     });
   });
@@ -175,6 +179,10 @@
         $('#loadingsvg').hide();
       },
     });
+  });
+  $('[data-toggle="tooltip"]').tooltip({
+    html: true,
+    trigger: 'hover click',
   });
 
   // ajax call for upload books

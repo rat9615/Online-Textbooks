@@ -23,6 +23,12 @@
       rel="stylesheet"
     />
 
+    <!--Bootstrap-select cdn-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css"
+    />
+
     <!-- Custom styles for this template-->
     <link href="/public/css/online-textbooks.css" rel="stylesheet" />
   </head>
@@ -318,10 +324,11 @@
                   </div>
                   <div class="card-body">
                     <form class="user">
-                      <div class="form-group">
+                      <div class="form-group-custom">
                         <select
                           id="selectCourse"
                           class="form-control selectpicker"
+                          data-style="dropicker"
                         >
                           <optgroup label="Branch">
                             <option selected hidden disabled>Course</option>
@@ -338,6 +345,7 @@
                         <select
                           id="selectSemester"
                           class="form-control selectpicker"
+                          data-style="dropicker"
                         >
                           <optgroup label="Semester">
                             <option selected hidden disabled>Semester</option>
@@ -430,11 +438,7 @@
     <script src="/public/vendor/jquery/jquery.min.js"></script>
     <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!--Bootstrap-select cdn-->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css"
-    />
+    <!-- Bootstrap Select JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
 
     <!-- Core plugin JavaScript-->

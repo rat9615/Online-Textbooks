@@ -1,9 +1,5 @@
 // load filepond plugin
 $(function () {
-  $('[data-toggle="tooltip"]').tooltip({
-    html: true,
-  });
-
   $.fn.filepond.registerPlugin(
     // eslint-disable-next-line no-undef
     FilePondPluginFileValidateType,
