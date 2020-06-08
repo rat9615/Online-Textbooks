@@ -97,10 +97,16 @@
     const selectval = $('#selectCourse').val();
     $.ajax({
       url: `/branch/${selectval}`,
+      beforeSend() {
+        $('#loadingsvg').show();
+      },
       success(data) {
         $('#browseBranch').html(data);
         popoverHtml();
         $('.selectpicker').selectpicker('refresh');
+      },
+      complete() {
+        $('#loadingsvg').hide();
       },
     });
   });
@@ -111,9 +117,15 @@
     const selectsem = $('#selectSemester').val();
     $.ajax({
       url: `/semester/${selectcourse}/${selectsem}`,
+      beforeSend() {
+        $('#loadingsvg').show();
+      },
       success(data) {
         $('#browseSemester').html(data);
         popoverHtml();
+      },
+      complete() {
+        $('#loadingsvg').hide();
       },
     });
   });
@@ -123,9 +135,15 @@
     const selectauth = $('#selectAuthor').val();
     $.ajax({
       url: `/author/${selectauth}`,
+      beforeSend() {
+        $('#loadingsvg').show();
+      },
       success(data) {
         $('#browseAuthor').html(data);
         popoverHtml();
+      },
+      complete() {
+        $('#loadingsvg').hide();
       },
     });
   });
@@ -137,6 +155,9 @@
       url: '/users/request',
       method: 'POST',
       data: $('#requestBook').serialize(),
+      beforeSend() {
+        $('#loadingsvg').show();
+      },
       success(data) {
         if (data.success === true) {
           $('#SuccessModal').modal('show');
@@ -147,6 +168,9 @@
           $('#requestBook').trigger('reset');
           $('.selectpicker').selectpicker('refresh');
         }
+      },
+      complete() {
+        $('#loadingsvg').hide();
       },
     });
   });
