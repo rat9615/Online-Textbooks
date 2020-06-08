@@ -1,19 +1,6 @@
 const mongoose = require('mongoose');
 const passmongoose = require('passport-local-mongoose');
 
-// // setup mongoose
-// mongoose.connect('mongodb://localhost:27017/onlinetextbookdbs', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useCreateIndex: true,
-// });
-
-// const db = mongoose.connection;
-// db.on('error', console.error.bind(console, 'Connection Error'));
-// db.once('open', () => {
-//   console.log('Connected Successfully');
-// });
-
 // user registration schema
 const userSchema = new mongoose.Schema({
   firstname: {

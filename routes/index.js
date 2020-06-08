@@ -60,6 +60,7 @@ router.post(
     failureRedirect: '/users/login',
     failureFlash: { type: 'error', message: 'Invalid Email or Password!' },
   }),
+  // eslint-disable-next-line consistent-return
   (req, res, done) => {
     if (req.user.isAdmin === true) {
       Requestbook.find({}, async (err, data) => {
