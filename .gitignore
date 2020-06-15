@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-node_modules
-=======
 # IDE files
 .vscode
 
@@ -10,4 +7,3 @@ node_modules
 # environment variables
 .env
 
->>>>>>> server-side
