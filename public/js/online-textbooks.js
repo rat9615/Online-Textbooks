@@ -73,7 +73,7 @@
     $('[data-toggle="popover"]').popover({
       animation: true,
       html: true,
-      trigger: 'hover click',
+      trigger: 'hover',
     });
   }
 
@@ -201,7 +201,7 @@
   });
   $('[data-toggle="tooltip"]').tooltip({
     html: true,
-    trigger: 'hover click',
+    trigger: 'hover',
   });
 
   // ajax call for upload books

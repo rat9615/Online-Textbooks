@@ -5,7 +5,7 @@ $(function () {
     $('[data-toggle="popover"]').popover({
       animation: true,
       html: true,
-      trigger: 'hover click',
+      trigger: 'hover',
     });
   }
 
