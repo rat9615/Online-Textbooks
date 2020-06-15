@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Online Textbooks - Register</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="/public/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
+  <!--Bootstrap-select cdn-->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+  
+  <!-- Custom styles for this template-->
+  <link href="/public/css/online-textbooks.css" rel="stylesheet">
+
+</head>
+
+<body class="bg-gradient-primary">
+
+  <div class="container">
+
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+      <div class="card-body p-0">
+        <!-- Nested Row within Card Body -->
+        <div class="row">
+          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-7">
+            <div class="p-4 p-sm-5">
+              <div class="text-center mb-4">
+                <a class="d-flex align-items-center justify-content-center text-decoration-none" href="/users/register">
+                  <div class="fas-login">
+                    <i class="fas fa-book-reader text-primary"></i>
+                  </div>
+                  <div class="text-primary font-weight-bold mx-2">online textbooks</div>
+                </a>
+              </div>
+              <div class="text-center">
+                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+              </div>
+              <!--alert-->
+              <% if (user == 'error') { %>
+                <div class="alert alert-danger py-2" role="alert">
+                  <%= err %>
+                </div>
+              <% } %>
+              <form class="user" action='/users/register' method="POST">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input type="text" class="form-control form-control-user" id="exampleFirstName" name="firstname" placeholder="First Name" required>
+                  </div>
+                  <div class="col-sm-6">
+                    <input type="text" class="form-control form-control-user" id="exampleLastName" name="lastname" placeholder="Last Name" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" name="email" placeholder="Email" required>
+                </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control form-control-user" id="exampleInputUSN" name="usn"  placeholder="USN" required>
+                  </div>
+                  <div class="form-group-custom">
+                    <select class=" form-control selectpicker " data-style="dropicker" name="course" required>
+                      <optgroup label="Course"></optgroup>
+                        <option selected hidden disabled>Course</option>
+                        <option value="Computer Applications">Computer Applications</option>
+                        <option value="Business Administration">Business Administration</option>
+                      </optgroup>
+                    </select>
+                  </div>
+                <div class="form-group">
+                    <input type="password" class="form-control form-control-user" id="exampleRegisterPassword" name="password" placeholder="Password" required>
+                </div>
+                <div class="text-center">
+                  <input type="submit" class="btn btn-primary btn-user" value="Register">
+                </div>
+              </form>
+              <hr>
+              <div class="text-center">
+                <a class="text-primary small" href="/users/forgot-password">Forgot Password?</a>
+              </div>
+              <div class="text-center">
+                <a class="text-primary small" href="/users/login">Already have an account? Login!</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+      <div class="justify-content-center">
+        <a
+          href="https://github.com/rat9615/Online-Textbooks"
+          class="gitbutton github"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-toggle="tooltip"
+          data-placement="bottom"
+          title="Star and fork us on GitHub"
+          ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 6c-3.313 0-6 2.686-6 6 0 2.651 1.719 4.9 4.104 5.693.3.056.396-.13.396-.289v-1.117c-1.669.363-2.017-.707-2.017-.707-.272-.693-.666-.878-.666-.878-.544-.373.041-.365.041-.365.603.042.92.619.92.619.535.917 1.403.652 1.746.499.054-.388.209-.652.381-.802-1.333-.152-2.733-.667-2.733-2.965 0-.655.234-1.19.618-1.61-.062-.153-.268-.764.058-1.59 0 0 .504-.161 1.65.615.479-.133.992-.199 1.502-.202.51.002 1.023.069 1.503.202 1.146-.776 1.648-.615 1.648-.615.327.826.121 1.437.06 1.588.385.42.617.955.617 1.61 0 2.305-1.404 2.812-2.74 2.96.216.186.412.551.412 1.111v1.646c0 .16.096.347.4.288 2.383-.793 4.1-3.041 4.1-5.691 0-3.314-2.687-6-6-6z"/></svg></a>
+      </div>
+    </footer>
+  <!-- Bootstrap core JavaScript-->
+  <script src="/public/vendor/jquery/jquery.min.js"></script>
+  <script src="/public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Bootstrap select JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/public/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/public/js/online-textbooks.js"></script>
+
+</body>
+
+</html>
